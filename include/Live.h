@@ -15,47 +15,53 @@
 #include "cinder/Utilities.h"
 #include "LiveObject.h"
 
-#define	OSC_OUT_PORT	9000
-#define	OSC_IN_PORT		9001
-#define	OSC_HOST		"localhost"
+#define	GET_INFO_MIN_DELAY	2.0f		// minimum delay between info requests
+
 
 class Modulo;
 
-/*
-class LiveTrack;
-class LiveScene;
-class LiveClip;
-class LiveDevice;
-*/
 
 class Live {
 	
 	
 public:
-	Live();
-	
-	void debug();
-	
-	void drawDebug();
+	Live(std::string osc_host, int osc_in_port, int osc_out_port, bool debugMode, bool init = false);
 	
 	void sendMessage(std::string address, std::string args = "");
 	
-	void getInfo();
+	bool getInfo();
+
+	void play(bool isPlaying = true) { mIsPlaying = isPlaying; };
 	
-	void play( bool playContinue = false ) { if ( playContinue ) sendMessage("/live/play/continue"); else sendMessage("/live/play"); };
+	void render();
 	
-	void stop() { sendMessage("/live/stop"); };
+	bool isDebugMode() { return mDebugMode; };
 	
-	void playClip(int track, int clip) { sendMessage("/live/play/clip", "i" + ci::toString(track) + " i" + ci::toString(clip) ); };
-	void stopClip(int track, int clip) { sendMessage("/live/stop/clip", "i" + ci::toString(track) + " i" + ci::toString(clip) ); };
+	void debug(bool debugMode = true) { mDebugMode = debugMode; };
 	
-	void setTrackName(int index, std::string name) { sendMessage("/live/name/track", "i" + ci::toString(index) + " s" + name ); };
+//	void play( bool playContinue = false ) { if ( playContinue ) sendMessage("/live/play/continue"); else sendMessage("/live/play"); };
 	
-	void setClip() {
-		// /live/name/clip         (int track, int clip, string name)              Sets clip number clip in track number track's name to name
-		};
+//	void stop() { sendMessage("/live/stop"); };
 	
-	void playScene(int scene) {	sendMessage("/live/play/scene", "i" + ci::toString(scene) ); };
+	void playClip(int track, int clip) { 
+		sendMessage("/live/play/clip", "i" + ci::toString(track) + " i" + ci::toString(clip) ); 
+		ci::app::console() << "play clip!" << std::endl;
+	};
+	void stopClip(int track, int clip) { sendMessage("/live/stop/clip", "i" + ci::toString(track) + " i" + ci::toString(clip) ); 
+		ci::app::console() << "stop clip!" << std::endl;
+	
+	};
+	
+	void stopTrack(int track) { sendMessage("/live/stop/track", "i" + ci::toString(track) );
+	
+		ci::app::console() << "stop track!" << std::endl;
+	};
+	
+//	void setTrackName(int index, std::string name) { sendMessage("/live/name/track", "i" + ci::toString(index) + " s" + name ); };
+	
+//	void setClip() { // /live/name/clip         (int track, int clip, string name)              Sets clip number clip in track number track's name to name };
+	
+//	void playScene(int scene) {	sendMessage("/live/play/scene", "i" + ci::toString(scene) ); };
 	
 	LiveClip* getClip(int n) { return mClips[n]; };
 	int getClipsN() { return mClips.size(); };
@@ -69,46 +75,62 @@ public:
 	LiveDevice* getDevice(int n) { return mDevices[n]; };
 	int getDevicesN() { return mDevices.size(); };
 	
-	void	addModule(Modulo *m) { mModules.push_back(m); };
-	
-	void	removeModule(Modulo *m) 
-	{ 
-		for (std::vector<Modulo*>::iterator it = mModules.begin(); it != mModules.end(); it++)
-			if ( *it == m ) { mModules.erase(it); return; }
-	};
-	
-	void clearModules() { mModules.clear(); };
-	
 	bool isPlaying() { return mIsPlaying; };
+	
+	LiveTrack*	getSelectedTrack() { return mSelectedTrack; };
+	
+	void	shutdown();
+	
+	bool	isOscListenerConnected()	{ return mOscListener != NULL; };
+	
+	bool	isOscSenderConnected()		{ return mOscSender != NULL; };	
+	
+	void	initOsc();
+	
 	
 private:
 	void	listTrackDevices(int trackIndex) { sendMessage("/live/devicelist", "i" + ci::toString(trackIndex) ); };
 	
 	void	receiveData();
 	
+	void	drawDebug();
 	
-	std::vector<Modulo*>			mModules;
+	void	deleteObjects();
 	
 	void	parseScene( ci::osc::Message message );
 	void	parseTrack( ci::osc::Message message );
 	void	parseClip( ci::osc::Message message );
 	void	parseClipInfo( ci::osc::Message message );
 	void	parseDevice( ci::osc::Message message );
-	void	parseDeviceParams( ci::osc::Message message );
-	
+//	void	parseDeviceParams( ci::osc::Message message );
+
 	std::vector<LiveTrack*>			mTracks;
 	std::vector<LiveScene*>			mScenes;
 	std::vector<LiveClip*>			mClips;
 	std::vector<LiveDevice*>		mDevices;
 	
-	ci::osc::Sender					mOscSender;
-	ci::osc::Listener				mOscListener;
-	
-	std::vector<ci::osc::Message>	mMessageQueue;
-	
-	ci::Font						mFontSmall;
+	ci::osc::Sender					*mOscSender;
+	ci::osc::Listener				*mOscListener;
 	
 	bool							mIsPlaying;
 	
+	std::string						mOscHost;
+	int								mOscInPort;
+	int								mOscOutPort;
 	
+	
+	ci::ColorA						mColorWhite;
+	ci::ColorA						mColor1;
+	ci::ColorA						mColor2;
+	ci::ColorA						mColor3;
+	ci::ColorA						mColor4;
+
+	ci::Font						mFontSmall;
+	
+	double							mGetInfoRequestAt;
+	
+	bool							mDebugMode;
+	
+	LiveTrack						*mSelectedTrack;
 };
+

@@ -23,53 +23,71 @@ public:
 	Modulo(Live *live, LiveClip *clip) {
 		mLive		= live;
 		mClip		= clip;
-		mIsPlaying	= false;
 		
-		mLive->addModule(this);
+		updateState();
+		updateBrightness();
 	};
 	
-	~Modulo() {
-		mLive->removeModule(this);
-	};
+	~Modulo() { };
 	
-	virtual void render() {};
+	virtual void render(float height) {};
 	
-	virtual void update() {
+	virtual void update(float *values) { };
+	
+	bool updateModulo() 
+	{
+		updateBrightness();
 		
-		ci::app::console() << "super update!" << std::endl;
+		return updateState();
 	};
 	
-	void play() {
-		mLive->playClip(mClip->getTrackIndex() , mClip->getIndex() );
-		mIsPlaying = true;
-		
-		ci::app::console() << "play!" << std::endl;
-
-	};
+	void play() { mIsClipPlaying = true; };
 	
-	void stop() {
-		mLive->stopClip(mClip->getTrackIndex() , mClip->getIndex() );
-		mIsPlaying = false;
-	};
+	void stop() { mIsClipPlaying = false; };
 	
 	bool updateState() 
 	{
 		ClipState state = mClip->getState();
 		
 		if ( state == HAS_CLIP )
-			mIsPlaying = false;
+			mIsClipPlaying = false;
 		else if ( state == CLIP_PLAYING )
-			mIsPlaying = true;
+			mIsClipPlaying = true;
 				
-		return mIsPlaying && mLive->isPlaying();
+		mIsPlaying = mIsClipPlaying && mLive->isPlaying();
+
+		return mIsPlaying;
 	};
 	
-	bool isPlaying() { return mIsPlaying && mLive->isPlaying(); };
+	bool isPlaying() { return mIsClipPlaying && mLive->isPlaying(); };
 	
+	LiveClip*	getClip() { return mClip; };
+	
+	LiveTrack*	getTrack() { return mLive->getTrack( mClip->getTrackIndex() ); };
+	
+	void		updateBrightness() { mBrightness = pow( mLive->getTrack(mClip->getTrackIndex())->getVolume(), 2); };
+	
+	float		getBrightness() { return mBrightness; };
+	
+	std::string getSettings() { return mSettingsStr; };
+	
+	std::string	getName() { return mName; };
+	
+	int			getTrackIndex() { return mClip->getTrackIndex(); };
+	
+
 protected:
-	Live		*mLive;
-	LiveClip	*mClip;
+	Live			*mLive;
+	LiveClip		*mClip;
 	
-	bool		mIsPlaying;
+	bool			mIsPlaying;			// true when both clip and Live are playing
+	bool			mIsClipPlaying;		// true when clip is playing
 	
+	float			mBrightness;
+	
+	std::string		mSettingsStr;
+	
+	std::string		mName;
+
 };
+

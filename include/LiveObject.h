@@ -53,10 +53,11 @@ class LiveClip : public LiveObject {
 	friend class Live;
 	
 public:
-	LiveClip(int index, std::string name, int trackIndex) : LiveObject(index, name) 
+	LiveClip(int index, std::string name, int trackIndex, ci::Color color) : LiveObject(index, name) 
 	{ 
 		mTrackIndex = trackIndex; 
-		mState = HAS_CLIP; 
+		mState		= HAS_CLIP; 
+		mColor		= color;
 	};
 	
 	int getTrackIndex() { return mTrackIndex; };
@@ -64,11 +65,16 @@ public:
 	ClipState	getState() { return mState; };
 	
 	void		setState(ClipState state) { mState = state;	};
-
+	
+	bool		isPlaying() { return ( mState == CLIP_PLAYING ); };
+	
+	ci::ColorA	getColor() { return mColor; };
+	
 	
 protected:
 	int			mTrackIndex;
 	ClipState	mState;
+	ci::ColorA	mColor;
 };
 
 
@@ -93,7 +99,7 @@ class LiveTrack : public LiveObject {
 	friend class Live;
 	
 public:
-	LiveTrack(int index, std::string name) : LiveObject(index, name) {};
+	LiveTrack(int index, std::string name) : LiveObject(index, name), mVolume(0.0f) {};
 	
 	void addClip( LiveClip *obj )		{ mClips.push_back(obj); };
 	void addDevice( LiveDevice *obj )	{ mDevices.push_back(obj); };
@@ -101,14 +107,19 @@ public:
 	int getClipsN() { return mClips.size(); };
 	int getDevicesN() { return mDevices.size(); };
 	
+	LiveClip *getClip(int n) { return mClips[n]; };
+	
 	void clearPointers() { mClips.clear(); mDevices.clear(); };
+	
+	float getVolume() { return mVolume; };
+	
 	
 protected:
 	
 	std::vector<LiveClip*>		mClips;
 	std::vector<LiveDevice*>	mDevices;
 	
-	
+	float						mVolume;
 };
 
 
