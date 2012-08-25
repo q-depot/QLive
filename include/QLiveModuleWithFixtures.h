@@ -106,7 +106,6 @@ namespace nocte {
     };
 
 
-
 }
 
 #endif

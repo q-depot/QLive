@@ -8,6 +8,10 @@
  *
  */
 
+
+#ifndef QLIVE_ANALYSER
+#define QLIVE_ANALYSER
+
 #pragma once
 
 #include "OscListener.h"
@@ -78,3 +82,5 @@ namespace nocte {
 
 
 }
+
+#endif

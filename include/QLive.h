@@ -8,6 +8,9 @@
  *
  */
 
+#ifndef QLIVE
+#define QLIVE
+
 #pragma once
 
 #include "cinder/app/AppBasic.h"
@@ -174,3 +177,5 @@ private:
 };
 
 }
+
+#endif
