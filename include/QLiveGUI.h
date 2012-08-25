@@ -53,23 +53,16 @@ namespace nocte {
             Vec2i               pos;
             ciUIWidget          *widget;
             char                roundedFloat[10];
-//            
+
             mIsFullWidth = false;
-//            mGUI     =  new ciUICanvas( 0, getWindowHeight() - mModuleGUISize.y, 
-//                                       CI_UI_GLOBAL_WIDGET_SPACING + mModuleGUISize.x * tracksN, mModuleGUISize.y );
-            
+
             mGUI     =  new ciUICanvas( 0, 0, ci::app::getWindowWidth() - mOffsetX, mModuleGUISize.y );
-            
-//            mGUI     =  new ciUIScrollableCanvas( 0, ci::app::getWindowHeight() - mModuleGUISize.y, 
-//                                                  ci::app::getWindowWidth(), mModuleGUISize.y );
-            
-//            gui = new ciUIScrollableCanvas(0,0,guiWidth, guiHeight);        
-//            mGUI->setScrollableDirections(false, true);
             
             mGUI->setFont(RES_GUI_FONT);
             mGUI->setFontSize( CI_UI_FONT_LARGE, 14 );
             mGUI->setFontSize( CI_UI_FONT_MEDIUM, 12 );
             mGUI->setFontSize( CI_UI_FONT_SMALL, 10 );
+            mGUI->setTheme( CI_UI_THEME_NOCTE_GREEN );
             
             for( int k=0; k < tracksN; k++ )
             {
@@ -81,6 +74,8 @@ namespace nocte {
                 // Label
                 widget = new ciUILabel( pos.x, pos.y, track->getName(), CI_UI_FONT_MEDIUM );
                 mGUI->addWidget( widget );
+                widget->setColorFill( track->getColor() );
+                widget->setColorOutline( track->getColor() );
                 pos.y += widget->getRect()->getHeight() + 3;
 
                 // Volume                
@@ -97,12 +92,12 @@ namespace nocte {
                 vector<string> clipNames;
                 for( int i=0; i < track->getClipsN(); i++ )
                 {
-                    clip = track->getClip(i);
-//                    widget = new ciUILabelToggle( pos.x, pos.y, w, 16, clip->getIsPlayingRef(), clip->getName(), CI_UI_FONT_SMALL ); 
+                    clip    = track->getClip(i);                    
+                    widget  = new ciUIToggle( pos.x, pos.y, 8, 8, clip->getIsPlayingRef(), clip->getName(), CI_UI_FONT_SMALL );
                     
-                    widget = new ciUIToggle( pos.x, pos.y, 8, 8, clip->getIsPlayingRef(), clip->getName(), CI_UI_FONT_SMALL );                     
                     widget->setMeta( "clip_" + toString( track->getIndex() ) + "_" + toString( clip->getIndex() ) );
                     mGUI->addWidget( widget );
+                    widget->setColorFill( clip->getColor() );
                     ((ciUIToggle*)widget)->setLabelOffset( 0, 8 );
                     pos.y += widget->getRect()->getHeight() + 4;
                 }
@@ -111,8 +106,8 @@ namespace nocte {
                 mGUI->addWidget( new ciUISpacer( pos.x, pos.y, w, 1 ) );
                 pos.y += 7;
                 
-                // Params   IGNORE all the params in the tracks that starts with "_"
-                if ( !boost::starts_with( track->getName(), "_") )
+                // Params   
+                if ( !boost::starts_with( track->getName(), "_") )          // IGNORE all the params in the tracks that starts with "_"
                 {
                     for( int i=0; i < track->getDevicesN(); i++ )
                     {
@@ -139,7 +134,7 @@ namespace nocte {
             if ( rect->getWidth() < ci::app::getWindowWidth() - mOffsetX )
                 rect->setWidth( ci::app::getWindowWidth() - mOffsetX );
 
-            mGUI->setTheme( CI_UI_THEME_NOCTE_GREEN );
+//            mGUI->setTheme( CI_UI_THEME_NOCTE_GREEN );
             
             mGUI->registerUIEvents(this, &QLiveGUI::guiEvent);
         }

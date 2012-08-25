@@ -133,6 +133,17 @@ private:
 	
 	void	deleteObjects();
 	
+    ci::ColorA colorIntToColorA( int colorInt )
+    {
+        ci::ColorA color;
+        color.r = (float)((colorInt >> 16) & 0xB0000FF) / 255.0f;
+        color.g = (float)((colorInt >> 8) & 0xB0000FF) / 255.0f;
+        color.b = (float)(colorInt & 0xB0000FF) / 255.0f;
+        color.a	= 1.0f;
+        
+        return color;
+    }
+    
 	void	parseScene( ci::osc::Message message );
 	void	parseTrack( ci::osc::Message message );
 	void	parseClip( ci::osc::Message message );

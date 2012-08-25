@@ -23,17 +23,14 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-namespace nocte {
+#define QLIVE_SETTINGS     "/Users/Q/QLiveSettings.xml"
 
-    
-    #define MODULE_SETTINGS     "/Users/Q/QLiveSettings.xml"
-        
+namespace nocte {
         
     QLive::QLive(string osc_host, int osc_live_in_port, int osc_live_out_port, int osc_analyzer_in_port, int live_params_in_port, bool init) 
     : mOscHost(osc_host), mOscLiveInPort(osc_live_in_port), mOscLiveOutPort(osc_live_out_port), mOscAnalyzerInPort(osc_analyzer_in_port), mOscLiveParamsInPort(live_params_in_port),
       mOscListener(NULL), mOscSender(NULL), mSelectedTrack(NULL), mIsPlaying(false), mIsReady(false)
-    {	
-        
+    {
         initOsc();
         
         mGetInfoRequestAt = - GET_INFO_MIN_DELAY * 2.0f;
@@ -104,6 +101,8 @@ namespace nocte {
 
     void QLive::shutdown() 
     {
+        // TODO proper clean up!!!
+        
         mIsReady = false;
         
         if ( mOscListener )					// close OSC listener
@@ -123,8 +122,28 @@ namespace nocte {
         deleteObjects();					// delete objects and clear pointers
         
         if ( mAnalyzer )
+        {
+            mAnalyzer->shutdown();
             delete mAnalyzer;
+            mAnalyzer = NULL;
+        }
+        
+        if ( mLiveParams )
+        {
+            mLiveParams->shutdown();
+            delete mLiveParams;
+            mLiveParams = NULL;
+        }
+        
+        if ( mLiveParams )
+        {
+            mLiveParams->shutdown();
+            delete mLiveParams;
+            mLiveParams = NULL;
+        }
     //	Logger::log("Live > shutdown!");
+        
+        
     }
 
 
@@ -265,7 +284,6 @@ namespace nocte {
         }
         
         mOscSender->sendMessage(message);
-        
     }
 
 
@@ -291,11 +309,12 @@ namespace nocte {
     bool sortTracksByIndex( QLiveTrack *a, QLiveTrack *b ) { return ( a->getIndex() < b->getIndex() ); };
 
 
-    void QLive::parseTrack( osc::Message message ) {
-        
-        int index	= message.getArgAsInt32(0);
-        string name = message.getArgAsString(1);
-        
+    void QLive::parseTrack( osc::Message message ) 
+    {          
+        int     index	= message.getArgAsInt32(0);
+        string  name    = message.getArgAsString(1);
+        ColorA  color   = colorIntToColorA( message.getArgAsInt32(2) );
+
         bool has_track = false;
         
         for(int k=0; k < mTracks.size(); k++)
@@ -307,7 +326,7 @@ namespace nocte {
             }
         
         if ( !has_track )
-            mTracks.push_back( new QLiveTrack( index, name ) );
+            mTracks.push_back( new QLiveTrack( index, name, color ) );
 
         sort (mTracks.begin(), mTracks.end(), sortTracksByIndex); 
 
@@ -317,24 +336,18 @@ namespace nocte {
     }
 
 
-    void QLive::parseClip( osc::Message message ) {
-        
-        int trackIndex	= message.getArgAsInt32(0);
-        int index		= message.getArgAsInt32(1);
-        string name		= message.getArgAsString(2);
-        int colorInt	= message.getArgAsInt32(3);
+    void QLive::parseClip( osc::Message message ) 
+    {
+        int     trackIndex	= message.getArgAsInt32(0);
+        int 	index		= message.getArgAsInt32(1);
+        string 	name		= message.getArgAsString(2);
+        ColorA  color       = colorIntToColorA( message.getArgAsInt32(3) );
         
         // return if the clips already exists
         for(int k=0; k < mClips.size(); k++)
             if ( mClips[k]->mIndex == index && mClips[k]->mTrackIndex == trackIndex )
                 return;
 
-        ColorA color;
-        color.r = (float)((colorInt >> 16) & 0xB0000FF) / 255.0f;
-        color.g = (float)((colorInt >> 8) & 0xB0000FF) / 255.0f;
-        color.b = (float)(colorInt & 0xB0000FF) / 255.0f;
-        color.a	= 1.0f;
-        
         QLiveClip *clip = new QLiveClip( index, name, trackIndex, color );
         
         mClips.push_back( clip );
@@ -345,8 +358,8 @@ namespace nocte {
     }
 
 
-    void QLive::parseClipInfo( osc::Message message ) {
-        
+    void QLive::parseClipInfo( osc::Message message ) 
+    {    
         int trackIndex	= message.getArgAsInt32(0);
         int index		= message.getArgAsInt32(1);
         ClipState state	= (ClipState)message.getArgAsInt32(2);
@@ -358,15 +371,12 @@ namespace nocte {
             
             if ( state == CLIP_PLAYING && mClips[k]->getTrackIndex() == trackIndex && mClips[k]->mIndex != index )     // stop clip
                 mClips[k]->setState( HAS_CLIP );
-                
         }
-        
-        //console() << "parse clip info: " << trackIndex << " " << index << " " << state << endl;
     }
 
 
-    void QLive::parseDevice( osc::Message message ) {
-       
+    void QLive::parseDevice( osc::Message message ) 
+    {
         if ( message.getNumArgs() < 3 )	// seems there is an error in the APIs!
            return;
         
@@ -376,7 +386,8 @@ namespace nocte {
         QLiveDevice	*dev;
         bool		deviceExists;
         
-        for (int k=1; k < message.getNumArgs(); k+=2) {
+        for (int k=1; k < message.getNumArgs(); k+=2) 
+        {
             index		= message.getArgAsInt32(k);
             name		= message.getArgAsString(k+1);
             
@@ -533,15 +544,18 @@ namespace nocte {
     //	Logger::log("Live > receiveData() thread exited!");
     }
 
+    
     void QLive::renderAnalyzer()
     {
         mAnalyzer->render();
     }
     
+    
  	float QLive::getFreqAmplitude(int freq, int channel) 
     { 
         return mAnalyzer->getFreqAmplitude(freq, channel); 
     };
+    
     
     float* QLive::getFftBuffer(int channel) 
     { 
@@ -614,7 +628,7 @@ namespace nocte {
         xmlDoc.push_back( paramSettings );
         
         //	moduleSettings.write( writeFile( loadResource(RES_MODULE_SETTINGS)->getFilePath() ) );
-        xmlDoc.write( writeFile(MODULE_SETTINGS) );
+        xmlDoc.write( writeFile(QLIVE_SETTINGS) );
     }
     
     void QLive::loadSettings( vector<QLiveModuleWithFixtures*> modules )
@@ -633,11 +647,11 @@ namespace nocte {
         try 
         {
             //    XmlTree settingsXml( loadResource(RES_MODULE_SETTINGS) );
-            settingsXml = XmlTree( loadFile(MODULE_SETTINGS) );
+            settingsXml = XmlTree( loadFile(QLIVE_SETTINGS) );
         }
         catch ( ... )
         {
-            console() << "loadModuleSettings:  settings file " << MODULE_SETTINGS << " not found!" << endl;
+            console() << "loadModuleSettings:  settings file " << QLIVE_SETTINGS << " not found!" << endl;
             return;
         }
         

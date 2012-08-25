@@ -31,12 +31,10 @@ QLiveAnalyzer::QLiveAnalyzer(int port) : mOscInPort(port), mOscListener(NULL)
 {
 	initOsc();
 	
-    mFft        = new float*[2];
+    mFft = new float*[2];
     
 	for (int k = 0; k < 2; k++)
-    {
         mFft[k] = new float[FFT_SIZE];
-    }
 
 	for (int k = 0; k < FFT_SIZE; k++)
 	{
@@ -98,6 +96,9 @@ void QLiveAnalyzer::initOsc()
 
 void QLiveAnalyzer::shutdown()
 {
+    for (int k = 0; k < 2; k++)
+        delete[] mFft[k];
+    
 	if ( mOscListener )
 	{
 		mOscListener->shutdown();

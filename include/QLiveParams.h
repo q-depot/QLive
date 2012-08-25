@@ -58,16 +58,19 @@ namespace nocte {
             boost::thread receiveDataThread( &QLiveParams::receiveData, this);
         }
 
+        
         void addParam( std::string name, float defaultVal = 0.0f )
         {
             float *var = new float(defaultVal);
             mParams[name] = var;
         }
         
+        
         void addParam( std::string name, float *var )
         {
             mParams[name] = var;
         }
+        
         
         float getParam( std::string name )
         {
@@ -77,6 +80,7 @@ namespace nocte {
             return *mParams[name];
         }
         
+        
         float* getParamRef( std::string name )
         {
             if ( !hasParam(name) )
@@ -85,8 +89,10 @@ namespace nocte {
             return mParams[name];
         }
         
+        
         bool hasParam( std::string name ) { return ( mParams.count( name ) > 0 ); }
         
+
         void receiveData(){
             
             std::string paramName;
@@ -159,15 +165,29 @@ namespace nocte {
         }
 
         
+        void shutdown()
+        {
+            if ( mOscListener )
+            {
+                mOscListener->shutdown();
+                delete mOscListener;
+                mOscListener = NULL;
+            }
+            
+            for ( std::map<std::string, float*>::iterator it = mParams.begin(); it != mParams.end(); it++ )
+                delete it->second;
+            mParams.clear();
+        }
+        
     public:
         
         ci::osc::Listener				*mOscListener;
         int                             mOscPort;
         
-        std::map <std::string, float*>  mParams;
+        std::map<std::string, float*>   mParams;
 
     };
 
 }
 
-#endif;
+#endif

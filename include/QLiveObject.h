@@ -62,11 +62,10 @@ class QLiveClip : public QLiveObject {
 	friend class QLive;
 	
 public:
-	QLiveClip(int index, std::string name, int trackIndex, ci::Color color) : QLiveObject(index, name) 
+    
+	QLiveClip(int index, std::string name, int trackIndex, ci::Color color) : QLiveObject(index, name), mTrackIndex(trackIndex), mColor(color) 
 	{ 
-		mTrackIndex = trackIndex; 
-		mState		= HAS_CLIP; 
-		mColor		= color;
+		mState		= HAS_CLIP;
         mIsPlaying  = false;
 	};
 	
@@ -163,8 +162,8 @@ class QLiveTrack : public QLiveObject {
 	friend class QLive;
 	
 public:
-    
-	QLiveTrack(int index, std::string name) : QLiveObject(index, name), mVolume(0.0f) {}
+ 
+	QLiveTrack( int index, std::string name, ci::Color color ) : QLiveObject(index, name), mColor(color), mVolume(0.0f) {}
 	
 	void addClip( QLiveClip *obj )		{ mClips.push_back(obj); }
 	void addDevice( QLiveDevice *obj )	{ mDevices.push_back(obj); }
@@ -182,12 +181,15 @@ public:
     
 	QLiveDevice* getDevice( int idx ) { return mDevices[idx]; }
     
+	ci::ColorA	getColor() { return mColor; };
+    
 protected:
 	
 	std::vector<QLiveClip*>		mClips;
 	std::vector<QLiveDevice*>	mDevices;
-	
 	float						mVolume;
+    ci::ColorA                  mColor;
+    
 };
 
 
