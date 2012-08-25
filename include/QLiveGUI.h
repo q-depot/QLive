@@ -10,10 +10,15 @@
  *
  */
 
+
+#ifndef QLIVE_GUI
+#define QLIVE_GUI
+
 #pragma once
 
 #include "cinder/app/AppBasic.h"
-
+#include <boost/lexical_cast.hpp>
+#include <boost/algorithm/string.hpp>
 #include "QLive.h"
 #include "ciUI.h"
 
@@ -24,21 +29,21 @@ namespace nocte {
         
     public:
         
-        QLiveGUI( QLive *live ) : mLive(live) 
+        QLiveGUI( QLive *live, int offsetX = 0 ) : mLive(live), mOffsetX(offsetX)
         {
             initGUI();
         }
         
-        void render() 
-        {
-            mGUI->draw();
-        }
+        void update() { mGUI->update(); }
+        
+        void render() { mGUI->draw(); }
         
         void initGUI() 
         {
-            Vec2f mModuleGUISize(120, 300);
-         
+            Vec2f mModuleGUISize(130, 300);
+            
             QLiveTrack      *track;
+            QLiveClip       *clip;
             QLiveDevice     *device;
             QLiveParam      *param;
             
@@ -48,9 +53,18 @@ namespace nocte {
             Vec2i               pos;
             ciUIWidget          *widget;
             char                roundedFloat[10];
+//            
+            mIsFullWidth = false;
+//            mGUI     =  new ciUICanvas( 0, getWindowHeight() - mModuleGUISize.y, 
+//                                       CI_UI_GLOBAL_WIDGET_SPACING + mModuleGUISize.x * tracksN, mModuleGUISize.y );
             
-            mGUI     =  new ciUICanvas( 0, getWindowHeight() - mModuleGUISize.y, 
-                                        CI_UI_GLOBAL_WIDGET_SPACING + mModuleGUISize.x * tracksN, mModuleGUISize.y );
+            mGUI     =  new ciUICanvas( 0, 0, ci::app::getWindowWidth() - mOffsetX, mModuleGUISize.y );
+            
+//            mGUI     =  new ciUIScrollableCanvas( 0, ci::app::getWindowHeight() - mModuleGUISize.y, 
+//                                                  ci::app::getWindowWidth(), mModuleGUISize.y );
+            
+//            gui = new ciUIScrollableCanvas(0,0,guiWidth, guiHeight);        
+//            mGUI->setScrollableDirections(false, true);
             
             mGUI->setFont(RES_GUI_FONT);
             mGUI->setFontSize( CI_UI_FONT_LARGE, 14 );
@@ -70,7 +84,9 @@ namespace nocte {
                 pos.y += widget->getRect()->getHeight() + 3;
 
                 // Volume                
-                widget = new ciUISlider( pos.x, pos.y, w, h, 0, 10.0, 1.0f, "Master" );
+                widget = new ciUISlider( pos.x, pos.y, w, h, 0, 1.0, track->getVolumeRef(), "Master" );
+                widget->setMeta( toString(k) );
+                
                 mGUI->addWidget( widget );
                 pos.y += 24;
                 
@@ -80,37 +96,148 @@ namespace nocte {
                 // Clips
                 vector<string> clipNames;
                 for( int i=0; i < track->getClipsN(); i++ )
-                    clipNames.push_back( track->getClip(i)->getName() );
-
-                widget = new ciUIRadio( pos.x, pos.y, 9, 9, "CLIPS_" + ci::toString(k), clipNames, CI_UI_ORIENTATION_VERTICAL );
-                mGUI->addWidget( widget );
-                pos.y += widget->getRect()->getHeight() - 3;
+                {
+                    clip = track->getClip(i);
+//                    widget = new ciUILabelToggle( pos.x, pos.y, w, 16, clip->getIsPlayingRef(), clip->getName(), CI_UI_FONT_SMALL ); 
+                    
+                    widget = new ciUIToggle( pos.x, pos.y, 8, 8, clip->getIsPlayingRef(), clip->getName(), CI_UI_FONT_SMALL );                     
+                    widget->setMeta( "clip_" + toString( track->getIndex() ) + "_" + toString( clip->getIndex() ) );
+                    mGUI->addWidget( widget );
+                    ((ciUIToggle*)widget)->setLabelOffset( 0, 8 );
+                    pos.y += widget->getRect()->getHeight() + 4;
+                }
+                pos.y += 3;
                 
                 mGUI->addWidget( new ciUISpacer( pos.x, pos.y, w, 1 ) );
                 pos.y += 7;
                 
-                // Params
-                for( int i=0; i < track->getDevicesN(); i++ )
+                // Params   IGNORE all the params in the tracks that starts with "_"
+                if ( !boost::starts_with( track->getName(), "_") )
                 {
-                    device = track->getDevice(i);
-                    
-                    for( int j=0; j < device->getParamsN(); j++ )
+                    for( int i=0; i < track->getDevicesN(); i++ )
                     {
-                        param = device->getParam(j);
-                        sprintf (roundedFloat, "%.2f", param->getValue() );
-                        widget = new ciUILabel( pos.x, pos.y, param->getName() + " " + roundedFloat, CI_UI_FONT_SMALL );
-                        mGUI->addWidget( widget );
-                        pos.y += widget->getRect()->getHeight() + 3;
+                        device = track->getDevice(i);
+                        
+                        for( int j=0; j < device->getParamsN(); j++ )
+                        {
+                            param = device->getParam(j);
+                            sprintf (roundedFloat, "%.2f", param->getValue() );
+                            widget = new ciUILabel( pos.x, pos.y, param->getName() + " " + roundedFloat, CI_UI_FONT_SMALL );
+                            mGUI->addWidget( widget );
+                            pos.y += widget->getRect()->getHeight() + 3;
+                        }
                     }
-                }                
+                }
+            }
+            
+            mGUI->autoSizeToFitWidgets();   
+            
+            ciUIRectangle* rect = mGUI->getRect();
+            rect->setX( mOffsetX );
+            rect->setY( ci::app::getWindowHeight() - rect->getHeight() );
+            
+            if ( rect->getWidth() < ci::app::getWindowWidth() - mOffsetX )
+                rect->setWidth( ci::app::getWindowWidth() - mOffsetX );
+
+            mGUI->setTheme( CI_UI_THEME_NOCTE_GREEN );
+            
+            mGUI->registerUIEvents(this, &QLiveGUI::guiEvent);
+        }
+        
+        
+        void guiEvent(ciUIEvent *event)
+        {
+            std::string name = event->widget->getName();
+            std::string meta = event->widget->getMeta();
+            
+            if(name == "Master")
+            {
+                int trackIdx = boost::lexical_cast<int>( event->widget->getMeta() );
+                ciUISlider *slider = (ciUISlider *) event->widget;
+                mLive->setTrackVolume( trackIdx, slider->getScaledValue() );
+            }
+            
+            else if ( boost::find_first( meta, "clip") )
+            {
+                ciUIToggle *toggle = (ciUIToggle *) event->widget;
+                
+                std::vector<std::string> splitValues;
+                boost::split( splitValues, meta, boost::is_any_of("_") );
+                
+                int trackIdx    = boost::lexical_cast<int>( splitValues[1] );
+                int clipIdx     = boost::lexical_cast<int>( splitValues[2] );
+                
+                if ( toggle->getValue() )
+                {
+                    // stop all other clips in the same track
+                    std::vector<ciUIWidget*>    allWidgets = mGUI->getWidgets();
+                    std::string                 clipMeta;
+                    
+                    for( size_t k=0; k < allWidgets.size(); k++ )
+                    {
+                        clipMeta = allWidgets[k]->getMeta();
+                        
+                        if ( boost::find_first( clipMeta, "clip_" + ci::toString(trackIdx) ) && clipMeta != meta )
+                        {
+                            toggle = (ciUIToggle *) allWidgets[k];
+                            toggle->setValue(false);
+                        }
+                    }
+                    
+                    mLive->playClip( trackIdx, clipIdx );               // play clip
+                }
+                else                                                    
+                {
+                    mLive->stopClip( trackIdx, clipIdx );               // stop clip
+                }
             }
             
         }
+        
+        void toggleVisible() { mGUI->toggleVisible(); };
+        
+        void toggleFullWidth() 
+        { 
+            mIsFullWidth = !mIsFullWidth; 
+            
+            ciUIRectangle* rect = mGUI->getRect();
+            
+            if ( mIsFullWidth )
+            {
+                rect->setX( 0 );
+                rect->setWidth( ci::app::getWindowWidth() );
+            }
+            else
+            {
+                mGUI->autoSizeToFitWidgets();
+                rect->setX( mOffsetX );
+                rect->setY( ci::app::getWindowHeight() - rect->getHeight() );
+                
+                if ( rect->getWidth() < ci::app::getWindowWidth() - mOffsetX )
+                    rect->setWidth( ci::app::getWindowWidth() - mOffsetX );
+            }
+            
+        }
+        
+        
+        void shutdown()
+        {
+            if ( mGUI )
+            delete mGUI;
+        }
+        
         
     private:
         
         QLive       *mLive;
         ciUICanvas  *mGUI;
+        int         mOffsetX;
+        bool        mIsFullWidth;
+        
+//        ciUIScrollableCanvas *mGUI;
+        
     };
     
 }
+
+#endif

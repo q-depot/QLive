@@ -8,6 +8,10 @@
  *
  */
 
+
+#ifndef QLIVE_OBJECT
+#define QLIVE_OBJECT
+
 namespace nocte {
     
     
@@ -63,14 +67,22 @@ public:
 		mTrackIndex = trackIndex; 
 		mState		= HAS_CLIP; 
 		mColor		= color;
+        mIsPlaying  = false;
 	};
 	
 	int getTrackIndex() { return mTrackIndex; };
 
 	ClipState	getState() { return mState; };
 	
-	void		setState(ClipState state) { mState = state;	};
+	void		setState(ClipState state) 
+    { 
+        mState = state; 
+        
+        mIsPlaying = ( mState == CLIP_PLAYING )  ? true : false;
+    };
 	
+    bool *getIsPlayingRef() { return &mIsPlaying; };
+    
 	bool		isPlaying() { return ( mState == CLIP_PLAYING ); };
 	
 	ci::ColorA	getColor() { return mColor; };
@@ -79,8 +91,12 @@ public:
 protected:
     
 	int			mTrackIndex;
-	ClipState	mState;
 	ci::ColorA	mColor;
+    
+private:
+    
+    bool        mIsPlaying;
+	ClipState	mState;
     
 };
 
@@ -148,21 +164,23 @@ class QLiveTrack : public QLiveObject {
 	
 public:
     
-	QLiveTrack(int index, std::string name) : QLiveObject(index, name), mVolume(0.0f) {};
+	QLiveTrack(int index, std::string name) : QLiveObject(index, name), mVolume(0.0f) {}
 	
-	void addClip( QLiveClip *obj )		{ mClips.push_back(obj); };
-	void addDevice( QLiveDevice *obj )	{ mDevices.push_back(obj); };
+	void addClip( QLiveClip *obj )		{ mClips.push_back(obj); }
+	void addDevice( QLiveDevice *obj )	{ mDevices.push_back(obj); }
 	
-	int getClipsN() { return mClips.size(); };
-	int getDevicesN() { return mDevices.size(); };
+	int getClipsN() { return mClips.size(); }
+	int getDevicesN() { return mDevices.size(); }
 	
-	QLiveClip *getClip(int n) { return mClips[n]; };
+	QLiveClip *getClip(int n) { return mClips[n]; }
 	
-	void clearPointers() { mClips.clear(); mDevices.clear(); };
+	void clearPointers() { mClips.clear(); mDevices.clear(); }
 	
-	float getVolume() { return mVolume; };
-	
-	QLiveDevice* getDevice( int idx ) { return mDevices[idx]; };
+	float getVolume() { return mVolume; }
+
+	float* getVolumeRef() { return &mVolume; }
+    
+	QLiveDevice* getDevice( int idx ) { return mDevices[idx]; }
     
 protected:
 	
@@ -185,3 +203,5 @@ public:
 
 
 }
+
+#endif

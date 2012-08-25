@@ -9,6 +9,9 @@
  */
 
 
+#ifndef QLIVE_MODULE
+#define QLIVE_MODULE
+
 #pragma once
 
 #include "cinder/app/AppBasic.h"
@@ -30,11 +33,13 @@ public:
     
 	~QLiveModule() {}
 	
-	virtual void render() {}
+	virtual void render( float height ) {}
 	
-	virtual void update( float *values, float masterBrightness, float baseBrightness ) {}
+//	virtual void update( float *values, float masterBrightness, float baseBrightness ) {}
 	
-    bool updateModulo() 
+    virtual void update( float *values ) {}
+	
+    bool updateModule() 
     {
         updateBrightness();
         
@@ -59,10 +64,13 @@ public:
 	
 	std::string getSettings() { return mSettingsStr; }
 	
-	std::string	getName() { return mName; }
-	
 	int			getTrackIndex();
-
+    
+    std::string getName();
+    
+    std::string getTypeString() { return mTypeString; }
+    
+    
 protected:
     
 	QLive			*mLive;
@@ -74,10 +82,13 @@ protected:
 	float			mTrackVolume;
 	
 	std::string		mSettingsStr;
-	
-	std::string		mName;
-
+    std::string     mTypeString;
+    
+	std::vector<int>        mFreqs;
+    float**                 mFftBuffer;
 };
 
 
 }
+
+#endif

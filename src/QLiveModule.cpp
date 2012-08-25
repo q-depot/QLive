@@ -22,6 +22,18 @@ namespace nocte {
         
         updateState();
         updateBrightness();
+        
+        // init Fft buffer
+        if ( mLive )
+        {   
+            mFftBuffer = new float*[2];
+            
+            for( int k=0; k < 2; k++)
+            {
+                mFftBuffer[k] = new float[FFT_SIZE];
+                mFftBuffer[k] = mLive->getFftBuffer(k);
+            }
+        }
     };
     
     bool QLiveModule::updateState() 
@@ -53,6 +65,14 @@ namespace nocte {
         mTrackVolume = pow( getTrack()->getVolume(), 2); 
     }
     
-    int			QLiveModule::getTrackIndex() { return mClip->getTrackIndex(); };
+    int QLiveModule::getTrackIndex() { return mClip->getTrackIndex(); };
+    
+    std::string QLiveModule::getName()
+    {
+        if ( mClip )
+            return mClip->getName();
+        else 
+            return "";
+    }
     
 }
