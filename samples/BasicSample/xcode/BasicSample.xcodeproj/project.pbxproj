@@ -15,7 +15,9 @@
 		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
 		00BAE65A0E7ED9C10018A608 /* BasicSampleApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00BAE6590E7ED9C10018A608 /* BasicSampleApp.cpp */; };
 		00CCAF15116A9FEE008396D5 /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 00CCAF14116A9FEE008396D5 /* CinderApp.icns */; };
-		102365F415A987C600A714FA /* QLive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 102365BF15A987C600A714FA /* QLive.cpp */; };
+		100559F415EBF66300773B2F /* QLive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1005581915EBF66300773B2F /* QLive.cpp */; };
+		100559F515EBF66300773B2F /* QLiveAnalyzer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1005581A15EBF66300773B2F /* QLiveAnalyzer.cpp */; };
+		100559F615EBF66300773B2F /* QLiveModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1005581B15EBF66300773B2F /* QLiveModule.cpp */; };
 		1023664515A9888E00A714FA /* osc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1023660D15A9888E00A714FA /* osc.a */; };
 		1023664615A9888E00A714FA /* osc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1023660F15A9888E00A714FA /* osc.a */; };
 		1023664715A9888E00A714FA /* osc.lib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1023661115A9888E00A714FA /* osc.lib */; };
@@ -24,8 +26,6 @@
 		1023665A15A9888E00A714FA /* OscListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1023663A15A9888E00A714FA /* OscListener.cpp */; };
 		1023665B15A9888E00A714FA /* OscMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1023663B15A9888E00A714FA /* OscMessage.cpp */; };
 		1023665C15A9888E00A714FA /* OscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1023663C15A9888E00A714FA /* OscSender.cpp */; };
-		1023666915A990B400A714FA /* BasicModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1023666815A990B400A714FA /* BasicModule.cpp */; };
-		1023666C15A994B000A714FA /* QLiveAnalyzer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1023666B15A994B000A714FA /* QLiveAnalyzer.cpp */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
 		53E3CDFC0E86099300238D2B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E3CDFB0E86099300238D2B /* Carbon.framework */; };
@@ -41,10 +41,15 @@
 		00B784B20FF439BC000DE1D7 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		00BAE6590E7ED9C10018A608 /* BasicSampleApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BasicSampleApp.cpp; path = ../src/BasicSampleApp.cpp; sourceTree = SOURCE_ROOT; };
 		00CCAF14116A9FEE008396D5 /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = SOURCE_ROOT; };
-		102365A315A987C600A714FA /* QLive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLive.h; sourceTree = "<group>"; };
-		102365A415A987C600A714FA /* QLiveObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLiveObject.h; sourceTree = "<group>"; };
-		102365A515A987C600A714FA /* QLiveModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLiveModule.h; sourceTree = "<group>"; };
-		102365BF15A987C600A714FA /* QLive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QLive.cpp; sourceTree = "<group>"; };
+		100557EF15EBF66300773B2F /* QLive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLive.h; sourceTree = "<group>"; };
+		100557F015EBF66300773B2F /* QLiveAnalyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLiveAnalyzer.h; sourceTree = "<group>"; };
+		100557F115EBF66300773B2F /* QLiveGUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLiveGUI.h; sourceTree = "<group>"; };
+		100557F215EBF66300773B2F /* QLiveModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLiveModule.h; sourceTree = "<group>"; };
+		100557F415EBF66300773B2F /* QLiveObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLiveObject.h; sourceTree = "<group>"; };
+		100557F515EBF66300773B2F /* QLiveParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLiveParams.h; sourceTree = "<group>"; };
+		1005581915EBF66300773B2F /* QLive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QLive.cpp; sourceTree = "<group>"; };
+		1005581A15EBF66300773B2F /* QLiveAnalyzer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QLiveAnalyzer.cpp; sourceTree = "<group>"; };
+		1005581B15EBF66300773B2F /* QLiveModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QLiveModule.cpp; sourceTree = "<group>"; };
 		102365F815A9888E00A714FA /* IpEndpointName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IpEndpointName.h; sourceTree = "<group>"; };
 		102365F915A9888E00A714FA /* NetworkingUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkingUtils.h; sourceTree = "<group>"; };
 		102365FA15A9888E00A714FA /* PacketListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketListener.h; sourceTree = "<group>"; };
@@ -72,10 +77,6 @@
 		1023663B15A9888E00A714FA /* OscMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OscMessage.cpp; sourceTree = "<group>"; };
 		1023663C15A9888E00A714FA /* OscSender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OscSender.cpp; sourceTree = "<group>"; };
 		1023666315A98A5C00A714FA /* Resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
-		1023666715A990B400A714FA /* BasicModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicModule.h; path = ../include/BasicModule.h; sourceTree = "<group>"; };
-		1023666815A990B400A714FA /* BasicModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BasicModule.cpp; path = ../src/BasicModule.cpp; sourceTree = "<group>"; };
-		1023666A15A9948C00A714FA /* QLiveAnalyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLiveAnalyzer.h; sourceTree = "<group>"; };
-		1023666B15A994B000A714FA /* QLiveAnalyzer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QLiveAnalyzer.cpp; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
@@ -117,48 +118,50 @@
 			isa = PBXGroup;
 			children = (
 				00BAE6590E7ED9C10018A608 /* BasicSampleApp.cpp */,
-				1023666815A990B400A714FA /* BasicModule.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
 		};
-		1023655515A987B500A714FA /* blocks */ = {
+		1005551315EBF66100773B2F /* QLive */ = {
 			isa = PBXGroup;
 			children = (
-				102365F515A9888E00A714FA /* osc */,
-				1023655715A987C600A714FA /* QLive */,
-			);
-			name = blocks;
-			sourceTree = "<group>";
-		};
-		1023655715A987C600A714FA /* QLive */ = {
-			isa = PBXGroup;
-			children = (
-				102365A215A987C600A714FA /* include */,
-				102365BE15A987C600A714FA /* src */,
+				100557EE15EBF66300773B2F /* include */,
+				1005581815EBF66300773B2F /* src */,
 			);
 			name = QLive;
 			path = ../../..;
 			sourceTree = "<group>";
 		};
-		102365A215A987C600A714FA /* include */ = {
+		100557EE15EBF66300773B2F /* include */ = {
 			isa = PBXGroup;
 			children = (
-				102365A315A987C600A714FA /* QLive.h */,
-				1023666A15A9948C00A714FA /* QLiveAnalyzer.h */,
-				102365A515A987C600A714FA /* QLiveModule.h */,
-				102365A415A987C600A714FA /* QLiveObject.h */,
+				100557EF15EBF66300773B2F /* QLive.h */,
+				100557F015EBF66300773B2F /* QLiveAnalyzer.h */,
+				100557F115EBF66300773B2F /* QLiveGUI.h */,
+				100557F215EBF66300773B2F /* QLiveModule.h */,
+				100557F415EBF66300773B2F /* QLiveObject.h */,
+				100557F515EBF66300773B2F /* QLiveParams.h */,
 			);
 			path = include;
 			sourceTree = "<group>";
 		};
-		102365BE15A987C600A714FA /* src */ = {
+		1005581815EBF66300773B2F /* src */ = {
 			isa = PBXGroup;
 			children = (
-				102365BF15A987C600A714FA /* QLive.cpp */,
-				1023666B15A994B000A714FA /* QLiveAnalyzer.cpp */,
+				1005581915EBF66300773B2F /* QLive.cpp */,
+				1005581A15EBF66300773B2F /* QLiveAnalyzer.cpp */,
+				1005581B15EBF66300773B2F /* QLiveModule.cpp */,
 			);
 			path = src;
+			sourceTree = "<group>";
+		};
+		1023655515A987B500A714FA /* blocks */ = {
+			isa = PBXGroup;
+			children = (
+				1005551315EBF66100773B2F /* QLive */,
+				102365F515A9888E00A714FA /* osc */,
+			);
+			name = blocks;
 			sourceTree = "<group>";
 		};
 		102365F515A9888E00A714FA /* osc */ = {
@@ -312,7 +315,6 @@
 			children = (
 				32CA4F630368D1EE00C91783 /* BasicSample_Prefix.pch */,
 				1023666315A98A5C00A714FA /* Resources.h */,
-				1023666715A990B400A714FA /* BasicModule.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -394,13 +396,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				00BAE65A0E7ED9C10018A608 /* BasicSampleApp.cpp in Sources */,
-				102365F415A987C600A714FA /* QLive.cpp in Sources */,
 				1023665915A9888E00A714FA /* OscBundle.cpp in Sources */,
 				1023665A15A9888E00A714FA /* OscListener.cpp in Sources */,
 				1023665B15A9888E00A714FA /* OscMessage.cpp in Sources */,
 				1023665C15A9888E00A714FA /* OscSender.cpp in Sources */,
-				1023666915A990B400A714FA /* BasicModule.cpp in Sources */,
-				1023666C15A994B000A714FA /* QLiveAnalyzer.cpp in Sources */,
+				100559F415EBF66300773B2F /* QLive.cpp in Sources */,
+				100559F515EBF66300773B2F /* QLiveAnalyzer.cpp in Sources */,
+				100559F615EBF66300773B2F /* QLiveModule.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

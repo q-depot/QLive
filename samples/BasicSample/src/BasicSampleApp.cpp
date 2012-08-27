@@ -2,7 +2,6 @@
 #include "cinder/gl/gl.h"
 
 #include "QLive.h"
-#include "BasicModule.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -18,11 +17,9 @@ class BasicSampleApp : public AppBasic {
 	void update();
 	void draw();
     
-	QLive                   *mLive;
-	
-	vector<QLiveModule*>	mModules;
-    
+	QLive                   *mLive;    
 };
+
 
 void BasicSampleApp::prepareSettings( Settings *settings )
 {
@@ -30,24 +27,28 @@ void BasicSampleApp::prepareSettings( Settings *settings )
 	settings->setFrameRate(60.0f);
 }
 
+
 void BasicSampleApp::setup()
 {
 	mLive = new QLive();
     
-    mModules.push_back( BasicModule( mLive ) );
+//    mModules.push_back( BasicModule( mLive ) );
 }
+
 
 void BasicSampleApp::mouseDown( MouseEvent event )
 {
 }
 
+
 void BasicSampleApp::update()
 {
-    float * values;
-    
-    for( size_t k=0; k < mModules.size(); k++ )
-        mModules->update( values );
+//    float * values;
+//    
+//    for( size_t k=0; k < mModules.size(); k++ )
+//        mModules->update( values );
 }
+
 
 void BasicSampleApp::draw()
 {
@@ -62,8 +63,8 @@ void BasicSampleApp::draw()
     
     gl::drawString( toString( getAverageFps() ), Vec2f(15,15) );
     
-    for( size_t k=0; k < mModules.size(); k++ )
-        mModules->render();
+//    for( size_t k=0; k < mModules.size(); k++ )
+//        mModules->render();
 }
 
 

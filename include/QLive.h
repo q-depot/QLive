@@ -21,29 +21,27 @@
 #include "QLiveModule.h"
 #include "QLiveModuleWithFixtures.h"
 #include "QLiveAnalyzer.h"
-#include "QLiveParams.h"
 
 #define	GET_INFO_MIN_DELAY	2.0f		// minimum delay between info requests
 
 
 namespace nocte {
+
     
-//class QLiveObject;
-//class QLiveAnalyzer;
-//class QLiveModule;
-//class QLiveClip;
-//class QLiveScene;
-//class QLiveDevice;
-//class QLiveTrack;
 
 class QLive {
 	
 public:
     
-	QLive( std::string osc_host = "localhost", int osc_live_in_port = 9001, int osc_live_out_port = 9000, int osc_analyzer_in_port = 8000, int live_params_in_port = 9500, bool init = false );
+	QLive( std::string osc_host = "localhost", int osc_live_in_port = 9001, int osc_live_out_port = 9000, int osc_analyzer_in_port = 8000, int live_params_in_port = 9500, bool init = true );
 	
+    
+    ~QLive() {}
+    
+    
 	void sendMessage(std::string address, std::string args = "");
 	
+    
 	bool getInfo();
 
 	//void play(bool isPlaying = true) { mIsPlaying = isPlaying; };
@@ -80,17 +78,64 @@ public:
 	
 //	void playScene(int scene) {	sendMessage("/live/play/scene", "i" + ci::toString(scene) ); };
 	
-	QLiveClip* getClip(int n) { return mClips[n]; }
-	int getClipsN() { return mClips.size(); }
+    
+    std::vector<QLiveTrack*> getTracks() { return mTracks; }
+    
+    std::vector<QLiveScene*> getScenes() { return mScenes; }
+    
+	QLiveClip* getClip( int trackIdx, int clipIdx )
+    { 
+        QLiveClip* clip = NULL;
+        
+        for( size_t k=0; k < mTracks.size(); k++ )
+            if ( mTracks[k]->mIndex == trackIdx )
+            {
+                for( size_t j=0; j < mTracks[k]->mDevices.size(); j++ )
+                    if ( mTracks[k]->mClips[j]->mIndex == clipIdx )
+                        return mTracks[k]->mClips[j];
+            }
+
+        return clip;
+    }
 	
-	QLiveTrack* getTrack(int n) { return mTracks[n]; }
-	int getTracksN() { return mTracks.size(); }
+	QLiveTrack* getTrack( int trackIdx ) 
+    { 
+        QLiveTrack* track = NULL;
+        
+        for( size_t k=0; k < mTracks.size(); k++ )
+            if ( mTracks[k]->mIndex == trackIdx )
+                return mTracks[k];
+                
+        return track;
+    }
 	
-	QLiveScene* getScene(int n) { return mScenes[n]; }
-	int getScenesN() { return mScenes.size(); }
+	QLiveScene* getScene( int sceneIdx )
+    { 
+        QLiveScene* scene = NULL;
+        
+        for( size_t k=0; k < mScenes.size(); k++ )
+            if ( mScenes[k]->mIndex == sceneIdx )
+                return mScenes[k];
+        
+        return scene; 
+    }
+    
 	
-	QLiveDevice* getDevice(int n) { return mDevices[n]; }
-	int getDevicesN() { return mDevices.size(); }
+	QLiveDevice* getDevice( int trackIdx, int deviceIdx ) 
+    {         
+        QLiveDevice* device = NULL;
+        
+        for( size_t k=0; k < mTracks.size(); k++ )
+            if ( mTracks[k]->mIndex == trackIdx )
+            {
+                for( size_t j=0; j < mTracks[k]->mDevices.size(); j++ )
+                    if ( mTracks[k]->mDevices[j]->mIndex == deviceIdx )
+                        return mTracks[k]->mDevices[j];
+            }
+        
+        return device; 
+    }
+    
 	
 	bool isPlaying() { return mIsPlaying; }
 
@@ -117,14 +162,14 @@ public:
 
     bool isReady() { return mIsReady; }
     
-    float getParam( std::string name ) { return mLiveParams->getParam(name); }
+//    float getParam( std::string name ) { return mLiveParams->getParam(name); }
     
-    float* getParamRef( std::string name ) { return mLiveParams->getParamRef(name); }
+//    float* getParamRef( std::string name ) { return mLiveParams->getParamRef(name); }
 
     void saveSettings( std::vector<QLiveModuleWithFixtures*> modules );
-    
+//    
     void loadSettings( std::vector<QLiveModuleWithFixtures*> modules );
-    
+//    
 private:
     
 	void	listTrackDevices(int trackIndex) { sendMessage("/live/devicelist", "i" + ci::toString(trackIndex) ); }
@@ -148,16 +193,16 @@ private:
 	void	parseTrack( ci::osc::Message message );
 	void	parseClip( ci::osc::Message message );
 	void	parseClipInfo( ci::osc::Message message );
-	void	parseDevice( ci::osc::Message message );
-	void	parseDeviceParams( ci::osc::Message message );
+	void	parseDeviceList( ci::osc::Message message );
+	void	parseDeviceAllParams( ci::osc::Message message );
+	void	parseDeviceParam( ci::osc::Message message );
 
+    void    debugOscMessage( ci::osc::Message message );
+    
 	std::vector<QLiveTrack*>		mTracks;
 	std::vector<QLiveScene*>		mScenes;
-	std::vector<QLiveClip*>			mClips;
-	std::vector<QLiveDevice*>		mDevices;
 	
     QLiveAnalyzer                   *mAnalyzer;
-    QLiveParams                     *mLiveParams;
     
 	ci::osc::Sender					*mOscSender;
 	ci::osc::Listener				*mOscListener;

@@ -47,13 +47,9 @@ namespace nocte {
         mFontMedium	= Font("Helvetica", 14);
         
         console() << "Live > Initialized!" << endl;	
-    //	Logger::log("Live > Initialized!");
-        
         
         mAnalyzer   = new QLiveAnalyzer( mOscAnalyzerInPort );
         
-        mLiveParams = new QLiveParams(mOscLiveParamsInPort);   
-    //    getParams();
     }
 
 
@@ -128,22 +124,6 @@ namespace nocte {
             mAnalyzer = NULL;
         }
         
-        if ( mLiveParams )
-        {
-            mLiveParams->shutdown();
-            delete mLiveParams;
-            mLiveParams = NULL;
-        }
-        
-        if ( mLiveParams )
-        {
-            mLiveParams->shutdown();
-            delete mLiveParams;
-            mLiveParams = NULL;
-        }
-    //	Logger::log("Live > shutdown!");
-        
-        
     }
 
 
@@ -153,8 +133,6 @@ namespace nocte {
         
         if ( getElapsedSeconds() - mGetInfoRequestAt < GET_INFO_MIN_DELAY )
             return false;
-        
-    //	Logger::log("Live > getInfo()");
         
         mSelectedTrack = NULL;
         
@@ -166,13 +144,13 @@ namespace nocte {
 
         ci::sleep(50);
         sendMessage("/live/name/track"); 
-
+//
         ci::sleep(200);
         sendMessage("/live/name/clip");    
-        
+//        
         ci::sleep(200);
         sendMessage("/live/devicelist");
-        
+//        
         ci::sleep(500);
         
         mIsReady = true;
@@ -182,28 +160,23 @@ namespace nocte {
 
 
     void QLive::deleteObjects()
-    {
-        for(int k=0; k < mTracks.size(); k++) {
+    {        
+        for(int k=0; k < mTracks.size(); k++)
             delete mTracks[k];
-        }
         mTracks.clear();
         
         for(int k=0; k < mScenes.size(); k++)
             delete mScenes[k];
         mScenes.clear();
-        
-        for(int k=0; k < mClips.size(); k++)
-            delete mClips[k];
-        mClips.clear();
-        
-        for(int k=0; k < mDevices.size(); k++)
-            delete mDevices[k];
-        mDevices.clear();
     }
 
 
-    void QLive::renderDebug() 
+    void QLive::renderDebug()
     {
+        QLiveTrack  *track;
+        QLiveClip   *clip;
+        QLiveDevice *device;
+        
         gl::color( Color::white() );
         
         TextLayout textLayout = TextLayout();
@@ -212,50 +185,46 @@ namespace nocte {
         textLayout.setColor( Color::white() );
         
         textLayout.setFont( mFontMedium );
-        
+
         textLayout.addLine( "QLIVE" );
         textLayout.addLine( mOscHost + " / in " + toString(mOscLiveInPort) + " / out " + toString(mOscLiveOutPort) + " / fft " + toString(mOscAnalyzerInPort) );
         textLayout.addLine( " " );
         
         textLayout.setFont( mFontSmall );
         
-        /*
         textLayout.addLine( "SCENES" );
         textLayout.addLine( "index\tname" );
         for (int k = 0; k < mScenes.size(); k++)
             textLayout.addLine( toString(mScenes[k]->mIndex) + "\t\t" + mScenes[k]->mName );
         textLayout.addLine( " " );	
-        */
-        textLayout.addLine( "TRACKS" );
-        textLayout.addLine( "index\tname" );
-        
-        for (int k = 0; k < mTracks.size(); k++)
-            textLayout.addLine( toString(mTracks[k]->mIndex) + "\t\t" + mTracks[k]->mName );
-        textLayout.addLine( " " );
-        
-        textLayout.addLine( "CLIPS" );
-        textLayout.addLine( "index\ttrack\t\tname" );
-        for (int k = 0; k < mClips.size(); k++)
-        {
-            if ( mClips[k]->getState() == CLIP_PLAYING )
-                textLayout.setColor( mColor1 );
-            else
-                textLayout.setColor( Color::white() );
-                
-            textLayout.addLine( toString(mClips[k]->mIndex) + "\t\t" + toString(mClips[k]->mTrackIndex) + "\t\t" + mClips[k]->mName );
-        }
-        textLayout.addLine( " " );
 
-        textLayout.setColor( Color::white() );	
+        textLayout.addLine( "TRACKS" );
+        for (int k = 0; k < mTracks.size(); k++)
+        {
+            track = mTracks[k];
+            
+            textLayout.addLine( toString(track->mIndex) + "\t" + track->mName + "\t" + toString(track->mClips.size()) );
+            
+            textLayout.addLine( "\tDEVICES" );
+            for( int i = 0; i < track->mDevices.size(); i++ )
+            {
+                device = track->mDevices[i];
+                textLayout.addLine( "\t" + toString(device->mIndex) + "\t" + device->mName );
+            }
+            
+            textLayout.addLine( "\tCLIPS" );
+            for( int i = 0; i < track->mClips.size(); i++ )
+            {
+                clip = track->mClips[i];                
+                textLayout.addLine( "\t" + toString(clip->mIndex) + "\t" + clip->mName );
+            }
+        }
         
-        textLayout.addLine( "DEVICES" );
-        textLayout.addLine( "index\ttrack\t\tname" );
-        for (int k = 0; k < mDevices.size(); k++)
-            textLayout.addLine( toString(mDevices[k]->mIndex) + "\t\t" + toString(mDevices[k]->mTrackIndex) + "\t\t" + mDevices[k]->mName );
         textLayout.addLine( " " );
         
         gl::Texture tex = gl::Texture(textLayout.render(true));
         gl::draw( tex, Vec2f( getWindowWidth() - 450, 15) );
+
     }
 
 
@@ -302,7 +271,7 @@ namespace nocte {
         
         mScenes.push_back( new QLiveScene( index, name ) );
         
-        //console() << "parse scene: " << endl;
+//        console() << "parse scene: " << endl;
     }
 
 
@@ -328,119 +297,148 @@ namespace nocte {
         if ( !has_track )
             mTracks.push_back( new QLiveTrack( index, name, color ) );
 
-        sort (mTracks.begin(), mTracks.end(), sortTracksByIndex); 
+        sort( mTracks.begin(), mTracks.end(), sortTracksByIndex );
 
         sendMessage("/live/volume", "i" + toString(index) );	// get track volume
 
         listTrackDevices(index);
+        
+        // parse devices
+        // parse clips
     }
 
 
     void QLive::parseClip( osc::Message message ) 
     {
-        int     trackIndex	= message.getArgAsInt32(0);
-        int 	index		= message.getArgAsInt32(1);
+        console() << "parse clip" << endl;
+        int     trackIdx	= message.getArgAsInt32(0);
+        int 	clipIdx		= message.getArgAsInt32(1);
         string 	name		= message.getArgAsString(2);
         ColorA  color       = colorIntToColorA( message.getArgAsInt32(3) );
-        
-        // return if the clips already exists
-        for(int k=0; k < mClips.size(); k++)
-            if ( mClips[k]->mIndex == index && mClips[k]->mTrackIndex == trackIndex )
-                return;
 
-        QLiveClip *clip = new QLiveClip( index, name, trackIndex, color );
+        QLiveTrack  *track = getTrack( trackIdx );
         
-        mClips.push_back( clip );
-        if ( trackIndex < mTracks.size() )
-            mTracks[trackIndex]->addClip( clip );
+        if ( track )                                            // return if the clip already exists
+        {
+            if ( track->getClip(clipIdx) )
+                return;
+        }
+    
+        QLiveClip *clip = new QLiveClip( clipIdx, name, trackIdx, color );
         
-        sendMessage("/live/clip/info", "i" + toString(trackIndex) + " i" + toString(index) );	// get clip info
+        mTracks[trackIdx]->mClips.push_back( clip );
+        
+        sendMessage("/live/clip/info", "i" + toString(trackIdx) + " i" + toString(clipIdx) );       // get clip info
     }
 
 
     void QLive::parseClipInfo( osc::Message message ) 
     {    
-        int trackIndex	= message.getArgAsInt32(0);
-        int index		= message.getArgAsInt32(1);
+        int trackIdx	= message.getArgAsInt32(0);
+        int clipIdx		= message.getArgAsInt32(1);
         ClipState state	= (ClipState)message.getArgAsInt32(2);
         
-        for(int k=0; k < mClips.size(); k++)
+        QLiveClip*  clip;
+        
+        
+        QLiveTrack  *track = getTrack( trackIdx );
+        
+        if ( track )
         {
-            if ( mClips[k]->getTrackIndex() == trackIndex && mClips[k]->mIndex == index)
-                mClips[k]->setState(state);
+            // stop all clips
+            for( size_t k=0; k < track->mClips.size(); k++ )
+                track->mClips[k]->setState( HAS_CLIP );
             
-            if ( state == CLIP_PLAYING && mClips[k]->getTrackIndex() == trackIndex && mClips[k]->mIndex != index )     // stop clip
-                mClips[k]->setState( HAS_CLIP );
+            clip = track->getClip(clipIdx);
+            
+            // play selected clip
+            if ( clip )
+                clip->setState(state);
         }
     }
 
 
-    void QLive::parseDevice( osc::Message message ) 
+    void QLive::parseDeviceList( osc::Message message ) 
     {
         if ( message.getNumArgs() < 3 )	// seems there is an error in the APIs!
            return;
         
-        int			trackIndex = message.getArgAsInt32(0);
-        int			index;
-        string		name;
-        QLiveDevice	*dev;
-        bool		deviceExists;
+        int			deviceIdx;
+        string		deviceName;
+
+        QLiveTrack  *track = getTrack( message.getArgAsInt32(0) );
         
-        for (int k=1; k < message.getNumArgs(); k+=2) 
+        if ( track )
         {
-            index		= message.getArgAsInt32(k);
-            name		= message.getArgAsString(k+1);
-            
-            deviceExists = false;
-            
-            // update if the device already exists
-            for(int k=0; k < mDevices.size(); k++)
-                if ( mDevices[k]->mName == name && mDevices[k]->mTrackIndex == trackIndex )
-                {
-                    mDevices[k]->mName = name;
-                    deviceExists = true;
-                }
-                
-                
-            if ( !deviceExists )
+            for( int k=1; k < message.getNumArgs(); k+=2 )
             {
-                dev = new QLiveDevice( index, name, trackIndex );	
-                mDevices.push_back( dev );
-                mTracks[trackIndex]->addDevice( dev );
+                deviceIdx	= message.getArgAsInt32(k);
+                deviceName  = message.getArgAsString(k+1);
+                    
+                if ( !track->getDevice(deviceIdx) )
+                {
+                    track->mDevices.push_back( new QLiveDevice( deviceIdx, deviceName, track->mIndex ) );
+                    
+                    // get device params	
+                    sendMessage("/live/device", "i" + toString(track->mIndex) + " i" + toString(deviceIdx) );
+                }
             }
-            
-            // get device params	
-            sendMessage("/live/device", "i" + toString(trackIndex) + " i" + toString(index) );
         }
     }
 
 
-    void QLive::parseDeviceParams( osc::Message message )
+    void QLive::parseDeviceAllParams( osc::Message message )
     {
         //	int trackIdx, int deviceIdx, int parameterIdx, int value,  str name, ...
-        if ( message.getNumArgs() < 5 )
+        if ( message.getNumArgs() < 7 )
             return;
         
         int			trackIdx    = message.getArgAsInt32(0);
         int			deviceIdx   = message.getArgAsInt32(1);
         QLiveTrack	*track      = getTrack(trackIdx);
-        QLiveDevice	*device     = track->mDevices[deviceIdx];
-
+        QLiveDevice	*device     = track->getDevice( deviceIdx );
+        
+        if ( !device )
+            return;
+        
         int         paramIdx;
         float       paramVal;
+        float       paramMinVal;
+        float       paramMaxVal;
         std::string paramName;
         
-        for (int k=2; k < message.getNumArgs(); k+=3) 
+        for (int k=2; k < message.getNumArgs(); k+=5) 
         {
             paramIdx    = message.getArgAsInt32(k);
             paramVal    = message.getArgAsFloat(k+1);
             paramName   = message.getArgAsString(k+2);
-            
-            device->addParam( paramIdx, paramVal, paramName );
+            paramMinVal = message.getArgAsFloat(k+3);
+            paramMaxVal = message.getArgAsFloat(k+4);
+
+            device->addParam( paramIdx, paramVal, paramName, paramMinVal, paramMaxVal );
         }
-        
     }
 
+    
+    void QLive::parseDeviceParam( osc::Message message )
+    {
+        //	/live/device/param (int track, int device, int paarmeter, int value, str name)
+        
+        if ( message.getNumArgs() < 5 )
+            return;
+        
+        int			trackIdx    = message.getArgAsInt32(0);
+        int			deviceIdx   = message.getArgAsInt32(1);
+        int			paramIdx    = message.getArgAsInt32(2);
+        
+        QLiveTrack	*track      = getTrack(trackIdx);
+        QLiveDevice	*device     = track->getDevice( deviceIdx );
+        QLiveParam	*param      = device->mParams[paramIdx];
+        
+        param->mValue   = ( message.getArgType(3) == osc::TYPE_INT32 ) ? message.getArgAsInt32(3) : message.getArgAsFloat(3);
+        param->mName    = message.getArgAsString(4);
+    }
+    
 
     void QLive::receiveData(){
 
@@ -454,64 +452,31 @@ namespace nocte {
 
                 // debug
                 if (false)
-                {
-                    console() << "LIVE: Address: " << message.getAddress() << " ";
-                    
-                    for (int i = 0; i < message.getNumArgs(); i++) {
-                        if (message.getArgType(i) == osc::TYPE_INT32){
-                            try {
-                                console() << message.getArgAsInt32(i) << " ";
-                            }
-                            catch (...) {
-                                console() << "Exception reading argument as int32" << std::endl;
-                            }
-                            
-                        }else if (message.getArgType(i) == osc::TYPE_FLOAT){
-                            try {
-                                console() << message.getArgAsFloat(i) << " ";
-                            }
-                            catch (...) {
-                                console() << "Exception reading argument as float" << std::endl;
-                            }
-                        }else if (message.getArgType(i) == osc::TYPE_STRING){
-                            try {
-                                console() << message.getArgAsString(i).c_str() << " ";
-                            }
-                            catch (...) {
-                                console() << "Exception reading argument as string" << std::endl;
-                            }
-                            
-                        }
-                    }
-                    console() << endl;
-                }
+                    debugOscMessage( message );
                 
             //	console() << "receive DATA! " << msgAddress << endl;
                 
                 // Parse Live objects
-                if ( msgAddress == "/live/name/scene" ) {
+                if ( msgAddress == "/live/name/scene" )
                     parseScene(message);
-                }
-                else if ( msgAddress == "/live/name/track" ) {
+                
+                else if ( msgAddress == "/live/name/track" )
                     parseTrack(message);
-                }
-                else if ( msgAddress == "/live/name/clip" ) {
-                    parseClip(message);	
-    //                console() << "parse clip" << std::endl;
-                }
-                else if ( msgAddress == "/live/clip/info" ) {
+                
+                else if ( msgAddress == "/live/name/clip" )
+                    parseClip(message);
+        
+                else if ( msgAddress == "/live/clip/info" )
                     parseClipInfo(message);
-                }
-                else if ( msgAddress == "/live/devicelist" ) {
-                    parseDevice(message);	
-                }
-                else if ( msgAddress == "/live/device/allparam" ) {
-                    parseDeviceParams(message);
-                }
+                
+                else if ( msgAddress == "/live/devicelist" )
+                    parseDeviceList(message);	
+                
+                else if ( msgAddress == "/live/device/allparam" )
+                    parseDeviceAllParams(message);
+            
                 else if ( msgAddress == "/live/play" )
-                {
                     mIsPlaying = ( (ClipState)message.getArgAsInt32(0) == 2 ) ? true : false;
-                }
 
                 else if ( msgAddress == "/live/volume" )
                 {
@@ -530,11 +495,10 @@ namespace nocte {
                             break;
                         }
                 }
-
-                else if ( msgAddress == "/live/param" )
-                {
-                    
-                }
+                
+                else if ( msgAddress == "/live/device/param" )
+                    parseDeviceParam(message);
+                
             }
                 
             sleep(15.0f);
@@ -567,7 +531,6 @@ namespace nocte {
     { 
         return &mAnalyzer->mAmplitude[channel];
     };
-
     
     void QLive::saveSettings( vector<QLiveModuleWithFixtures*> modules )
     {
@@ -602,11 +565,12 @@ namespace nocte {
         // Device settings
         for( size_t k=0; k < mTracks.size(); k++ )
         {
-            track = mTracks[k];
+            track   = mTracks[k];
             
-            for( int i=0; i < track->getDevicesN(); i++ )
+            for( size_t i=0; i < track->mDevices.size(); i++ )
             {
-                device = track->getDevice(i);
+                device = track->mDevices[i];
+                
                 for(int j=0; j < device->getParamsN(); j++ )
                 {
                     param = device->getParam(j);
@@ -682,13 +646,11 @@ namespace nocte {
                     }
                 }
             }
-            
             catch ( ... )
             {
                 console() << "loadModuleSettings: Module parsing error!" << endl;
                 return;
             }
-            
         }
         
         // parse Params
@@ -703,5 +665,38 @@ namespace nocte {
             setParam( paramTrackIdx, paramDeviceIdx, paramIdx, paramValue );
         }   
     }
+    
 
+    void QLive::debugOscMessage( osc::Message message )
+    {
+        console() << "LIVE: Address: " << message.getAddress() << " ";
+        
+        for (int i = 0; i < message.getNumArgs(); i++) {
+            if (message.getArgType(i) == osc::TYPE_INT32){
+                try {
+                    console() << message.getArgAsInt32(i) << " ";
+                }
+                catch (...) {
+                    console() << "Exception reading argument as int32" << std::endl;
+                }
+                
+            }else if (message.getArgType(i) == osc::TYPE_FLOAT){
+                try {
+                    console() << message.getArgAsFloat(i) << " ";
+                }
+                catch (...) {
+                    console() << "Exception reading argument as float" << std::endl;
+                }
+            }else if (message.getArgType(i) == osc::TYPE_STRING){
+                try {
+                    console() << message.getArgAsString(i).c_str() << " ";
+                }
+                catch (...) {
+                    console() << "Exception reading argument as string" << std::endl;
+                }
+                
+            }
+        }
+        console() << endl;
+    }
 }

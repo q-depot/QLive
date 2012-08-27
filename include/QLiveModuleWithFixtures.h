@@ -31,23 +31,34 @@ namespace nocte {
         
         QLiveModuleWithFixtures( QLive *live, QLiveClip *clip, std::vector<Fixture*> fixtures ) : QLiveModule(live, clip), mFixtures(fixtures)
         {
-            mBoundingBox = ci::AxisAlignedBox3f( -ci::Vec3f::one(), ci::Vec3f::one() );
+            mBoundingBox = ci::AxisAlignedBox3f( ci::Vec3f(-1.0f, 0.0f, -1.0f), ci::Vec3f::one() );
 
             calcActiveFixtures();
         }
         
         ~QLiveModuleWithFixtures() {}
         
-        void renderBoundingBox( ci::ColorA col = ci::ColorA( 1.0f, 1.0f, 1.0f, 1.0f ) ) 
+        
+        void renderBoundingBox( bool isMouseOn, bool isSelected  ) 
         {
-            ci::gl::color( col );
+            ci::ColorA  boxCol = mClip->getColor();
+            
+            if ( isSelected )
+                glLineWidth( 2.0f );
+            
+            // draw stroke
+            ci::gl::color( boxCol );
             ci::gl::drawStrokedCube(mBoundingBox);
             
-            col.a = 0.3;
-            ci::gl::color( col );
+            boxCol.a = ( isSelected || isMouseOn ) ? 0.2f : 0.1f;
+             
+            // draw cube
+            ci::gl::color( boxCol );
             ci::gl::drawCube( mBoundingBox.getCenter(), mBoundingBox.getSize() );      
                 
             ci::gl::color( ci::ColorA::white() );
+            
+            glLineWidth( 1.0f );
         }
         
         void setBoundingBox( ci::Vec3f minVec, ci::Vec3f maxVec )
@@ -81,19 +92,8 @@ namespace nocte {
                 if ( rectXY.contains( pos3f.xy() ) && rectXZ.contains( pos3f.xz() ) )
                     mActiveFixtureIndices.push_back( k );
             }
-            
-            
-//            
-//            for( size_t k=0; k < mFixtures.size(); k++ )
-//            {
-//                pos3f = mFixtures[k]->getPos();
-//                
-//                if ( rectXY.contains( pos3f.xy() ) && rectXZ.contains( pos3f.xz() ) )
-//                    mActiveFixtures.push_back( mFixtures[k] );
-//            }
         }
         
-//        std::vector<Fixture*>   mActiveFixtures;
         std::vector<int>        mActiveFixtureIndices;
         std::vector<Fixture*>   mFixtures;
         ci::AxisAlignedBox3f    mBoundingBox;
