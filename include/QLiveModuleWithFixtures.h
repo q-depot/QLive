@@ -16,7 +16,7 @@
 
 #pragma once
 
-//#include "cinder/app/AppBasic.h"
+#include "QLiveModule.h"
 #include "Fixture.h"
 
 namespace nocte {
@@ -29,7 +29,7 @@ namespace nocte {
         
     public:
         
-        QLiveModuleWithFixtures( QLive *live, QLiveClip *clip, std::vector<Fixture*> fixtures ) : QLiveModule(live, clip), mFixtures(fixtures)
+        QLiveModuleWithFixtures( QLive *live, QLiveTrack *track, QLiveClip *clip, std::vector<Fixture*> fixtures ) : QLiveModule(live, track, clip), mFixtures(fixtures)
         {
             mBoundingBox = ci::AxisAlignedBox3f( ci::Vec3f(-1.0f, 0.0f, -1.0f), ci::Vec3f::one() );
 
@@ -69,7 +69,6 @@ namespace nocte {
         }   
         
         ci::AxisAlignedBox3f getBoundingBox() { return mBoundingBox; }
-        
         
     protected:
         

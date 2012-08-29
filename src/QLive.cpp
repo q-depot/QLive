@@ -23,8 +23,6 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-#define QLIVE_SETTINGS     "/Users/Q/QLiveSettings.xml"
-
 namespace nocte {
         
     QLive::QLive(string osc_host, int osc_live_in_port, int osc_live_out_port, int osc_analyzer_in_port, int live_params_in_port, bool init) 
@@ -43,8 +41,8 @@ namespace nocte {
         mColor3		= ColorA( 0.90, 0.88f, 0.56f, 1.0f );
         mColor4		= ColorA( 0.57, 0.88f, 0.36f, 1.0f );
         
-        mFontSmall	= Font("Helvetica", 12);
-        mFontMedium	= Font("Helvetica", 14);
+        mFontSmall	= Font( "Helvetica", 12 );
+        mFontMedium	= Font( "Helvetica", 14 );
         
         console() << "Live > Initialized!" << endl;	
         
@@ -73,22 +71,20 @@ namespace nocte {
             mOscSender = new osc::Sender();
             mOscSender->setup(mOscHost, mOscLiveOutPort);
             
-            console() << "LIVE: Initialized OSC sender " << toString(mOscHost) + ":" << toString(mOscLiveOutPort) << endl;	
-    //        Logger::log("LIVE: Initialized OSC sender " + toString(mOscHost) + ":" + toString(mOscOutPort) );
-        } catch (...) {
+            console() << "LIVE: Initialized OSC sender " << toString(mOscHost) + ":" << toString(mOscLiveOutPort) << endl;
+        } 
+        catch (...) {
             mOscSender = NULL;
             console() << "LIVE: Failed to bind OSC sender socket " << toString(mOscHost) << ":" << toString(mOscLiveOutPort) << endl;
-    //		Logger::log("LIVE: Failed to bind OSC sender socket " + toString(mOscHost) + ":" + toString(mOscOutPort) );
         }
         
         try {
             mOscListener = new osc::Listener();
             mOscListener->setup(mOscLiveInPort);
-            console() << "LIVE: Initialized OSC listener " << mOscLiveInPort << endl; 
-    //		Logger::log("LIVE: Initialized OSC listener " + toString(mOscInPort) );
-        } catch (...) {
+            console() << "LIVE: Initialized OSC listener " << mOscLiveInPort << endl;
+        } 
+        catch (...) {
             mOscListener = NULL;
-    //		Logger::log("LIVE: Failed to bind OSC listener socket " + toString(mOscInPort) );
         }
         
         thread receiveDataThread( &QLive::receiveData, this);
@@ -97,8 +93,6 @@ namespace nocte {
 
     void QLive::shutdown() 
     {
-        // TODO proper clean up!!!
-        
         mIsReady = false;
         
         if ( mOscListener )					// close OSC listener
@@ -126,7 +120,19 @@ namespace nocte {
         
     }
 
-
+    
+    void QLive::deleteObjects()
+    {        
+        for(int k=0; k < mTracks.size(); k++)
+            delete mTracks[k];
+        mTracks.clear();
+        
+        for(int k=0; k < mScenes.size(); k++)
+            delete mScenes[k];
+        mScenes.clear();
+    }
+    
+    
     bool QLive::getInfo() 
     { 
         mIsReady = false;
@@ -144,30 +150,18 @@ namespace nocte {
 
         ci::sleep(50);
         sendMessage("/live/name/track"); 
-//
+
         ci::sleep(200);
         sendMessage("/live/name/clip");    
-//        
+
         ci::sleep(200);
         sendMessage("/live/devicelist");
-//        
+
         ci::sleep(500);
         
         mIsReady = true;
         
         return mIsReady;
-    }
-
-
-    void QLive::deleteObjects()
-    {        
-        for(int k=0; k < mTracks.size(); k++)
-            delete mTracks[k];
-        mTracks.clear();
-        
-        for(int k=0; k < mScenes.size(); k++)
-            delete mScenes[k];
-        mScenes.clear();
     }
 
 
@@ -183,41 +177,43 @@ namespace nocte {
         textLayout.clear( ColorA(0.0f, 0.0f, 0.0f, 0.0f) );
         textLayout.setLeadingOffset(3);
         textLayout.setColor( Color::white() );
+        textLayout.setFont( mFontSmall );
         
-        textLayout.setFont( mFontMedium );
-
         textLayout.addLine( "QLIVE" );
         textLayout.addLine( mOscHost + " / in " + toString(mOscLiveInPort) + " / out " + toString(mOscLiveOutPort) + " / fft " + toString(mOscAnalyzerInPort) );
         textLayout.addLine( " " );
         
-        textLayout.setFont( mFontSmall );
-        
         textLayout.addLine( "SCENES" );
-        textLayout.addLine( "index\tname" );
+        textLayout.addLine( " " );
+        
         for (int k = 0; k < mScenes.size(); k++)
             textLayout.addLine( toString(mScenes[k]->mIndex) + "\t\t" + mScenes[k]->mName );
         textLayout.addLine( " " );	
-
+        
         textLayout.addLine( "TRACKS" );
+        textLayout.addLine( " " );
+        
         for (int k = 0; k < mTracks.size(); k++)
         {
             track = mTracks[k];
             
-            textLayout.addLine( toString(track->mIndex) + "\t" + track->mName + "\t" + toString(track->mClips.size()) );
+            textLayout.addLine( toString(track->mIndex) + " - " + track->mName + "\t" + toString(track->mClips.size()) );
+            textLayout.addLine( " " );
             
-            textLayout.addLine( "\tDEVICES" );
             for( int i = 0; i < track->mDevices.size(); i++ )
             {
                 device = track->mDevices[i];
-                textLayout.addLine( "\t" + toString(device->mIndex) + "\t" + device->mName );
+                textLayout.addLine( "\tDEVICE\t" + toString(device->mIndex) + "\t" + device->mName );
             }
+            textLayout.addLine( " " );
             
-            textLayout.addLine( "\tCLIPS" );
+            textLayout.setFont( mFontSmall );
             for( int i = 0; i < track->mClips.size(); i++ )
             {
                 clip = track->mClips[i];                
-                textLayout.addLine( "\t" + toString(clip->mIndex) + "\t" + clip->mName );
+                textLayout.addLine( "\tCLIP\t\t" + toString(clip->mIndex) + "\t" + clip->mName );
             }
+            textLayout.addLine( " " );
         }
         
         textLayout.addLine( " " );
@@ -230,8 +226,6 @@ namespace nocte {
 
     void QLive::sendMessage(string address, string args)
     {	
-        
-    //	console() << "send message" << endl;
         osc::Message message;
         message.setAddress( address );
         message.setRemoteEndpoint(mOscHost, mOscLiveOutPort);
@@ -302,15 +296,11 @@ namespace nocte {
         sendMessage("/live/volume", "i" + toString(index) );	// get track volume
 
         listTrackDevices(index);
-        
-        // parse devices
-        // parse clips
     }
 
 
     void QLive::parseClip( osc::Message message ) 
     {
-        console() << "parse clip" << endl;
         int     trackIdx	= message.getArgAsInt32(0);
         int 	clipIdx		= message.getArgAsInt32(1);
         string 	name		= message.getArgAsString(2);
@@ -324,7 +314,7 @@ namespace nocte {
                 return;
         }
     
-        QLiveClip *clip = new QLiveClip( clipIdx, name, trackIdx, color );
+        QLiveClip *clip = new QLiveClip( clipIdx, name, color );
         
         mTracks[trackIdx]->mClips.push_back( clip );
         
@@ -377,7 +367,7 @@ namespace nocte {
                     
                 if ( !track->getDevice(deviceIdx) )
                 {
-                    track->mDevices.push_back( new QLiveDevice( deviceIdx, deviceName, track->mIndex ) );
+                    track->mDevices.push_back( new QLiveDevice( deviceIdx, deviceName ) );
                     
                     // get device params	
                     sendMessage("/live/device", "i" + toString(track->mIndex) + " i" + toString(deviceIdx) );
@@ -454,8 +444,6 @@ namespace nocte {
                 if (false)
                     debugOscMessage( message );
                 
-            //	console() << "receive DATA! " << msgAddress << endl;
-                
                 // Parse Live objects
                 if ( msgAddress == "/live/name/scene" )
                     parseScene(message);
@@ -503,9 +491,8 @@ namespace nocte {
                 
             sleep(15.0f);
     //		boost::this_thread::sleep(boost::posix_time::milliseconds(15));
-            
         }
-    //	Logger::log("Live > receiveData() thread exited!");
+        console() << "Live > receiveData() thread exited!" << endl;
     }
 
     
@@ -531,141 +518,7 @@ namespace nocte {
     { 
         return &mAnalyzer->mAmplitude[channel];
     };
-    
-    void QLive::saveSettings( vector<QLiveModuleWithFixtures*> modules )
-    {
-        XmlTree                 xmlDoc("settings", "");
-        XmlTree                 moduleSettings("modules", "");
-        XmlTree                 paramSettings("params", "");
-        XmlTree                 node;
-        QLiveModuleWithFixtures *module;
-        AxisAlignedBox3f        bBox;
-        Vec3f                   bBoxMinVec, bBoxMaxVec;
-        QLiveTrack              *track;
-        QLiveDevice             *device;
-        QLiveParam              *param;
-        
-        // Modules
-        for( size_t k=0; k < modules.size(); k++ )
-        {
-            module      = modules[k];
-            bBox        = module->getBoundingBox();
-            bBoxMinVec  = bBox.getMin();
-            bBoxMaxVec  = bBox.getMax();
-            
-            node = XmlTree( "module", "" );
-            node.setAttribute( "type", module->getTypeString() );
-            node.setAttribute( "name", module->getName() );
-            node.setAttribute( "bBox_min_x", bBoxMinVec.x ); node.setAttribute( "bBox_min_y", bBoxMinVec.y ); node.setAttribute( "bBox_min_z", bBoxMinVec.z );
-            node.setAttribute( "bBox_max_x", bBoxMaxVec.x ); node.setAttribute( "bBox_max_y", bBoxMaxVec.y ); node.setAttribute( "bBox_max_z", bBoxMaxVec.z );
-            
-            moduleSettings.push_back(node);
-        }
-        
-        // Device settings
-        for( size_t k=0; k < mTracks.size(); k++ )
-        {
-            track   = mTracks[k];
-            
-            for( size_t i=0; i < track->mDevices.size(); i++ )
-            {
-                device = track->mDevices[i];
-                
-                for(int j=0; j < device->getParamsN(); j++ )
-                {
-                    param = device->getParam(j);
-                    
-                    node = XmlTree( "param", "" );
-                    node.setAttribute( "effect",   track->getName() );      // only used for XML readability
-                    node.setAttribute( "name",     param->getName() );
-                    node.setAttribute( "track",    track->getIndex() );
-                    node.setAttribute( "device",   device->getIndex() );
-                    node.setAttribute( "index",    param->getIndex() );
-                    node.setAttribute( "value",    param->getValue() );
-                    
-                    paramSettings.push_back( node );
-                }
-            }
-        }
-        
-        xmlDoc.push_back( moduleSettings );
-        xmlDoc.push_back( paramSettings );
-        
-        //	moduleSettings.write( writeFile( loadResource(RES_MODULE_SETTINGS)->getFilePath() ) );
-        xmlDoc.write( writeFile(QLIVE_SETTINGS) );
-    }
-    
-    void QLive::loadSettings( vector<QLiveModuleWithFixtures*> modules )
-    {
-        string  moduleName;
-        string  moduleType;
-        string  paramName;
-        float   paramValue;
-        int     paramTrackIdx, paramDeviceIdx, paramIdx;
-        
-        XmlTree settingsXml;
-        Vec3f   bBoxMinVec, bBoxMaxVec;
-        
-        QLiveModuleWithFixtures *module;
-        
-        try 
-        {
-            //    XmlTree settingsXml( loadResource(RES_MODULE_SETTINGS) );
-            settingsXml = XmlTree( loadFile(QLIVE_SETTINGS) );
-        }
-        catch ( ... )
-        {
-            console() << "loadModuleSettings:  settings file " << QLIVE_SETTINGS << " not found!" << endl;
-            return;
-        }
-        
-        // parse Modules
-        for(XmlTree::Iter moduleIt = settingsXml.begin("settings/modules/module"); moduleIt != settingsXml.end(); ++moduleIt)
-        {
-            try 
-            {
-                moduleName      = moduleIt->getAttributeValue<string>("name");
-                moduleType      = moduleIt->getAttributeValue<string>("type");
-                
-                for( size_t k=0; k < modules.size(); k++ )
-                {
-                    module = modules[k];
-                    
-                    if ( module->getName() == moduleName && module->getTypeString() == moduleType )
-                    {
-                        // Bounding Box
-                        bBoxMinVec.x    = moduleIt->getAttributeValue<float>("bBox_min_x");
-                        bBoxMinVec.y    = moduleIt->getAttributeValue<float>("bBox_min_y");
-                        bBoxMinVec.z    = moduleIt->getAttributeValue<float>("bBox_min_z");
-                        
-                        bBoxMaxVec.x    = moduleIt->getAttributeValue<float>("bBox_max_x");
-                        bBoxMaxVec.y    = moduleIt->getAttributeValue<float>("bBox_max_y");
-                        bBoxMaxVec.z    = moduleIt->getAttributeValue<float>("bBox_max_z");
-                        
-                        module->setBoundingBox( bBoxMinVec, bBoxMaxVec );
-                    }
-                }
-            }
-            catch ( ... )
-            {
-                console() << "loadModuleSettings: Module parsing error!" << endl;
-                return;
-            }
-        }
-        
-        // parse Params
-        for(XmlTree::Iter paramIt = settingsXml.begin("settings/params/param"); paramIt != settingsXml.end(); ++paramIt)
-        {
-            paramName       = paramIt->getAttributeValue<string>("name");
-            paramTrackIdx   = paramIt->getAttributeValue<int>("track");
-            paramDeviceIdx  = paramIt->getAttributeValue<int>("device");
-            paramIdx        = paramIt->getAttributeValue<int>("index");
-            paramValue      = paramIt->getAttributeValue<float>("value");
-            
-            setParam( paramTrackIdx, paramDeviceIdx, paramIdx, paramValue );
-        }   
-    }
-    
+                 
 
     void QLive::debugOscMessage( osc::Message message )
     {
@@ -699,4 +552,83 @@ namespace nocte {
         }
         console() << endl;
     }
+    
+    
+    void QLive::saveSettings( const std::string &filename )
+    {
+        XmlTree liveSettings("QLiveSettings", "" );
+        XmlTree scenes("scenes", "" );
+        XmlTree tracks("tracks", "" );
+        
+        for( size_t k=0; k < mScenes.size(); k++ )
+            scenes.push_back( mScenes[k]->getXmlNode() );
+        
+        for( size_t k=0; k < mTracks.size(); k++ )
+            tracks.push_back( mTracks[k]->getXmlNode() );
+        
+        liveSettings.push_back( scenes );
+        liveSettings.push_back( tracks );
+        
+        liveSettings.write( writeFile(filename) );
+    }
+
+    void QLive::loadSettings( const std::string &filename, bool forceXmlSettings )
+    {
+        XmlTree liveSettings;
+        
+        try 
+        {
+            liveSettings = XmlTree( loadFile(filename) );
+        }
+        catch ( ... )
+        {
+            console() << "ASOW_stageApp::loadSettings() > settings file " << filename << " not found!" << endl;
+            return;
+        }
+        
+        QLiveScene  *scene;
+        QLiveTrack  *track;
+        int         index;
+        string      name;
+        
+        // parse scenes
+        for( XmlTree::Iter nodeIt = liveSettings.begin("QLiveSettings/scenes/scene"); nodeIt != liveSettings.end(); ++nodeIt )
+        {
+            index   = nodeIt->getAttributeValue<int>("index");
+            name    = nodeIt->getAttributeValue<string>("name");
+            scene   = getScene(index);
+            if ( scene )
+                scene->loadXmlNode( *nodeIt );
+            
+            else if ( !scene && forceXmlSettings )
+            {
+                scene = new QLiveScene( index, name, true );
+                scene->loadXmlNode( *nodeIt );
+                mScenes.push_back( scene );
+            }
+            
+            scene->loadXmlNode( *nodeIt );
+        }
+        
+        // parase tracks
+        for( XmlTree::Iter nodeIt = liveSettings.begin("QLiveSettings/tracks/track"); nodeIt != liveSettings.end(); ++nodeIt )
+        {
+            index   = nodeIt->getAttributeValue<int>("index");
+            name    = nodeIt->getAttributeValue<string>("name");
+            track   = getTrack(index);
+
+            if ( track )
+                track->loadXmlNode( *nodeIt, forceXmlSettings );
+            
+            else if ( !track && forceXmlSettings )
+            {
+                track = new QLiveTrack( index, name, Color::white(), true );
+                track->loadXmlNode( *nodeIt, forceXmlSettings );
+                mTracks.push_back( track );
+            }
+        }
+
+    }
+    
+    
 }

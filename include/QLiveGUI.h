@@ -62,7 +62,7 @@ namespace nocte {
             
 //            int                 tracksN = mLive->getTracksN();
             float               w       = mModuleGUISize.x - CI_UI_GLOBAL_WIDGET_SPACING * 2;
-            float               h       = 8.0f;
+            float               h       = 10.0f;
             Vec2i               pos;
             ciUIWidget          *widget;
 
@@ -116,7 +116,6 @@ namespace nocte {
                 {
                     clip    = clips[i];
                     widget  = new ciUIToggle( pos.x, pos.y, 8, 8, clip->getIsPlayingRef(), clip->getName(), CI_UI_FONT_SMALL );
-                    
                     widget->setMeta( "clip_" + toString( track->getIndex() ) + "_" + toString( clip->getIndex() ) );
                     mGUI->addWidget( widget );
                     widget->setColorFill( clip->getColor() );
@@ -142,6 +141,8 @@ namespace nocte {
                         {
                             param = params[j];
                             widget = new ciUISlider( pos.x, pos.y, w, h/2.0f, param->getMin(), param->getMax(), param->getRef(), param->getName() );
+//                            widget = new ciUIRotarySlider( pos.x, pos.y, 30, param->getMin(), param->getMax(), param->getRef(), param->getName() );
+                            
                             mGUI->addWidget( widget );
                             pos.y += widget->getRect()->getHeight() * 4.5f + 3;
                         }

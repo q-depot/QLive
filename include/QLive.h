@@ -19,7 +19,7 @@
 #include "cinder/Utilities.h"
 #include "QLiveObject.h"
 #include "QLiveModule.h"
-#include "QLiveModuleWithFixtures.h"
+//#include "QLiveModuleWithFixtures.h"
 #include "QLiveAnalyzer.h"
 
 #define	GET_INFO_MIN_DELAY	2.0f		// minimum delay between info requests
@@ -34,37 +34,56 @@ class QLive {
 public:
     
 	QLive( std::string osc_host = "localhost", int osc_live_in_port = 9001, int osc_live_out_port = 9000, int osc_analyzer_in_port = 8000, int live_params_in_port = 9500, bool init = true );
-	
     
     ~QLive() {}
-    
-    
+
 	void sendMessage(std::string address, std::string args = "");
 	
-    
 	bool getInfo();
 
-	//void play(bool isPlaying = true) { mIsPlaying = isPlaying; };
-	
     void renderDebug();
     
     void renderAnalyzer();
-    
-//    void renderAnalyzer()
-//    {
-//        mAnalyzer->render();
-//    }
-	
-//	void debug(bool debugMode = true) { mDebugMode = debugMode; };
 	
 	void play( bool playContinue = false ) { if ( playContinue ) sendMessage("/live/play/continue"); else sendMessage("/live/play"); }
 	
 	void stop() { sendMessage("/live/stop"); }
 
-	// play/stop clip, track: they should also set the local value in case Live doesn't respond
-	void playClip(int track, int clip) { sendMessage("/live/play/clip", "i" + ci::toString(track) + " i" + ci::toString(clip) ); }
+	void playClip( int trackIdx, int clipIdx ) 
+    { 
+        QLiveTrack *track = getTrack( trackIdx );
+        
+        if ( !track )
+            return;
+        
+        QLiveClip *clip = track->getClip(clipIdx);
+        
+        if ( !clip )
+            return;
+        
+        if ( clip->isNull() )
+            clip->setState( CLIP_PLAYING );
+        else
+            sendMessage("/live/play/clip", "i" + ci::toString(trackIdx) + " i" + ci::toString(clipIdx) );
+    }
     
-	void stopClip(int track, int clip) { sendMessage("/live/stop/clip", "i" + ci::toString(track) + " i" + ci::toString(clip) ); }
+	void stopClip( int trackIdx, int clipIdx ) 
+    {
+        QLiveTrack *track = getTrack( trackIdx );
+        
+        if ( !track )
+            return;
+        
+        QLiveClip *clip = track->getClip(clipIdx);
+        
+        if ( !clip )
+            return;
+        
+        if ( clip->isNull() )
+            clip->setState( HAS_CLIP );
+        else
+            sendMessage("/live/stop/clip", "i" + ci::toString(track) + " i" + ci::toString(clip) ); 
+    }
 	
 	void stopTrack(int track) { sendMessage("/live/stop/track", "i" + ci::toString(track) ); }
     
@@ -77,7 +96,6 @@ public:
 //	void setClip() { // /live/name/clip         (int track, int clip, string name)              Sets clip number clip in track number track's name to name };
 	
 //	void playScene(int scene) {	sendMessage("/live/play/scene", "i" + ci::toString(scene) ); };
-	
     
     std::vector<QLiveTrack*> getTracks() { return mTracks; }
     
@@ -119,7 +137,6 @@ public:
         
         return scene; 
     }
-    
 	
 	QLiveDevice* getDevice( int trackIdx, int deviceIdx ) 
     {         
@@ -136,7 +153,37 @@ public:
         return device; 
     }
     
-	
+	float getParamValue( int trackIdx, int deviceIdx, std::string name ) 
+    { 
+        QLiveTrack  *track  = getTrack( trackIdx );
+        QLiveDevice *device;
+        
+        if ( track )
+        {
+            device = track->getDevice( deviceIdx );
+            if ( device )
+                return device->getParamValue( name );
+        }
+        
+        return 0;
+    }
+    
+    float* getParamRef( int trackIdx, int deviceIdx, std::string name ) 
+    { 
+        float       *ref    = NULL;
+        QLiveTrack  *track  = getTrack( trackIdx );
+        QLiveDevice *device;
+        
+        if ( track )
+        {
+            device = track->getDevice( deviceIdx );
+            if ( device )
+                return device->getParamRef( name );
+        }
+        
+        return ref;
+    }
+    
 	bool isPlaying() { return mIsPlaying; }
 
 	bool* getIsPlayingRef() { return &mIsPlaying; }
@@ -162,14 +209,19 @@ public:
 
     bool isReady() { return mIsReady; }
     
-//    float getParam( std::string name ) { return mLiveParams->getParam(name); }
-    
-//    float* getParamRef( std::string name ) { return mLiveParams->getParamRef(name); }
+    QLiveTrack* addNullTrack( int trackIdx, const std::string &name ) 
+    { 
+        QLiveTrack *track = new QLiveTrack( trackIdx, name, ci::Color::white(), true );
+        mTracks.push_back( track ); 
 
-    void saveSettings( std::vector<QLiveModuleWithFixtures*> modules );
-//    
-    void loadSettings( std::vector<QLiveModuleWithFixtures*> modules );
-//    
+        return track;
+    }
+    
+    void loadSettings( const std::string &filename, bool forceXmlSettings = false );
+    
+    void saveSettings( const std::string &filename );
+//    bool isEmpty() { return false; }
+    
 private:
     
 	void	listTrackDevices(int trackIndex) { sendMessage("/live/devicelist", "i" + ci::toString(trackIndex) ); }
@@ -224,8 +276,6 @@ private:
 	ci::Font						mFontMedium;
 	
 	double							mGetInfoRequestAt;
-	
-//	bool							mDebugMode;
 	
 	QLiveTrack						*mSelectedTrack;
     

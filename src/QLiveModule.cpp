@@ -15,11 +15,9 @@
 namespace nocte {
     
     
-    QLiveModule::QLiveModule( QLive *live, QLiveClip *clip) 
+    QLiveModule::QLiveModule( QLive *live, QLiveTrack *track, QLiveClip *clip )
+    : mLive(live), mTrack(track), mClip(clip)
     {
-        mLive		= live;
-        mClip		= clip;
-        
         updateState();
         updateBrightness();
         
@@ -38,7 +36,7 @@ namespace nocte {
     
     bool QLiveModule::updateState() 
     {
-        if ( mClip == NULL )
+        if ( !mClip )
             return false;
         
         ClipState state = mClip->getState();
@@ -55,17 +53,13 @@ namespace nocte {
     
     bool QLiveModule::isPlaying() { return mIsClipPlaying && mLive->isPlaying(); };
     
-    QLiveTrack*	QLiveModule::getTrack() { return mLive->getTrack( mClip->getTrackIndex() ); };
-    
     void QLiveModule::updateBrightness() 
     { 
-        if ( mClip == NULL ) 
+        if ( !mTrack ) 
             return;
         
-        mTrackVolume = pow( getTrack()->getVolume(), 2); 
+        mTrackVolume = pow( mTrack->getVolume(), 2); 
     }
-    
-    int QLiveModule::getTrackIndex() { return mClip->getTrackIndex(); };
     
     std::string QLiveModule::getName()
     {
