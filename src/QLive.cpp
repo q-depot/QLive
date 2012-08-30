@@ -135,10 +135,12 @@ namespace nocte {
     
     bool QLive::getInfo() 
     { 
-        mIsReady = false;
-        
         if ( getElapsedSeconds() - mGetInfoRequestAt < GET_INFO_MIN_DELAY )
             return false;
+        
+        mIsReady = false;
+        
+        deleteObjects();
         
         mSelectedTrack = NULL;
         
@@ -170,7 +172,7 @@ namespace nocte {
         QLiveTrack  *track;
         QLiveClip   *clip;
         QLiveDevice *device;
-        
+
         gl::color( Color::white() );
         
         TextLayout textLayout = TextLayout();
@@ -414,19 +416,30 @@ namespace nocte {
     {
         //	/live/device/param (int track, int device, int paarmeter, int value, str name)
         
-        if ( message.getNumArgs() < 5 )
+        if ( message.getNumArgs() < 7 )
             return;
         
         int			trackIdx    = message.getArgAsInt32(0);
         int			deviceIdx   = message.getArgAsInt32(1);
-        int			paramIdx    = message.getArgAsInt32(2);
+//        int			paramIdx    = message.getArgAsInt32(2);
+        float       paramValue  = ( message.getArgType(3) == osc::TYPE_INT32 ) ? message.getArgAsInt32(3) : message.getArgAsFloat(3);
+        string      paramName   = message.getArgAsString(4);
+//        float       paramMin    = message.getArgAsFloat(5);
+//        float       paramMax    = message.getArgAsFloat(6);
         
-        QLiveTrack	*track      = getTrack(trackIdx);
-        QLiveDevice	*device     = track->getDevice( deviceIdx );
-        QLiveParam	*param      = device->mParams[paramIdx];
+        QLiveParam	*param      = getParam( trackIdx, deviceIdx, paramName );
         
-        param->mValue   = ( message.getArgType(3) == osc::TYPE_INT32 ) ? message.getArgAsInt32(3) : message.getArgAsFloat(3);
-        param->mName    = message.getArgAsString(4);
+        if ( param )
+            param->mValue = paramValue;
+        
+//        else
+//        {
+//            QLiveDevice *device = getDevice( trackIdx, deviceIdx );
+//            
+//            if ( device )
+//                device->mParams.push_back( new QLiveParam( paramIdx, paramName, paramValue, paramMin, paramMax ) );                               
+//        }
+        
     }
     
 
@@ -574,6 +587,9 @@ namespace nocte {
 
     void QLive::loadSettings( const std::string &filename, bool forceXmlSettings )
     {
+        if ( forceXmlSettings )
+            deleteObjects();
+        
         XmlTree liveSettings;
         
         try 
@@ -596,18 +612,17 @@ namespace nocte {
         {
             index   = nodeIt->getAttributeValue<int>("index");
             name    = nodeIt->getAttributeValue<string>("name");
-            scene   = getScene(index);
+            scene   = getScene(name);
+            
             if ( scene )
                 scene->loadXmlNode( *nodeIt );
             
             else if ( !scene && forceXmlSettings )
             {
-                scene = new QLiveScene( index, name, true );
+                scene = new QLiveScene( index, name );
                 scene->loadXmlNode( *nodeIt );
                 mScenes.push_back( scene );
             }
-            
-            scene->loadXmlNode( *nodeIt );
         }
         
         // parase tracks
@@ -615,14 +630,14 @@ namespace nocte {
         {
             index   = nodeIt->getAttributeValue<int>("index");
             name    = nodeIt->getAttributeValue<string>("name");
-            track   = getTrack(index);
+            track   = getTrack(name);
 
             if ( track )
                 track->loadXmlNode( *nodeIt, forceXmlSettings );
             
             else if ( !track && forceXmlSettings )
             {
-                track = new QLiveTrack( index, name, Color::white(), true );
+                track = new QLiveTrack( index, name );
                 track->loadXmlNode( *nodeIt, forceXmlSettings );
                 mTracks.push_back( track );
             }

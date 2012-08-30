@@ -32,7 +32,7 @@ namespace nocte {
         QLiveGUI( QLive *live, int offsetX = 0 ) : mLive(live), mOffsetX(offsetX)
         {
             mGUI = NULL;
-            initGUI();
+            init();
         }
         
         
@@ -49,7 +49,7 @@ namespace nocte {
         void render() { mGUI->draw(); }
         
         
-        void initGUI() 
+        void init() 
         {
             Vec2f mModuleGUISize(130, 300);
             
@@ -60,15 +60,17 @@ namespace nocte {
             
             std::vector<QLiveTrack*> tracks = mLive->getTracks();
             
-//            int                 tracksN = mLive->getTracksN();
             float               w       = mModuleGUISize.x - CI_UI_GLOBAL_WIDGET_SPACING * 2;
             float               h       = 10.0f;
             Vec2i               pos;
             ciUIWidget          *widget;
 
             mIsFullWidth = false;
-
-            mGUI     =  new ciUICanvas( 0, 0, ci::app::getWindowWidth() - mOffsetX, mModuleGUISize.y );
+            
+            if ( mGUI )
+                mGUI->removeAllWidgets();
+            else    
+                mGUI =  new ciUICanvas( 0, 0, ci::app::getWindowWidth() - mOffsetX, mModuleGUISize.y );
             
             mGUI->setFont(RES_GUI_FONT);
             mGUI->setFontSize( CI_UI_FONT_LARGE, 14 );

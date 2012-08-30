@@ -61,10 +61,8 @@ public:
         if ( !clip )
             return;
         
-        if ( clip->isNull() )
-            clip->setState( CLIP_PLAYING );
-        else
-            sendMessage("/live/play/clip", "i" + ci::toString(trackIdx) + " i" + ci::toString(clipIdx) );
+        clip->setState( CLIP_PLAYING );
+        sendMessage("/live/play/clip", "i" + ci::toString(trackIdx) + " i" + ci::toString(clipIdx) );
     }
     
 	void stopClip( int trackIdx, int clipIdx ) 
@@ -79,10 +77,8 @@ public:
         if ( !clip )
             return;
         
-        if ( clip->isNull() )
-            clip->setState( HAS_CLIP );
-        else
-            sendMessage("/live/stop/clip", "i" + ci::toString(track) + " i" + ci::toString(clip) ); 
+        clip->setState( HAS_CLIP );
+        sendMessage("/live/stop/clip", "i" + ci::toString(trackIdx) + " i" + ci::toString(clipIdx) ); 
     }
 	
 	void stopTrack(int track) { sendMessage("/live/stop/track", "i" + ci::toString(track) ); }
@@ -102,67 +98,117 @@ public:
     std::vector<QLiveScene*> getScenes() { return mScenes; }
     
 	QLiveClip* getClip( int trackIdx, int clipIdx )
-    { 
-        QLiveClip* clip = NULL;
+    {   
+        QLiveTrack *track = getTrack(trackIdx);
         
-        for( size_t k=0; k < mTracks.size(); k++ )
-            if ( mTracks[k]->mIndex == trackIdx )
-            {
-                for( size_t j=0; j < mTracks[k]->mDevices.size(); j++ )
-                    if ( mTracks[k]->mClips[j]->mIndex == clipIdx )
-                        return mTracks[k]->mClips[j];
-            }
-
+        if ( track )
+            return track->getClip(clipIdx);            
+            
+        QLiveClip *clip = NULL;
         return clip;
     }
 	
+    QLiveClip* getClip( const std::string trackName, const std::string clipName )
+    {   
+        QLiveTrack *track = getTrack(trackName);
+        
+        if ( track )
+            return track->getClip(clipName);            
+        
+        QLiveClip *clip = NULL;
+        return clip;
+    }
+    
 	QLiveTrack* getTrack( int trackIdx ) 
     { 
-        QLiveTrack* track = NULL;
-        
         for( size_t k=0; k < mTracks.size(); k++ )
             if ( mTracks[k]->mIndex == trackIdx )
                 return mTracks[k];
                 
+        QLiveTrack* track = NULL;
         return track;
     }
-	
-	QLiveScene* getScene( int sceneIdx )
+    
+    QLiveTrack* getTrack( const std::string &name ) 
     { 
-        QLiveScene* scene = NULL;
+        for( size_t k=0; k < mTracks.size(); k++ )
+            if ( mTracks[k]->mName == name )
+                return mTracks[k];
         
+        QLiveTrack* track = NULL;
+        return track;
+    }
+    
+	QLiveScene* getScene( int idx )
+    {   
         for( size_t k=0; k < mScenes.size(); k++ )
-            if ( mScenes[k]->mIndex == sceneIdx )
+            if ( mScenes[k]->mIndex == idx )
                 return mScenes[k];
         
+        QLiveScene* scene = NULL;  
+        return scene; 
+    }
+    
+    QLiveScene* getScene( const std::string &name )
+    {   
+        for( size_t k=0; k < mScenes.size(); k++ )
+            if ( mScenes[k]->mName == name )
+                return mScenes[k];
+        
+        QLiveScene* scene = NULL;  
         return scene; 
     }
 	
 	QLiveDevice* getDevice( int trackIdx, int deviceIdx ) 
     {         
-        QLiveDevice* device = NULL;
+        QLiveTrack *track = getTrack(trackIdx);
         
-        for( size_t k=0; k < mTracks.size(); k++ )
-            if ( mTracks[k]->mIndex == trackIdx )
-            {
-                for( size_t j=0; j < mTracks[k]->mDevices.size(); j++ )
-                    if ( mTracks[k]->mDevices[j]->mIndex == deviceIdx )
-                        return mTracks[k]->mDevices[j];
-            }
+        if ( track )
+            return track->getDevice(deviceIdx);            
         
-        return device; 
+        QLiveDevice *device = NULL;
+        return device;
     }
     
+    QLiveDevice* getDevice( const std::string &trackName, const std::string &deviceName )
+    {         
+        QLiveTrack *track = getTrack(trackName);
+        
+        if ( track )
+            return track->getDevice(deviceName);            
+        
+        QLiveDevice *device = NULL;
+        return device;
+    }
+    
+    QLiveParam* getParam( int trackIdx, int deviceIdx, std::string name ) 
+    { 
+        QLiveTrack  *track  = getTrack( trackIdx );
+        
+        if ( track )
+        {   
+            QLiveDevice *device = track->getDevice( deviceIdx );
+            if ( device )
+                return device->getParam(name);
+        }
+        
+        QLiveParam *param = NULL;
+        return param;
+    }
+
 	float getParamValue( int trackIdx, int deviceIdx, std::string name ) 
     { 
         QLiveTrack  *track  = getTrack( trackIdx );
-        QLiveDevice *device;
         
         if ( track )
-        {
-            device = track->getDevice( deviceIdx );
+        {   
+            QLiveDevice *device = track->getDevice( deviceIdx );
             if ( device )
-                return device->getParamValue( name );
+            {
+                QLiveParam *param = device->getParam(name);
+                if ( param )
+                    return param->getValue();
+            }
         }
         
         return 0;
@@ -170,17 +216,20 @@ public:
     
     float* getParamRef( int trackIdx, int deviceIdx, std::string name ) 
     { 
-        float       *ref    = NULL;
         QLiveTrack  *track  = getTrack( trackIdx );
-        QLiveDevice *device;
         
         if ( track )
-        {
-            device = track->getDevice( deviceIdx );
+        {   
+            QLiveDevice *device = track->getDevice( deviceIdx );
             if ( device )
-                return device->getParamRef( name );
+            {
+                QLiveParam *param = device->getParam(name);
+                if ( param )
+                    return param->getRef();
+            }
         }
         
+        float *ref = NULL;
         return ref;
     }
     
@@ -202,25 +251,12 @@ public:
     
     float* getFftBuffer(int channel);
     float* getAmplitudeRef(int channel);
-    float* getAmplitudeGainRef() { return &mAnalyzer->mAmplitudeGain; }
-    float* getFftGainRef() { return &mAnalyzer->mFftGain; }
-    float* getFftOffsetRef() { return &mAnalyzer->mFftOffset; }
-    float* getFftDumpingRef() { return &mAnalyzer->mFftDumping; }
 
     bool isReady() { return mIsReady; }
-    
-    QLiveTrack* addNullTrack( int trackIdx, const std::string &name ) 
-    { 
-        QLiveTrack *track = new QLiveTrack( trackIdx, name, ci::Color::white(), true );
-        mTracks.push_back( track ); 
-
-        return track;
-    }
-    
+        
     void loadSettings( const std::string &filename, bool forceXmlSettings = false );
     
     void saveSettings( const std::string &filename );
-//    bool isEmpty() { return false; }
     
 private:
     

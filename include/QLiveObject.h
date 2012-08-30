@@ -33,15 +33,13 @@ namespace nocte {
 
     public:
         
-        QLiveObject( int index, std::string name, bool isNull ) : mIndex(index), mName(name), mIsNull(isNull) { }
+        QLiveObject( int index, std::string name ) : mIndex(index), mName(name) { }
         
         ~QLiveObject() {}
         
         int			getIndex() { return mIndex; }
         
         std::string getName() { return mName; }
-        
-        bool isNull() { return mIsNull; }
         
     protected:
         
@@ -50,7 +48,7 @@ namespace nocte {
             ci::XmlTree node( "object", "" );
             node.setAttribute( "name", mName );
             node.setAttribute( "index", mIndex );
-            
+
             return node;
         }
         
@@ -90,7 +88,6 @@ namespace nocte {
         
         int			mIndex;
         std::string	mName;
-        bool        mIsNull;
         
     };
 
@@ -102,7 +99,7 @@ namespace nocte {
         
     public:
         
-        QLiveClip(int index, std::string name, ci::Color color, bool isNull = false ) : QLiveObject(index, name, isNull), mColor(color) 
+        QLiveClip(int index, std::string name, ci::Color color = ci::Color::white() ) : QLiveObject(index, name), mColor(color) 
         { 
             mState		= HAS_CLIP;
             mIsPlaying  = false;
@@ -160,8 +157,8 @@ namespace nocte {
         
     public:
         
-        QLiveParam( int index, std::string name, float value = 0.0f, float minVal = 0.0f, float maxVal = 1.0f, bool isNull = false ) 
-        : QLiveObject(index, name, isNull), mValue(value), mMinValue(minVal), mMaxValue(maxVal) {}
+        QLiveParam( int index, std::string name, float value = 0.0f, float minVal = 0.0f, float maxVal = 1.0f ) 
+        : QLiveObject(index, name), mValue(value), mMinValue(minVal), mMaxValue(maxVal) {}
         
         ~QLiveParam() {}
         
@@ -182,18 +179,20 @@ namespace nocte {
             node.setAttribute( "value", mValue );
             node.setAttribute( "min",   mMinValue);
             node.setAttribute( "max",   mMaxValue );
-            
+
             return node;
         }
         
         void loadXmlNode( ci::XmlTree node )
         {
             QLiveObject::loadXmlNode( node );
-            
+
             mValue      = node.getAttributeValue<float>( "value" );
             mMinValue   = node.getAttributeValue<float>( "min" );
             mMaxValue   = node.getAttributeValue<float>( "max" );
         }
+        
+    protected:
         
         float       mValue;
         float       mMinValue;
@@ -209,7 +208,7 @@ namespace nocte {
         
     public:
         
-        QLiveDevice( int index, std::string name, bool isNull = false ) : QLiveObject(index, name, isNull) {}
+        QLiveDevice( int index, std::string name ) : QLiveObject(index, name) {}
         
         ~QLiveDevice()
         {
@@ -224,7 +223,6 @@ namespace nocte {
         
         QLiveParam* getParam( int idx ) 
         { 
-            
             if ( idx < mParams.size() )
                 return mParams[idx]; 
             
@@ -232,9 +230,8 @@ namespace nocte {
             return param;
         }
         
-        QLiveParam* getParamByName( std::string name )
+        QLiveParam* getParam( std::string name )
         {
-            
             for( size_t k=0; k < mParams.size(); k++ )
                 if( mParams[k]->mName == name )
                     return mParams[k];
@@ -245,18 +242,18 @@ namespace nocte {
         
         float getParamValue( std::string name )
         {
-            for( size_t k=0; k < mParams.size(); k++ )
-                if ( mParams[k]->getName() == name )
-                    return mParams[k]->getValue();
+            QLiveParam *param = getParam(name);
+            if ( param )
+                return param->getValue();
                     
             return 0;
         }
         
         float* getParamRef( std::string name )
         {   
-            for( size_t k=0; k < mParams.size(); k++ )
-                if ( mParams[k]->getName() == name )
-                    return mParams[k]->getRef();
+            QLiveParam *param = getParam(name);
+            if ( param )
+                return param->getRef();
             
             float *ref = NULL;
             return ref;
@@ -288,14 +285,14 @@ namespace nocte {
             {
                 index   = nodeIt->getAttributeValue<int>("index");
                 name    = nodeIt->getAttributeValue<std::string>("name");
-                param   = getParam(index);
-                
+                param   = getParam(name);
+
                 if ( param )
                     param->loadXmlNode( *nodeIt );
                     
                 else if ( !param && forceXmlSettings )
                 {
-                    param = new QLiveParam( index, name, 0.0f, 0.0f, 1.0f, true );
+                    param = new QLiveParam( index, name );
                     param->loadXmlNode( *nodeIt );
                     mParams.push_back( param );
                 }
@@ -316,7 +313,7 @@ namespace nocte {
         
     public:
      
-        QLiveTrack( int index, std::string name, ci::Color color, bool isNull = false ) : QLiveObject(index, name, isNull), mColor(color), mVolume(0.0f) {}
+        QLiveTrack( int index, std::string name, ci::Color color = ci::Color::white() ) : QLiveObject(index, name), mColor(color), mVolume(0.0f) {}
         
         ~QLiveTrack() 
         {
@@ -337,50 +334,55 @@ namespace nocte {
         
         std::vector<QLiveDevice*> getDevices() { return mDevices; }
 
-        QLiveClip *getClip( int clipIdx ) 
+        QLiveClip *getClip( int idx ) 
         { 
-            QLiveClip *clip = NULL;
-            
             for( size_t k=0; k < mClips.size(); k++ )
-                if ( mClips[k]->mIndex == clipIdx )
-                    return mClips[clipIdx];
+                if ( mClips[k]->mIndex == idx )
+                    return mClips[k];
             
+            QLiveClip *clip = NULL;
             return clip;
         }
         
+        QLiveClip *getClip( const std::string &name ) 
+        { 
+            for( size_t k=0; k < mClips.size(); k++ )
+                if ( mClips[k]->mName == name )
+                    return mClips[k];
+            
+            QLiveClip *clip = NULL;  
+            return clip;
+        }
+
         void clearPointers() { mClips.clear(); mDevices.clear(); }
         
         float getVolume() { return mVolume; }
 
         float* getVolumeRef() { return &mVolume; }
-
+        
         QLiveDevice* getDevice( int idx ) 
-        { 
-            QLiveDevice* device = NULL;
+        {   
+            for( size_t k=0; k < mDevices.size(); k++ )
+                if ( mDevices[k]->mIndex == idx )
+                    return mDevices[k];
             
-            if ( idx < mDevices.size() )
-                return mDevices[idx]; 
-            else
-                return device;
-        }
-        
-        ci::ColorA	getColor() { return mColor; };
-        
-        QLiveClip* addNullClip( int clipIdx, const std::string &name ) 
-        { 
-            QLiveClip *clip = new QLiveClip( clipIdx, name, ci::Color::white(), true );
-            mClips.push_back( clip ); 
-            
-            return clip;
-        }
-        
-        QLiveDevice* addNullDevice( int deviceIdx, const std::string &name )
-        { 
-            QLiveDevice *device = new QLiveDevice( deviceIdx, name, true );
-            mDevices.push_back( device ); 
-            
+            QLiveDevice *device = NULL;
             return device;
         }
+
+        
+        QLiveDevice* getDevice( const std::string &name ) 
+        { 
+            for( size_t k=0; k < mDevices.size(); k++ )
+                if ( mDevices[k]->mName == name )
+                    return mDevices[k];
+            
+            QLiveDevice *device = NULL;
+            return device;
+        }
+
+        
+        ci::ColorA	getColor() { return mColor; };
         
     protected:
         
@@ -422,14 +424,14 @@ namespace nocte {
             {
                 index   = nodeIt->getAttributeValue<int>("index");
                 name    = nodeIt->getAttributeValue<std::string>("name");
-                clip    = getClip(index);
+                clip    = getClip(name);
  
                 if ( clip )
                     clip->loadXmlNode( *nodeIt );
                     
                 else if ( !clip && forceXmlSettings )
                 {
-                    clip = new QLiveClip( index, name, ci::Color::white(), true );
+                    clip = new QLiveClip( index, name, ci::Color::white() );
                     clip->loadXmlNode( *nodeIt );
                     mClips.push_back( clip );
                 }
@@ -442,14 +444,14 @@ namespace nocte {
             {
                 index   = nodeIt->getAttributeValue<int>("index");
                 name    = nodeIt->getAttributeValue<std::string>("name");
-                device  = getDevice(index);
-                
+                device  = getDevice(name);
+
                 if ( device )
                     device->loadXmlNode( *nodeIt, forceXmlSettings );
                     
                 else if ( !device && forceXmlSettings )
                 {
-                    device = new QLiveDevice( index, name, true );
+                    device = new QLiveDevice( index, name );
                     device->loadXmlNode( *nodeIt, forceXmlSettings );
                     mDevices.push_back( device );
                 }
@@ -473,7 +475,7 @@ namespace nocte {
         
     public:
         
-        QLiveScene(int index, std::string name, bool isNull = false) : QLiveObject(index, name, isNull) {};
+        QLiveScene( int index, std::string name ) : QLiveObject(index, name) {};
 
         ~QLiveScene() {}
         
