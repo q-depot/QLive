@@ -15,6 +15,7 @@
 #pragma once
 
 #include "cinder/Xml.h"
+#include "cinder/Function.h"
 
 namespace nocte {
     
@@ -111,9 +112,14 @@ namespace nocte {
         
         void		setState(ClipState state) 
         { 
+            if ( state == mState )
+                return;
+
             mState = state; 
             
             mIsPlaying = ( mState == CLIP_PLAYING )  ? true : false;
+            
+            callStateUpdateCallbacks();
         };
         
         bool *getIsPlayingRef() { return &mIsPlaying; };
@@ -121,7 +127,14 @@ namespace nocte {
         bool		isPlaying() { return ( mState == CLIP_PLAYING ); };
         
         ci::ColorA	getColor() { return mColor; };
-                
+        
+        void addStateUpdateCallback( const std::function<void ()> &callback )
+        {
+            std::shared_ptr<std::function<void ()> > callbackPtr( new std::function<void ()>( callback ) );
+            mStateUpdateCallbacks.push_back( callbackPtr );
+        }    
+        
+        
     protected:
 
         ci::XmlTree getXmlNode() 
@@ -139,14 +152,28 @@ namespace nocte {
             
             mColor  = hexToColor( node.getAttributeValue<std::string>( "color" ) );
         }
-        
+    
+    protected:
+    
         ci::ColorA	mColor;
-        
+        bool        mIsPlaying;
+
     private:
         
-        bool        mIsPlaying;
         ClipState	mState;
+        std::vector<std::shared_ptr<std::function<void()> > >   mStateUpdateCallbacks;
         
+    private:
+    
+        void callStateUpdateCallbacks()
+        {
+            for( size_t k=0; k < mStateUpdateCallbacks.size(); k++ )
+            {
+                std::function<void ()> *fn = reinterpret_cast<std::function<void ()>*>( mStateUpdateCallbacks[k].get() );
+                (*fn)();
+            }
+        }
+    
     };
 
 

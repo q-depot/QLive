@@ -78,14 +78,10 @@ namespace nocte {
             mGUI->setFontSize( CI_UI_FONT_SMALL, 10 );
             mGUI->setTheme( CI_UI_THEME_NOCTE_GREEN );
             
-            ///
-            
-            
             std::vector<QLiveDevice*>   devices;
             std::vector<QLiveClip*>     clips;
             std::vector<QLiveParam*>    params;
             std::vector<std::string>    clipNames;
-            
             
             for( int k=0; k < tracks.size(); k++ )
             {
@@ -103,6 +99,7 @@ namespace nocte {
 
                 // Volume                
                 widget = new ciUISlider( pos.x, pos.y, w, h, 0, 1.0, track->getVolumeRef(), "Master" );
+                widget->setColorFill( track->getColor() );
                 widget->setMeta( toString(k) );
                 
                 mGUI->addWidget( widget );
@@ -143,7 +140,7 @@ namespace nocte {
                         {
                             param = params[j];
                             widget = new ciUISlider( pos.x, pos.y, w, h/2.0f, param->getMin(), param->getMax(), param->getRef(), param->getName() );
-//                            widget = new ciUIRotarySlider( pos.x, pos.y, 30, param->getMin(), param->getMax(), param->getRef(), param->getName() );
+                            widget->setMeta( "param_" + toString( track->getIndex() ) + "_" + toString( device->getIndex() ) + "_" + toString( param->getIndex() ) );
                             
                             mGUI->addWidget( widget );
                             pos.y += widget->getRect()->getHeight() * 4.5f + 3;
@@ -213,6 +210,22 @@ namespace nocte {
                 {
                     mLive->stopClip( trackIdx, clipIdx );               // stop clip
                 }
+            }
+            
+            else if ( boost::find_first( meta, "param") )
+            {
+                // param_TRACKIDX_DEVICEIDX_PARAMIDX
+                
+                ciUISlider *slider = (ciUISlider *) event->widget;
+                
+                std::vector<std::string> splitValues;
+                boost::split( splitValues, meta, boost::is_any_of("_") );
+                
+                int trackIdx    = boost::lexical_cast<int>( splitValues[1] );
+                int deviceIdx   = boost::lexical_cast<int>( splitValues[2] );
+                int paramIdx    = boost::lexical_cast<int>( splitValues[3] );
+
+                mLive->setParam( trackIdx, deviceIdx, paramIdx, slider->getScaledValue() );
             }
             
         }

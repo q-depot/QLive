@@ -47,7 +47,8 @@ namespace nocte {
         console() << "Live > Initialized!" << endl;	
         
         mAnalyzer   = new QLiveAnalyzer( mOscAnalyzerInPort );
-        
+
+        mPingReceivedAt = getElapsedSeconds();
     }
 
 
@@ -499,6 +500,9 @@ namespace nocte {
                 
                 else if ( msgAddress == "/live/device/param" )
                     parseDeviceParam(message);
+                
+                else if ( msgAddress == "/live/ping" )
+                    mPingReceivedAt = getElapsedSeconds();
                 
             }
                 

@@ -45,9 +45,24 @@ public:
     
     void renderAnalyzer();
 	
-	void play( bool playContinue = false ) { if ( playContinue ) sendMessage("/live/play/continue"); else sendMessage("/live/play"); }
+	void play( bool playContinue = false ) 
+    { 
+        if ( isAlive() )
+            if ( playContinue ) 
+                sendMessage("/live/play/continue"); 
+            else 
+                sendMessage("/live/play"); 
+        else
+            mIsPlaying = true;
+    }
 	
-	void stop() { sendMessage("/live/stop"); }
+	void stop() 
+    {         
+        if ( isAlive() )
+            sendMessage("/live/stop");
+        else
+            mIsPlaying = false;
+    }
 
 	void playClip( int trackIdx, int clipIdx ) 
     { 
@@ -60,9 +75,11 @@ public:
         
         if ( !clip )
             return;
-        
-        clip->setState( CLIP_PLAYING );
-        sendMessage("/live/play/clip", "i" + ci::toString(trackIdx) + " i" + ci::toString(clipIdx) );
+
+        if ( isAlive() )
+            sendMessage("/live/play/clip", "i" + ci::toString(trackIdx) + " i" + ci::toString(clipIdx) );
+        else
+            clip->setState( CLIP_PLAYING );
     }
     
 	void stopClip( int trackIdx, int clipIdx ) 
@@ -77,15 +94,47 @@ public:
         if ( !clip )
             return;
         
-        clip->setState( HAS_CLIP );
-        sendMessage("/live/stop/clip", "i" + ci::toString(trackIdx) + " i" + ci::toString(clipIdx) ); 
+        if ( isAlive() )
+            sendMessage("/live/stop/clip", "i" + ci::toString(trackIdx) + " i" + ci::toString(clipIdx) ); 
+        else
+            clip->setState( HAS_CLIP );
     }
 	
-	void stopTrack(int track) { sendMessage("/live/stop/track", "i" + ci::toString(track) ); }
+//	void stopTrack(int track) { sendMessage("/live/stop/track", "i" + ci::toString(track) ); }
     
-	void setTrackVolume( int track, float volume ) { sendMessage("/live/volume", "i" + ci::toString(track) + " f" + ci::toString(volume) ); }
+	void setTrackVolume( int trackIdx, float volume ) 
+    { 
+        QLiveTrack *track = getTrack( trackIdx );
+        
+        if ( !track )
+            return;
+        
+        if ( isAlive() )
+            sendMessage("/live/volume", "i" + ci::toString(trackIdx) + " f" + ci::toString(volume) ); 
+        else
+            track->mVolume = volume;
+    }
 	
-    void setParam( int track, int device, int param, float value ) { sendMessage("/live/device", "i" + ci::toString(track) + " i" + ci::toString(device) + " i" + ci::toString(param) + " f" + ci::toString(value) ); }
+    void setParam( int trackIdx, int deviceIdx, int paramIdx, float value ) 
+    { 
+        QLiveTrack *track = getTrack(trackIdx);
+        if (!track)
+            return;
+        
+        QLiveDevice *device = track->getDevice(deviceIdx);
+        if (!device)
+            return;
+        
+        QLiveParam *param = device->getParam(paramIdx);
+        if(!param)
+            return;
+        
+        // is alive?????
+        
+        param->mValue = value;
+        
+        sendMessage("/live/device", "i" + ci::toString(trackIdx) + " i" + ci::toString(deviceIdx) + " i" + ci::toString(paramIdx) + " f" + ci::toString(value) ); 
+    }
     
 //	void setTrackName(int index, std::string name) { sendMessage("/live/name/track", "i" + ci::toString(index) + " s" + name ); };
 	
@@ -258,6 +307,14 @@ public:
     
     void saveSettings( const std::string &filename );
     
+    bool isAlive()
+    {
+        if ( ci::app::getElapsedSeconds() - mPingReceivedAt < 0.5f )
+            return true;
+
+        return false;
+    }
+    
 private:
     
 	void	listTrackDevices(int trackIndex) { sendMessage("/live/devicelist", "i" + ci::toString(trackIndex) ); }
@@ -316,6 +373,8 @@ private:
 	QLiveTrack						*mSelectedTrack;
     
     bool                            mIsReady;
+    
+    double                          mPingReceivedAt;
 };
 
 }

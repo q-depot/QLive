@@ -12,6 +12,11 @@
 #include "cinder/app/AppBasic.h"
 #include "QLive.h"
 
+using namespace ci;
+using namespace ci::app;
+using namespace std;
+
+
 namespace nocte {
     
     
@@ -26,32 +31,26 @@ namespace nocte {
         {   
             mFftBuffer = new float*[2];
             
-            for( int k=0; k < 2; k++)
+            for( int k=0; k < 2; k++ )
             {
                 mFftBuffer[k] = new float[FFT_SIZE];
                 mFftBuffer[k] = mLive->getFftBuffer(k);
             }
         }
-    };
+        
+        mDevice = NULL;
+        
+        mClip->addStateUpdateCallback( std::bind( &QLiveModule::clipStateUpdateCallback, this ) );
+        
+        mParamsUpdatedAt = 0;
+    }
     
     bool QLiveModule::updateState() 
-    {
-        if ( !mClip )
-            return false;
-        
-        ClipState state = mClip->getState();
-        
-        if ( state == HAS_CLIP )
-            mIsClipPlaying = false;
-        else if ( state == CLIP_PLAYING )
-            mIsClipPlaying = true;
-        
-        mIsPlaying = mIsClipPlaying && mLive->isPlaying();
+    {        
+        mIsPlaying = ( mClip->isPlaying() && mLive->isPlaying() ) ? true : false;
         
         return mIsPlaying;
-    };
-    
-    bool QLiveModule::isPlaying() { return mIsClipPlaying && mLive->isPlaying(); };
+    }
     
     void QLiveModule::updateBrightness() 
     { 
@@ -61,7 +60,7 @@ namespace nocte {
         mTrackVolume = pow( mTrack->getVolume(), 2); 
     }
     
-    std::string QLiveModule::getName()
+    string QLiveModule::getName()
     {
         if ( mClip )
             return mClip->getName();
@@ -69,4 +68,48 @@ namespace nocte {
             return "";
     }
     
+    
+    void QLiveModule::sendLiveParamValue( const string &name, float value ) // set Live value to Module local value is it's playing(is selected)
+    {
+        if (!mDevice)
+            return;
+        
+        QLiveParam *param = mDevice->getParam(name);
+        
+        if ( param )
+            mLive->setParam( mTrack->getIndex(), mDevice->getIndex(), param->getIndex(), value );
+    }
+    
+    
+    bool QLiveModule::updateModule() 
+    {
+        updateBrightness();
+        
+        updateState();
+        
+        if ( mClip->isPlaying() && getElapsedSeconds() - mParamsUpdatedAt > 0.5f )
+        {                
+            // update local params
+            std::map< std::string, std::pair<float,float*> >::iterator it;
+            for ( it=mParams.begin(); it != mParams.end(); it++ )
+                it->second.first = *(it->second.second);
+        }
+        
+        return mIsPlaying;
+    }
+    
+    
+    void QLiveModule::clipStateUpdateCallback()
+    { 
+        if ( mClip->isPlaying() ) 
+        {
+//            console() << "clipStateUpdateCallback() " << getName() << " " << mClip->getState() << endl;
+            std::map< std::string, std::pair<float,float*> >::iterator it;
+            for ( it=mParams.begin(); it != mParams.end(); it++ )
+                sendLiveParamValue( it->first, it->second.first );
+            
+            mParamsUpdatedAt = getElapsedSeconds();
+        }
+    }
+
 }

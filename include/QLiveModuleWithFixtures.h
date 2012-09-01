@@ -70,6 +70,35 @@ namespace nocte {
         
         ci::AxisAlignedBox3f getBoundingBox() { return mBoundingBox; }
         
+        ci::XmlTree getXmlNode() 
+        {
+            ci::XmlTree node        = QLiveModule::getXmlNode();
+            ci::Vec3f   bBoxMinVec  = mBoundingBox.getMin();
+            ci::Vec3f   bBoxMaxVec  = mBoundingBox.getMax();
+            
+            node.setAttribute( "bBox_min_x", bBoxMinVec.x ); node.setAttribute( "bBox_min_y", bBoxMinVec.y ); node.setAttribute( "bBox_min_z", bBoxMinVec.z );
+            node.setAttribute( "bBox_max_x", bBoxMaxVec.x ); node.setAttribute( "bBox_max_y", bBoxMaxVec.y ); node.setAttribute( "bBox_max_z", bBoxMaxVec.z );
+            
+            return node;
+        }
+        
+        void loadXmlNode( ci::XmlTree node )
+        {
+            QLiveModule::loadXmlNode( node );
+            ci::Vec3f bBoxMinVec;
+            ci::Vec3f bBoxMaxVec;
+            
+            bBoxMinVec.x    = node.getAttributeValue<float>("bBox_min_x");
+            bBoxMinVec.y    = node.getAttributeValue<float>("bBox_min_y");
+            bBoxMinVec.z    = node.getAttributeValue<float>("bBox_min_z");
+            
+            bBoxMaxVec.x    = node.getAttributeValue<float>("bBox_max_x");
+            bBoxMaxVec.y    = node.getAttributeValue<float>("bBox_max_y");
+            bBoxMaxVec.z    = node.getAttributeValue<float>("bBox_max_z");
+            
+            setBoundingBox( bBoxMinVec, bBoxMaxVec );
+        }        
+
     protected:
         
         void calcActiveFixtures()
