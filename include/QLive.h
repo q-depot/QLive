@@ -33,7 +33,7 @@ class QLive {
 	
 public:
     
-	QLive( std::string osc_host = "localhost", int osc_live_in_port = 9001, int osc_live_out_port = 9000, int osc_analyzer_in_port = 8000, int live_params_in_port = 9500, bool init = true );
+	QLive( std::string osc_host = "localhost", int osc_live_in_port = 9001, int osc_live_out_port = 9000, bool initFromLive = true );
     
     ~QLive() {}
 
@@ -45,6 +45,8 @@ public:
     
     void renderAnalyzer();
 	
+    void initAnalyzer( int port, const std::string &trackName, const std::string &deviceName );
+    
 	void play( bool playContinue = false ) 
     { 
         if ( isAlive() )
@@ -99,9 +101,7 @@ public:
         else
             clip->setState( HAS_CLIP );
     }
-	
-//	void stopTrack(int track) { sendMessage("/live/stop/track", "i" + ci::toString(track) ); }
-    
+	    
 	void setTrackVolume( int trackIdx, float volume ) 
     { 
         QLiveTrack *track = getTrack( trackIdx );
@@ -136,6 +136,8 @@ public:
         sendMessage("/live/device", "i" + ci::toString(trackIdx) + " i" + ci::toString(deviceIdx) + " i" + ci::toString(paramIdx) + " f" + ci::toString(value) ); 
     }
     
+//	void stopTrack(int track) { sendMessage("/live/stop/track", "i" + ci::toString(track) ); }
+
 //	void setTrackName(int index, std::string name) { sendMessage("/live/name/track", "i" + ci::toString(index) + " s" + name ); };
 	
 //	void setClip() { // /live/name/clip         (int track, int clip, string name)              Sets clip number clip in track number track's name to name };
@@ -315,6 +317,8 @@ public:
         return false;
     }
     
+    bool hasAnalyzer() { return mAnalyzer != NULL; }
+    
 private:
     
 	void	listTrackDevices(int trackIndex) { sendMessage("/live/devicelist", "i" + ci::toString(trackIndex) ); }
@@ -357,13 +361,6 @@ private:
 	std::string						mOscHost;
 	int								mOscLiveInPort;
 	int								mOscLiveOutPort;
-	int                             mOscAnalyzerInPort;
-	int                             mOscLiveParamsInPort;
-    
-	ci::ColorA						mColor1;
-	ci::ColorA						mColor2;
-	ci::ColorA						mColor3;
-	ci::ColorA						mColor4;
     
 	ci::Font						mFontSmall;
 	ci::Font						mFontMedium;

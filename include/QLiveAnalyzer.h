@@ -25,14 +25,19 @@ namespace nocte {
     #define AUDIO_RIGHT_CHANNEL     1
         
     class QLive;
-
+    class QLiveDevice;
+    
     class QLiveAnalyzer {
         
         friend class QLive;
         
     public:
         
-        QLiveAnalyzer(int port);
+        QLiveAnalyzer();
+        
+        QLiveAnalyzer( int port, QLiveDevice *device );
+        
+        ~QLiveAnalyzer();
         
         void	render();
         
@@ -41,12 +46,9 @@ namespace nocte {
         bool	isOnBeat() { return mIsOnBeat; };
         bool	isOnSet() { return mIsOnSet; };
         
-        void	shutdown();
-        
         bool	isConnected() { return mOscListener != NULL; };
         
-        void	initOsc();
-            
+        void	init( int port, QLiveDevice *device );
         
     protected:
         
@@ -55,7 +57,10 @@ namespace nocte {
         void	update();
         
         void	parseRawFft(ci::osc::Message message, int channel);
+      
+    protected:
         
+        QLiveDevice         *mDevice;
         ci::osc::Listener	*mOscListener;
         
         float				mAmplitude[2];

@@ -90,6 +90,11 @@ namespace nocte {
         int			mIndex;
         std::string	mName;
         
+    private:
+        // disallow
+        QLiveObject(const QLiveObject&);
+        QLiveObject& operator=(const QLiveObject&);
+        
     };
 
     
@@ -173,6 +178,11 @@ namespace nocte {
                 (*fn)();
             }
         }
+        
+    private:
+        // disallow
+        QLiveClip(const QLiveClip&);
+        QLiveClip& operator=(const QLiveClip&);
     
     };
 
@@ -224,6 +234,11 @@ namespace nocte {
         float       mValue;
         float       mMinValue;
         float       mMaxValue;
+        
+    private:
+        // disallow
+        QLiveParam(const QLiveParam&);
+        QLiveParam& operator=(const QLiveParam&);
         
     };
 
@@ -330,7 +345,12 @@ namespace nocte {
     protected:
         
         std::vector<QLiveParam*>    mParams;
-
+        
+    private:
+        // disallow
+        QLiveDevice(const QLiveDevice&);
+        QLiveDevice& operator=(const QLiveDevice&);
+        
     };
 
 
@@ -493,6 +513,11 @@ namespace nocte {
         float						mVolume;
         ci::ColorA                  mColor;
         
+    private:
+        // disallow
+        QLiveTrack(const QLiveTrack&);
+        QLiveTrack& operator=(const QLiveTrack&);
+        
     };
 
 
@@ -515,7 +540,12 @@ namespace nocte {
 
             return node;
         }
-
+        
+    private:
+        // disallow
+        QLiveScene(const QLiveScene&);
+        QLiveScene& operator=(const QLiveScene&);
+        
     };
 
 

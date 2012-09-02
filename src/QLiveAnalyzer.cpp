@@ -15,9 +15,9 @@
 #include "cinder/Thread.h"
 #include "cinder/Utilities.h"
 #include <boost/algorithm/string.hpp>
-//#include "Resources.h"
 
 #include "QLiveAnalyzer.h"
+#include "QLiveObject.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -26,16 +26,13 @@ using namespace std;
 
 namespace nocte {
 
-
-QLiveAnalyzer::QLiveAnalyzer(int port) : mOscInPort(port), mOscListener(NULL)
+QLiveAnalyzer::QLiveAnalyzer() : mDevice(NULL), mOscListener(NULL)
 {
-	initOsc();
-	
     mFft = new float*[2];
     
 	for (int k = 0; k < 2; k++)
         mFft[k] = new float[FFT_SIZE];
-
+    
 	for (int k = 0; k < FFT_SIZE; k++)
 	{
 		mFft[AUDIO_LEFT_CHANNEL][k] = 0.0f;
@@ -61,17 +58,38 @@ QLiveAnalyzer::QLiveAnalyzer(int port) : mOscInPort(port), mOscListener(NULL)
     
     mLeftChannelCol     = ColorA( 0.92f, 0.18f, 0.28f, 0.7f );
     mRightChannelCol    = ColorA( 0.20f, 0.22f, 0.27f, 0.7f );
+}
     
-//    ColorA( 0.92f, 0.18f, 0.28f, 0.7f );
     
-	thread receiveDataThread( &QLiveAnalyzer::receiveData, this);
-	thread updateThread( &QLiveAnalyzer::update, this);
-
+QLiveAnalyzer::QLiveAnalyzer( int port, QLiveDevice *device ) : mOscListener(NULL)
+{
+    QLiveAnalyzer();
+    
+	init( port, device );
 }
 
-
-void QLiveAnalyzer::initOsc()
+    
+QLiveAnalyzer::~QLiveAnalyzer()
 {
+    for (int k = 0; k < 2; k++)
+        delete[] mFft[k];
+    
+    if ( mOscListener )
+    {
+        mOscListener->shutdown();
+        delete mOscListener;
+        mOscListener = NULL;
+        ci::sleep(50);
+    }
+    
+    //	Logger::log("Analyzer > shutdown!");
+}
+
+    
+void QLiveAnalyzer::init( int port, QLiveDevice *device )
+{
+    mOscInPort  = port;
+    mDevice     = device;
 	if ( mOscListener )
 	{
 		mOscListener->shutdown();
@@ -91,23 +109,7 @@ void QLiveAnalyzer::initOsc()
 	}
 	
 	thread receiveDataThread( &QLiveAnalyzer::receiveData, this);
-}
-
-
-void QLiveAnalyzer::shutdown()
-{
-    for (int k = 0; k < 2; k++)
-        delete[] mFft[k];
-    
-	if ( mOscListener )
-	{
-		mOscListener->shutdown();
-		delete mOscListener;
-		mOscListener = NULL;
-		ci::sleep(50);
-	}
-	
-//	Logger::log("Analyzer > shutdown!");
+	thread updateThread( &QLiveAnalyzer::update, this);
 }
 
 
@@ -242,6 +244,11 @@ void QLiveAnalyzer::update()
 {
     while( true )
     {
+        mAmplitudeGain  = mDevice->getParamValue("A Gain");
+        mFftGain        = mDevice->getParamValue("Gain");
+    	mFftOffset      = mDevice->getParamValue("Offset");
+    	mFftDumping     = mDevice->getParamValue("Dumping");
+        
         // dump Fft values nicely
         for(int k=0; k < FFT_SIZE; k++) {
             //		mFft[0][k] = max( mFft[0][k] - mFftDumping, 0.0f );

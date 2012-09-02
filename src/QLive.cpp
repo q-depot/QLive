@@ -25,29 +25,30 @@ using namespace std;
 
 namespace nocte {
         
-    QLive::QLive(string osc_host, int osc_live_in_port, int osc_live_out_port, int osc_analyzer_in_port, int live_params_in_port, bool init) 
-    : mOscHost(osc_host), mOscLiveInPort(osc_live_in_port), mOscLiveOutPort(osc_live_out_port), mOscAnalyzerInPort(osc_analyzer_in_port), mOscLiveParamsInPort(live_params_in_port),
-      mOscListener(NULL), mOscSender(NULL), mSelectedTrack(NULL), mIsPlaying(false), mIsReady(false)
+    QLive::QLive( string osc_host, int osc_live_in_port, int osc_live_out_port, bool initFromLive ) 
+    : mOscHost(osc_host), mOscLiveInPort(osc_live_in_port), mOscLiveOutPort(osc_live_out_port)
     {
+        mOscListener    = NULL;
+        mOscSender      = NULL;
+        mSelectedTrack  = NULL;
+        mAnalyzer       = NULL;
+        mIsPlaying      = false;
+        mIsReady        = false;
+        
         initOsc();
         
         mGetInfoRequestAt = - GET_INFO_MIN_DELAY * 2.0f;
         
-        if ( init )
+        if ( initFromLive )
             getInfo();
-        
-        mColor1		= ColorA( 0.95f, 0.25f, 0.5f, 1.0f );
-        mColor2		= ColorA( 0.39f, 0.89f, 0.92f, 1.0f );
-        mColor3		= ColorA( 0.90, 0.88f, 0.56f, 1.0f );
-        mColor4		= ColorA( 0.57, 0.88f, 0.36f, 1.0f );
         
         mFontSmall	= Font( "Helvetica", 12 );
         mFontMedium	= Font( "Helvetica", 14 );
         
+        mAnalyzer   = new QLiveAnalyzer();
+        
         console() << "Live > Initialized!" << endl;	
         
-        mAnalyzer   = new QLiveAnalyzer( mOscAnalyzerInPort );
-
         mPingReceivedAt = getElapsedSeconds();
     }
 
@@ -91,7 +92,19 @@ namespace nocte {
         thread receiveDataThread( &QLive::receiveData, this);
     }
 
+    
+    void QLive::initAnalyzer( int port, const std::string &trackName, const std::string &deviceName )
+    {
+        QLiveDevice *device = getDevice( trackName, deviceName );    // track 0, device 1
+        if ( !device )
+            return;
+//        
+//        if ( !mAnalyzer )
+//            mAnalyzer   = new QLiveAnalyzer( port, device );
 
+        mAnalyzer->init( port, device );
+    }
+    
     void QLive::shutdown() 
     {
         mIsReady = false;
@@ -114,7 +127,6 @@ namespace nocte {
         
         if ( mAnalyzer )
         {
-            mAnalyzer->shutdown();
             delete mAnalyzer;
             mAnalyzer = NULL;
         }
@@ -183,7 +195,7 @@ namespace nocte {
         textLayout.setFont( mFontSmall );
         
         textLayout.addLine( "QLIVE" );
-        textLayout.addLine( mOscHost + " / in " + toString(mOscLiveInPort) + " / out " + toString(mOscLiveOutPort) + " / fft " + toString(mOscAnalyzerInPort) );
+        textLayout.addLine( mOscHost + " / in " + toString(mOscLiveInPort) + " / out " + toString(mOscLiveOutPort) );
         textLayout.addLine( " " );
         
         textLayout.addLine( "SCENES" );
@@ -511,21 +523,28 @@ namespace nocte {
     
     void QLive::renderAnalyzer()
     {
-        mAnalyzer->render();
+        if ( mAnalyzer )
+            mAnalyzer->render();
     }
     
     
  	float QLive::getFreqAmplitude(int freq, int channel) 
     { 
-        return mAnalyzer->getFreqAmplitude(freq, channel); 
+        if ( mAnalyzer )
+            return mAnalyzer->getFreqAmplitude(freq, channel); 
+
+        return 0.0f;
     };
     
     
     float* QLive::getFftBuffer(int channel) 
     { 
-        return mAnalyzer->mFft[channel];
-    };
+        if ( mAnalyzer )
+            return mAnalyzer->mFft[channel];
     
+        float *f = NULL;
+        return f;
+    }
     
     float* QLive::getAmplitudeRef(int channel)
     { 
