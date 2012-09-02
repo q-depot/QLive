@@ -41,7 +41,7 @@ namespace nocte {
         
         bool updateModule();
 
-        bool isPlaying() { return mIsPlaying; }
+        bool isPlaying() { return mClip->isPlaying(); }
         
         QLiveClip*	getClip() { return mClip; }
         
@@ -107,7 +107,7 @@ namespace nocte {
         
     protected:
         
-        bool    updateState();
+//        bool    updateState();
         
     protected:
         
@@ -119,7 +119,7 @@ namespace nocte {
         std::map< std::string, std::pair<float,float*> >    mParams;
         double                                              mParamsUpdatedAt;
         
-        bool                mIsPlaying;			// true when both clip and Live are playing
+//        bool                mIsPlaying;			// true when both clip and Live are playing
         
         float               mTrackVolume;
         

@@ -178,11 +178,6 @@ namespace nocte {
             std::string name = event->widget->getName();
             std::string meta = event->widget->getMeta();
 
-            ///////
-            ci::app::console() << "trigger " << meta   << endl;
-
-        
-            
             if(name == "Master")
             {
                 int trackIdx = boost::lexical_cast<int>( event->widget->getMeta() );
@@ -195,43 +190,20 @@ namespace nocte {
                 ciUIToggle *toggle = (ciUIToggle *) event->widget;
                 
                 std::vector<std::string>    splitValues;                
-                std::vector<ciUIWidget*>    allWidgets  = mGUI->getWidgetsOfType(CI_UI_WIDGET_TOGGLE);
                 std::string                 clipMeta;
                 bool                        toggleVal   = toggle->getValue();
                 
                 boost::split( splitValues, meta, boost::is_any_of("_") );
                 
                 int trackIdx    = boost::lexical_cast<int>( splitValues[1] );
-                int clipIdx;
+                int clipIdx     = boost::lexical_cast<int>( splitValues[2] );
                 
-                for( size_t k=0; k < allWidgets.size(); k++ )
-                {
-                    clipMeta    = allWidgets[k]->getMeta();
-                    boost::split( splitValues, clipMeta, boost::is_any_of("_") );
-                    clipIdx     = boost::lexical_cast<int>( splitValues[2] );
-                    
-                    if ( boost::find_first( clipMeta, "clip_" + ci::toString(trackIdx) ) )
-                    {
-                        toggle      = (ciUIToggle *) allWidgets[k];
-                        toggleVal   = toggle->getValue();
-                        
-                        if ( meta == clipMeta )
-                        {
-                            toggle->setValue(toggleVal);
-                            
-                            if ( toggleVal )
-                                mLive->playClip( trackIdx, clipIdx );               // play clip
-                            else
-                                mLive->stopClip( trackIdx, clipIdx );               // stop clip
-                        }
-                        else
-                        {
-                            toggle->setValue(false);
-                            mLive->stopClip( trackIdx, clipIdx );                   // stop clip
-                        }   
-                    }
-                }
-
+                toggle->setValue(false);    // QLive sets the value, this is to avoid flickering
+                
+                if ( toggleVal )        // play triggered clip
+                    mLive->playClip( trackIdx, clipIdx );               // play clip
+                else
+                    mLive->stopClip( trackIdx, clipIdx );               // play clip
             }
             
             else if ( boost::find_first( meta, "param") )

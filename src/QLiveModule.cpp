@@ -23,7 +23,6 @@ namespace nocte {
     QLiveModule::QLiveModule( QLive *live, QLiveTrack *track, QLiveClip *clip )
     : mLive(live), mTrack(track), mClip(clip)
     {
-        updateState();
         updateBrightness();
         
         // init Fft buffer
@@ -45,12 +44,6 @@ namespace nocte {
         mParamsUpdatedAt = 0;
     }
     
-    bool QLiveModule::updateState() 
-    {        
-        mIsPlaying = ( mClip->isPlaying() && mLive->isPlaying() ) ? true : false;
-        
-        return mIsPlaying;
-    }
     
     void QLiveModule::updateBrightness() 
     { 
@@ -85,8 +78,6 @@ namespace nocte {
     {
         updateBrightness();
         
-        updateState();
-        
         if ( mClip->isPlaying() && getElapsedSeconds() - mParamsUpdatedAt > 0.5f )
         {                
             // update local params
@@ -95,7 +86,7 @@ namespace nocte {
                 it->second.first = *(it->second.second);
         }
         
-        return mIsPlaying;
+        return isPlaying();
     }
     
     
@@ -103,7 +94,6 @@ namespace nocte {
     { 
         if ( mClip->isPlaying() ) 
         {
-//            console() << "clipStateUpdateCallback() " << getName() << " " << mClip->getState() << endl;
             std::map< std::string, std::pair<float,float*> >::iterator it;
             for ( it=mParams.begin(); it != mParams.end(); it++ )
                 sendLiveParamValue( it->first, it->second.first );
