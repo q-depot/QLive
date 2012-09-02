@@ -43,10 +43,18 @@ namespace nocte {
         }
         
         
-        void update() { mGUI->update(); }
+        void update() 
+        { 
+            if ( mGUI ) 
+                mGUI->update(); 
+        }
         
         
-        void render() { mGUI->draw(); }
+        void render() 
+        { 
+            if ( mGUI ) 
+                mGUI->draw(); 
+        }
         
         
         void init() 
@@ -68,10 +76,10 @@ namespace nocte {
             mIsFullWidth = false;
             
             if ( mGUI )
-                mGUI->removeAllWidgets();
-            else    
-                mGUI =  new ciUICanvas( 0, 0, ci::app::getWindowWidth() - mOffsetX, mModuleGUISize.y );
-            
+                delete mGUI;
+
+            mGUI = new ciUICanvas( 0, 0, ci::app::getWindowWidth() - mOffsetX, mModuleGUISize.y );
+
             mGUI->setFont(RES_GUI_FONT);
             mGUI->setFontSize( CI_UI_FONT_LARGE, 14 );
             mGUI->setFontSize( CI_UI_FONT_MEDIUM, 12 );
@@ -169,6 +177,11 @@ namespace nocte {
         {
             std::string name = event->widget->getName();
             std::string meta = event->widget->getMeta();
+
+            ///////
+            ci::app::console() << "trigger " << meta   << endl;
+
+        
             
             if(name == "Master")
             {
@@ -181,35 +194,44 @@ namespace nocte {
             {
                 ciUIToggle *toggle = (ciUIToggle *) event->widget;
                 
-                std::vector<std::string> splitValues;
+                std::vector<std::string>    splitValues;                
+                std::vector<ciUIWidget*>    allWidgets  = mGUI->getWidgetsOfType(CI_UI_WIDGET_TOGGLE);
+                std::string                 clipMeta;
+                bool                        toggleVal   = toggle->getValue();
+                
                 boost::split( splitValues, meta, boost::is_any_of("_") );
                 
                 int trackIdx    = boost::lexical_cast<int>( splitValues[1] );
-                int clipIdx     = boost::lexical_cast<int>( splitValues[2] );
+                int clipIdx;
                 
-                if ( toggle->getValue() )
+                for( size_t k=0; k < allWidgets.size(); k++ )
                 {
-                    // stop all other clips in the same track
-                    std::vector<ciUIWidget*>    allWidgets = mGUI->getWidgets();
-                    std::string                 clipMeta;
+                    clipMeta    = allWidgets[k]->getMeta();
+                    boost::split( splitValues, clipMeta, boost::is_any_of("_") );
+                    clipIdx     = boost::lexical_cast<int>( splitValues[2] );
                     
-                    for( size_t k=0; k < allWidgets.size(); k++ )
+                    if ( boost::find_first( clipMeta, "clip_" + ci::toString(trackIdx) ) )
                     {
-                        clipMeta = allWidgets[k]->getMeta();
+                        toggle      = (ciUIToggle *) allWidgets[k];
+                        toggleVal   = toggle->getValue();
                         
-                        if ( boost::find_first( clipMeta, "clip_" + ci::toString(trackIdx) ) && clipMeta != meta )
+                        if ( meta == clipMeta )
                         {
-                            toggle = (ciUIToggle *) allWidgets[k];
-                            toggle->setValue(false);
+                            toggle->setValue(toggleVal);
+                            
+                            if ( toggleVal )
+                                mLive->playClip( trackIdx, clipIdx );               // play clip
+                            else
+                                mLive->stopClip( trackIdx, clipIdx );               // stop clip
                         }
+                        else
+                        {
+                            toggle->setValue(false);
+                            mLive->stopClip( trackIdx, clipIdx );                   // stop clip
+                        }   
                     }
-                    
-                    mLive->playClip( trackIdx, clipIdx );               // play clip
                 }
-                else                                                    
-                {
-                    mLive->stopClip( trackIdx, clipIdx );               // stop clip
-                }
+
             }
             
             else if ( boost::find_first( meta, "param") )

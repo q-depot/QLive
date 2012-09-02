@@ -124,7 +124,7 @@ namespace nocte {
         
         bool *getIsPlayingRef() { return &mIsPlaying; };
         
-        bool		isPlaying() { return ( mState == CLIP_PLAYING ); };
+        bool		isPlaying() { return mIsPlaying; };
         
         ci::ColorA	getColor() { return mColor; };
         
