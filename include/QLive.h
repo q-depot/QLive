@@ -80,8 +80,6 @@ public:
             sendMessage("/live/play/clip", "i" + ci::toString(trackIdx) + " i" + ci::toString(clipIdx) );
         else
             clip->setState( CLIP_PLAYING );
-        
-        ci::app::console() << "QLive::playClip() " << clip->getName() << std::endl;
     }
     
 	void stopClip( int trackIdx, int clipIdx ) 
@@ -100,9 +98,6 @@ public:
             sendMessage("/live/stop/clip", "i" + ci::toString(trackIdx) + " i" + ci::toString(clipIdx) ); 
         else
             clip->setState( HAS_CLIP );
-        
-        
-        ci::app::console() << "QLive::stopClip() " << clip->getName() << std::endl;
     }
 	
 //	void stopTrack(int track) { sendMessage("/live/stop/track", "i" + ci::toString(track) ); }

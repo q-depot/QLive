@@ -338,10 +338,6 @@ namespace nocte {
         
         if ( track )
         {
-            // stop all clips
-            for( size_t k=0; k < track->mClips.size(); k++ )
-                track->mClips[k]->setState( HAS_CLIP );
-            
             clip = track->getClip(clipIdx);
             
             // play selected clip
@@ -457,7 +453,7 @@ namespace nocte {
                 // debug
                 if (false)
                     debugOscMessage( message );
-                
+
                 // Parse Live objects
                 if ( msgAddress == "/live/name/scene" )
                     parseScene(message);
@@ -646,8 +642,23 @@ namespace nocte {
                 mTracks.push_back( track );
             }
         }
-
+        
+       // syncLiveClips();        // send clip state to Live
+        
     }
-    
-    
+//    
+//    void syncLiveClips()
+//    {
+//        vector<QLiveClip*> clips;
+//        
+//        for( size_t k=0; k < mTracks.size(); k++ )
+//        {
+//            clips = mTracks[k]->getClips();
+//            
+//            for( size_t i=0; i < clips.size(); i++ )
+//            {
+//                play
+//            }
+//        }
+//    }
 }

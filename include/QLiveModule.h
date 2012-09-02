@@ -14,10 +14,8 @@
 
 #pragma once
 
-//#include "cinder/app/AppBasic.h"
 #include "cinder/Xml.h"
 #include "QLive.h"
-//#include "boost/tuple/tuple.hpp"
 
 namespace nocte {
     
@@ -107,10 +105,6 @@ namespace nocte {
         
     protected:
         
-//        bool    updateState();
-        
-    protected:
-        
         QLive               *mLive;
         QLiveTrack          *mTrack;
         QLiveClip           *mClip;
@@ -118,8 +112,6 @@ namespace nocte {
 
         std::map< std::string, std::pair<float,float*> >    mParams;
         double                                              mParamsUpdatedAt;
-        
-//        bool                mIsPlaying;			// true when both clip and Live are playing
         
         float               mTrackVolume;
         

@@ -198,9 +198,9 @@ namespace nocte {
                 int trackIdx    = boost::lexical_cast<int>( splitValues[1] );
                 int clipIdx     = boost::lexical_cast<int>( splitValues[2] );
                 
-                toggle->setValue(false);    // QLive sets the value, this is to avoid flickering
+                toggle->setValue( !toggle->getValue() );    // trigger back the toogle, QLive sets the value, this is to avoid flickering
                 
-                if ( toggleVal )        // play triggered clip
+                if ( toggleVal )
                     mLive->playClip( trackIdx, clipIdx );               // play clip
                 else
                     mLive->stopClip( trackIdx, clipIdx );               // play clip
