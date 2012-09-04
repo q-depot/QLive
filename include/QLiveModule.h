@@ -16,6 +16,7 @@
 
 #include "cinder/Xml.h"
 #include "QLive.h"
+#include <boost/tuple/tuple.hpp>
 
 namespace nocte {
     
@@ -67,11 +68,11 @@ namespace nocte {
             
             // params
             ci::XmlTree pNode( "param", "" );
-            std::map< std::string, std::pair<float,float*> >::iterator it;
+            std::map< std::string, boost::tuple<float,float*,int,int> >::iterator it;
             for ( it=mParams.begin(); it != mParams.end(); it++ )
             {
                 pNode.setAttribute( "name", it->first );
-                pNode.setAttribute( "value", it->second.first );
+                pNode.setAttribute( "value", getParamValue(it->first) );
                 node.push_back( pNode );
             }
             
@@ -89,14 +90,14 @@ namespace nocte {
                 value   = it->getAttributeValue<float>("value");    
                 
                 if ( mParams.count(name) )
-                    mParams[name].first = value;
+                    boost::get<0>(mParams[name]) = value;
 
             }    
             
             clipStateUpdateCallback();
         }
         
-        void sendLiveParamValue( const std::string &name, float value ); // set Live value to Module local value is it's playing(is selected)
+        void sendLocalParamValues( const std::string &name ); // set Live value to Module local value is it's playing(is selected)
 
         static void saveSettings( std::vector<QLiveModule*> modules ) {}
         static void loadSettings( std::vector<QLiveModule*> modules ) {}
@@ -104,14 +105,38 @@ namespace nocte {
         void clipStateUpdateCallback();
         
     protected:
+    
+        void registerParam( int deviceIdx, const std::string &name )
+        {
+            QLiveDevice *device = mTrack->getDevice( deviceIdx );
+            
+            if ( !device )
+                ci::app::console() << getName() << "::registerParam() cannot find device " << deviceIdx << std::endl;
+            
+            QLiveParam *param = device->getParam(name);
+            
+            if ( param )
+                mParams[name] = boost::make_tuple( param->getValue(), param->getRef(), device->getIndex(), param->getIndex() );
+            
+            else
+                mParams[name] = boost::make_tuple( 0.0f, new float(0.0f), device->getIndex(), -1 );
+        }
+        
+        float getParamValue( const std::string &name )
+        {
+            return boost::get<0>(mParams[name]);
+        }
+        
+        
+    protected:
         
         QLive               *mLive;
         QLiveTrack          *mTrack;
         QLiveClip           *mClip;
-        QLiveDevice         *mDevice;
 
-        std::map< std::string, std::pair<float,float*> >    mParams;
-        double                                              mParamsUpdatedAt;
+        std::map< std::string, boost::tuple<float,float*,int,int> >   mParams;
+
+        double              mParamsUpdatedAt;
         
         float               mTrackVolume;
         

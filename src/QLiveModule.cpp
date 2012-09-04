@@ -37,8 +37,6 @@ namespace nocte {
             }
         }
         
-        mDevice = NULL;
-        
         mClip->addStateUpdateCallback( std::bind( &QLiveModule::clipStateUpdateCallback, this ) );
         
         mParamsUpdatedAt = 0;
@@ -62,15 +60,25 @@ namespace nocte {
     }
     
     
-    void QLiveModule::sendLiveParamValue( const string &name, float value ) // set Live value to Module local value is it's playing(is selected)
+    void QLiveModule::sendLocalParamValues( const string &name ) // set Live value to Module local value is it's playing(is selected)
     {
-        if (!mDevice)
+        if ( mParams.count(name) == 0 )
             return;
         
-        QLiveParam *param = mDevice->getParam(name);
+        boost::tuple<float,float*,int,int> localParam = mParams[name];
+
         
-        if ( param )
-            mLive->setParam( mTrack->getIndex(), mDevice->getIndex(), param->getIndex(), value );
+        mLive->setParam( mTrack->getIndex(), boost::get<2>(localParam), boost::get<3>(localParam), boost::get<0>(localParam) );
+        
+        /////
+        
+//        if (!mDevice)
+//            return;
+//        
+//        QLiveParam *param = mDevice->getParam(name);
+//        
+//        if ( param )
+//            mLive->setParam( mTrack->getIndex(), mDevice->getIndex(), param->getIndex(), value );
     }
     
     
@@ -81,9 +89,10 @@ namespace nocte {
         if ( mClip->isPlaying() && getElapsedSeconds() - mParamsUpdatedAt > 0.5f )
         {                
             // update local params
-            std::map< std::string, std::pair<float,float*> >::iterator it;
+            std::map< std::string, boost::tuple<float,float*,int,int> >::iterator it;
             for ( it=mParams.begin(); it != mParams.end(); it++ )
-                it->second.first = *(it->second.second);
+                boost::get<0>(it->second) = *(boost::get<1>(it->second));
+//                it->second.first = *(it->second.second);
         }
         
         return isPlaying();
@@ -94,9 +103,11 @@ namespace nocte {
     { 
         if ( mClip->isPlaying() ) 
         {
-            std::map< std::string, std::pair<float,float*> >::iterator it;
+            std::map< std::string, boost::tuple<float,float*,int,int> >::iterator it;
             for ( it=mParams.begin(); it != mParams.end(); it++ )
-                sendLiveParamValue( it->first, it->second.first );
+                sendLocalParamValues( it->first );
+            
+            //    sendLiveParamValue( it->first, it->second.first );
             
             mParamsUpdatedAt = getElapsedSeconds();
         }
