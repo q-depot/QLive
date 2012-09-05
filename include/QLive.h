@@ -80,8 +80,17 @@ public:
 
         if ( isAlive() )
             sendMessage("/live/play/clip", "i" + ci::toString(trackIdx) + " i" + ci::toString(clipIdx) );
+      
         else
-            clip->setState( CLIP_PLAYING );
+        {
+            std::vector<QLiveClip*> clips = track->getClips();
+            
+            for( size_t k=0; k < clips.size(); k++ )
+                if ( clips[k] == clip )
+                    clip->setState( CLIP_PLAYING );
+                else
+                    clips[k]->setState( HAS_CLIP );
+        }
     }
     
 	void stopClip( int trackIdx, int clipIdx ) 

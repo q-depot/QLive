@@ -69,16 +69,6 @@ namespace nocte {
 
         
         mLive->setParam( mTrack->getIndex(), boost::get<2>(localParam), boost::get<3>(localParam), boost::get<0>(localParam) );
-        
-        /////
-        
-//        if (!mDevice)
-//            return;
-//        
-//        QLiveParam *param = mDevice->getParam(name);
-//        
-//        if ( param )
-//            mLive->setParam( mTrack->getIndex(), mDevice->getIndex(), param->getIndex(), value );
     }
     
     
@@ -92,7 +82,6 @@ namespace nocte {
             std::map< std::string, boost::tuple<float,float*,int,int> >::iterator it;
             for ( it=mParams.begin(); it != mParams.end(); it++ )
                 boost::get<0>(it->second) = *(boost::get<1>(it->second));
-//                it->second.first = *(it->second.second);
         }
         
         return isPlaying();
@@ -106,8 +95,6 @@ namespace nocte {
             std::map< std::string, boost::tuple<float,float*,int,int> >::iterator it;
             for ( it=mParams.begin(); it != mParams.end(); it++ )
                 sendLocalParamValues( it->first );
-            
-            //    sendLiveParamValue( it->first, it->second.first );
             
             mParamsUpdatedAt = getElapsedSeconds();
         }
