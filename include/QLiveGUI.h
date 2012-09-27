@@ -70,7 +70,7 @@ namespace nocte {
             
             float               w       = mModuleGUISize.x - CI_UI_GLOBAL_WIDGET_SPACING * 2;
             float               h       = 10.0f;
-            Vec2i               pos;
+            Vec2i               pos     = Vec2i( CI_UI_GLOBAL_WIDGET_SPACING, CI_UI_GLOBAL_WIDGET_SPACING );
             ciUIWidget          *widget;
 
             mIsFullWidth = false;
@@ -91,11 +91,15 @@ namespace nocte {
             std::vector<QLiveParam*>    params;
             std::vector<std::string>    clipNames;
             
+        
             for( int k=0; k < tracks.size(); k++ )
             {
                 track   = tracks[k];
+             
+                if ( boost::starts_with( track->getName(), "_") )          // IGNORE all the params in the tracks that starts with "_"
+                    continue;
                 
-                pos.x   = CI_UI_GLOBAL_WIDGET_SPACING + mModuleGUISize.x * k;
+//                pos.x   = CI_UI_GLOBAL_WIDGET_SPACING + mModuleGUISize.x * k;
                 pos.y   = CI_UI_GLOBAL_WIDGET_SPACING;
                 
                 // Label
@@ -135,7 +139,7 @@ namespace nocte {
                 pos.y += 7;
                 
                 // Params
-                if ( !boost::starts_with( track->getName(), "_") )          // IGNORE all the params in the tracks that starts with "_"
+//                if ( !boost::starts_with( track->getName(), "_") )          // IGNORE all the params in the tracks that starts with "_"
                 {
                     devices = track->getDevices();
                     
@@ -155,6 +159,9 @@ namespace nocte {
                         }
                     }
                 }
+                
+                
+                pos.x   += CI_UI_GLOBAL_WIDGET_SPACING + mModuleGUISize.x;
             }
             
             mGUI->autoSizeToFitWidgets();   

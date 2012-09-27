@@ -10,7 +10,9 @@
 
 
 #include "cinder/app/AppBasic.h"
+
 #include "QLive.h"
+#include "QLiveModule.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -51,12 +53,19 @@ namespace nocte {
         mTrackVolume = pow( mTrack->getVolume(), 2); 
     }
     
+    
     string QLiveModule::getName()
     {
         if ( mClip )
             return mClip->getName();
         else 
             return "";
+    }
+    
+    
+    bool QLiveModule::isPlaying() 
+    {
+        return ( mClip->isPlaying() && mLive->isPlaying() ); 
     }
     
     

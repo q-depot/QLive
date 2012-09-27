@@ -15,7 +15,7 @@
 #pragma once
 
 #include "cinder/Xml.h"
-#include "QLive.h"
+//#include "QLive.h"
 #include <boost/tuple/tuple.hpp>
 
 namespace nocte {
@@ -40,7 +40,7 @@ namespace nocte {
         
         bool updateModule();
 
-        bool isPlaying() { return mClip->isPlaying(); }
+        bool isPlaying();
         
         QLiveClip*	getClip() { return mClip; }
         
@@ -111,7 +111,10 @@ namespace nocte {
             QLiveDevice *device = mTrack->getDevice( deviceIdx );
             
             if ( !device )
+            {
                 ci::app::console() << getName() << "::registerParam() cannot find device " << deviceIdx << std::endl;
+                exit(-1);
+            }
             
             QLiveParam *param = device->getParam(name);
             
