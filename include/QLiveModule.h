@@ -130,7 +130,6 @@ namespace nocte {
             return boost::get<0>(mParams[name]);
         }
         
-        
     protected:
         
         QLive               *mLive;

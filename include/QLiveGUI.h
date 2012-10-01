@@ -72,7 +72,8 @@ namespace nocte {
             float               h       = 10.0f;
             Vec2i               pos     = Vec2i( CI_UI_GLOBAL_WIDGET_SPACING, CI_UI_GLOBAL_WIDGET_SPACING );
             ciUIWidget          *widget;
-
+            ciUILabel           *labelWidget;
+            
             mIsFullWidth = false;
             
             if ( mGUI )
@@ -99,7 +100,6 @@ namespace nocte {
                 if ( boost::starts_with( track->getName(), "_") )          // IGNORE all the params in the tracks that starts with "_"
                     continue;
                 
-//                pos.x   = CI_UI_GLOBAL_WIDGET_SPACING + mModuleGUISize.x * k;
                 pos.y   = CI_UI_GLOBAL_WIDGET_SPACING;
                 
                 // Label
@@ -130,6 +130,8 @@ namespace nocte {
                     widget->setMeta( "clip_" + toString( track->getIndex() ) + "_" + toString( clip->getIndex() ) );
                     mGUI->addWidget( widget );
                     widget->setColorFill( clip->getColor() );
+                    labelWidget = ((ciUIWidgetWithLabel*)widget)->getLabelWidget();
+                    labelWidget->setColorFill( clip->getColor() );
                     ((ciUIToggle*)widget)->setLabelOffset( 0, 8 );
                     pos.y += widget->getRect()->getHeight() + 4;
                 }
@@ -139,27 +141,23 @@ namespace nocte {
                 pos.y += 7;
                 
                 // Params
-//                if ( !boost::starts_with( track->getName(), "_") )          // IGNORE all the params in the tracks that starts with "_"
-                {
-                    devices = track->getDevices();
-                    
-                    for( int i=0; i < devices.size(); i++ )
-                    {
-                        device = devices[i];
-                        params = device->getParams();
-                        
-                        for( int j=1; j < params.size(); j++ )       // starts from 1 to ignore "Device On"
-                        {
-                            param = params[j];
-                            widget = new ciUISlider( pos.x, pos.y, w, h/2.0f, param->getMin(), param->getMax(), param->getRef(), param->getName() );
-                            widget->setMeta( "param_" + toString( track->getIndex() ) + "_" + toString( device->getIndex() ) + "_" + toString( param->getIndex() ) );
-                            
-                            mGUI->addWidget( widget );
-                            pos.y += widget->getRect()->getHeight() * 4.5f + 3;
-                        }
-                    }
-                }
+                devices = track->getDevices();
                 
+                for( int i=0; i < devices.size(); i++ )
+                {
+                    device = devices[i];
+                    params = device->getParams();
+                    
+                    for( int j=1; j < params.size(); j++ )       // starts from 1 to ignore "Device On"
+                    {
+                        param = params[j];
+                        widget = new ciUISlider( pos.x, pos.y, w, h/2.0f, param->getMin(), param->getMax(), param->getRef(), param->getName() );
+                        widget->setMeta( "param_" + toString( track->getIndex() ) + "_" + toString( device->getIndex() ) + "_" + toString( param->getIndex() ) );
+                        
+                        mGUI->addWidget( widget );
+                        pos.y += widget->getRect()->getHeight() * 4.5f + 3;
+                    }
+                }                
                 
                 pos.x   += CI_UI_GLOBAL_WIDGET_SPACING + mModuleGUISize.x;
             }
@@ -173,8 +171,6 @@ namespace nocte {
             
             if ( rect->getWidth() < ci::app::getWindowWidth() - mOffsetX )
                 rect->setWidth( ci::app::getWindowWidth() - mOffsetX );
-
-//            mGUI->setTheme( CI_UI_THEME_NOCTE_GREEN );
             
             mGUI->registerUIEvents(this, &QLiveGUI::guiEvent);
         }
@@ -262,7 +258,7 @@ namespace nocte {
         void shutdown()
         {
             if ( mGUI )
-            delete mGUI;
+                delete mGUI;
         }
         
     private:

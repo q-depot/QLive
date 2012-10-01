@@ -37,6 +37,9 @@ namespace nocte {
         
         initOsc();
         
+        // set LiveOsc peer: /remix/set_peer HOST PORT (null host > host is automatically set to the host that sent the request)
+        sendMessage("/remix/set_peer", "s i" + ci::toString(mOscLiveInPort) );
+        
         mGetInfoRequestAt = - GET_INFO_MIN_DELAY * 2.0f;
         
         if ( initFromLive )
