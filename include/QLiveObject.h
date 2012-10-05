@@ -512,6 +512,7 @@ namespace nocte {
         std::vector<QLiveDevice*>	mDevices;
         float						mVolume;
         ci::ColorA                  mColor;
+        std::map<int, float>        mSends;
         
     private:
         // disallow

@@ -1,7 +1,7 @@
 /*
  *  QLive.h
  *
- *  Created by Andrea Cuius on 08/08/2011.
+ *  Created by Andrea Cuius
  *  Nocte Copyright 2011 . All rights reserved.
  *
  *  www.nocte.co.uk
@@ -41,7 +41,7 @@ public:
 	
 	bool getInfo();
 
-    void renderDebug();
+    void renderDebug( bool renderScenes = true, bool renderTracks = true, bool renderClips = true, bool renderDevices = true );
     
     void renderAnalyzer();
 	
@@ -144,7 +144,29 @@ public:
         
         sendMessage("/live/device", "i" + ci::toString(trackIdx) + " i" + ci::toString(deviceIdx) + " i" + ci::toString(paramIdx) + " f" + ci::toString(value) ); 
     }
-    
+
+    void getTrackSends( int idx )
+    {
+        QLiveTrack *track = getTrack( idx );
+        
+        if ( !track )
+            return;
+        
+        sendMessage( "/live/send", "i" + ci::toString(idx) );
+    }
+
+    void setTrackSend( int trackIdx, int sendIdx, float val )
+    {
+        QLiveTrack *track = getTrack( trackIdx );
+        
+        if ( !track )
+            return;
+        
+        track->mSends[sendIdx] = val;   // if the send value doesn't change in Live, it doesn't send anything back!
+        
+        sendMessage( "/live/send", "i" + ci::toString(trackIdx) + " i" + ci::toString(sendIdx) + " f" + ci::toString(val) );
+    }
+
 //	void stopTrack(int track) { sendMessage("/live/stop/track", "i" + ci::toString(track) ); }
 
 //	void setTrackName(int index, std::string name) { sendMessage("/live/name/track", "i" + ci::toString(index) + " s" + name ); };
@@ -354,7 +376,8 @@ private:
 	void	parseDeviceList( ci::osc::Message message );
 	void	parseDeviceAllParams( ci::osc::Message message );
 	void	parseDeviceParam( ci::osc::Message message );
-
+    void	parseTrackSends( ci::osc::Message message );
+    
     void    debugOscMessage( ci::osc::Message message );
     
 	std::vector<QLiveTrack*>		mTracks;

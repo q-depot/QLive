@@ -183,7 +183,7 @@ namespace nocte {
     }
 
 
-    void QLive::renderDebug()
+    void QLive::renderDebug( bool renderScenes, bool renderTracks, bool renderClips, bool renderDevices )
     {
         QLiveTrack  *track;
         QLiveClip   *clip;
@@ -201,39 +201,58 @@ namespace nocte {
         textLayout.addLine( mOscHost + " / in " + toString(mOscLiveInPort) + " / out " + toString(mOscLiveOutPort) );
         textLayout.addLine( " " );
         
-        textLayout.addLine( "SCENES" );
-        textLayout.addLine( " " );
-        
-        for (int k = 0; k < mScenes.size(); k++)
-            textLayout.addLine( toString(mScenes[k]->mIndex) + "\t\t" + mScenes[k]->mName );
-        textLayout.addLine( " " );	
-        
-        textLayout.addLine( "TRACKS" );
-        textLayout.addLine( " " );
-        
-        for (int k = 0; k < mTracks.size(); k++)
+        if ( renderScenes )
         {
-            track = mTracks[k];
-            
-            textLayout.addLine( toString(track->mIndex) + " - " + track->mName + "\t" + toString(track->mClips.size()) );
+            textLayout.addLine( "SCENES" );
             textLayout.addLine( " " );
             
-            for( int i = 0; i < track->mDevices.size(); i++ )
-            {
-                device = track->mDevices[i];
-                textLayout.addLine( "\tDEVICE\t" + toString(device->mIndex) + "\t" + device->mName );
-            }
-            textLayout.addLine( " " );
-            
-            textLayout.setFont( mFontSmall );
-            for( int i = 0; i < track->mClips.size(); i++ )
-            {
-                clip = track->mClips[i];                
-                textLayout.addLine( "\tCLIP\t\t" + toString(clip->mIndex) + "\t" + clip->mName );
-            }
-            textLayout.addLine( " " );
+            for (int k = 0; k < mScenes.size(); k++)
+                textLayout.addLine( toString(mScenes[k]->mIndex) + "\t\t" + mScenes[k]->mName );
+            textLayout.addLine( " " );	
         }
-        
+
+        if ( renderTracks )
+        {
+            textLayout.addLine( "TRACKS" );
+            textLayout.addLine( " " );
+            
+            for (int k = 0; k < mTracks.size(); k++)
+            {
+                track = mTracks[k];
+                
+                textLayout.addLine( toString(track->mIndex) + " - " + track->mName + "\t" + toString(track->mClips.size()) );
+
+                // Sends
+                if ( !track->mSends.empty() )
+                    textLayout.addLine( "\t" );
+                
+                for ( map<int,float>::iterator it=track->mSends.begin() ; it != track->mSends.end(); it++ )
+                    textLayout.addLine( toString(it->first) + ">" + toString(it->second) );
+                
+                textLayout.addLine( " " );
+
+                if ( renderDevices )
+                {
+                    for( int i = 0; i < track->mDevices.size(); i++ )
+                    {
+                        device = track->mDevices[i];
+                        textLayout.addLine( "\tDEVICE\t" + toString(device->mIndex) + "\t" + device->mName );
+                    }
+                    textLayout.addLine( " " );
+                }
+                    
+                if ( renderClips )
+                {
+                    textLayout.setFont( mFontSmall );
+                    for( int i = 0; i < track->mClips.size(); i++ )
+                    {
+                        clip = track->mClips[i];                
+                        textLayout.addLine( "\tCLIP\t\t" + toString(clip->mIndex) + "\t" + clip->mName );
+                    }
+                    textLayout.addLine( " " );
+                }
+            }
+        }
         textLayout.addLine( " " );
         
         gl::Texture tex = gl::Texture(textLayout.render(true));
@@ -454,7 +473,18 @@ namespace nocte {
         
     }
     
+    
+    void QLive::parseTrackSends( ci::osc::Message message )
+    {
+        QLiveTrack *track;
 
+        track = getTrack( message.getArgAsInt32(0) );
+        if ( track )
+            for( int k=1; k < message.getNumArgs() - 1; k+=2 )
+                track->mSends[ message.getArgAsInt32(k) ] = message.getArgAsFloat(k+1);
+    }
+    
+    
     void QLive::receiveData(){
 
         while( mOscListener ) {
@@ -466,7 +496,7 @@ namespace nocte {
                 string	msgAddress = message.getAddress();
 
                 // debug
-                if (false)
+                if (true)
                     debugOscMessage( message );
 
                 // Parse Live objects
@@ -515,6 +545,8 @@ namespace nocte {
                 else if ( msgAddress == "/live/ping" )
                     mPingReceivedAt = getElapsedSeconds();
                 
+                else if ( msgAddress == "/live/send" )
+                    parseTrackSends(message);
             }
                 
             sleep(15.0f);
