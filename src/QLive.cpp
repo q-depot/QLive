@@ -496,7 +496,7 @@ namespace nocte {
                 string	msgAddress = message.getAddress();
 
                 // debug
-                if (true)
+                if (false)
                     debugOscMessage( message );
 
                 // Parse Live objects
