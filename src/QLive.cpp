@@ -35,6 +35,8 @@ namespace nocte {
         mIsPlaying      = false;
         mIsReady        = false;
         
+        mRunOscDataThread = false;
+        
         initOsc();
         
         // set LiveOsc peer: /remix/set_peer HOST PORT (null host > host is automatically set to the host that sent the request)
@@ -92,7 +94,7 @@ namespace nocte {
             mOscListener = NULL;
         }
         
-        thread receiveDataThread( &QLive::receiveData, this);
+        mReceiveOscDataThread = std::thread( &QLive::receiveData, this );
     }
 
     
@@ -112,13 +114,11 @@ namespace nocte {
     {
         mIsReady = false;
         
-        if ( mOscListener )					// close OSC listener
-        {
-            mOscListener->shutdown();		
-            delete mOscListener;
-            mOscListener = NULL;
-            ci::sleep(50);
-        }
+        mRunOscDataThread = false;
+        mReceiveOscDataThread.join();
+        mOscListener->shutdown();
+        delete mOscListener;
+        mOscListener = NULL;
 
         if ( mOscSender )					// close OSC sender
         {
@@ -167,7 +167,7 @@ namespace nocte {
         sendMessage("/live/name/scene");
 
         ci::sleep(50);
-        sendMessage("/live/name/track"); 
+        sendMessage("/live/name/track");
 
         ci::sleep(200);
         sendMessage("/live/name/clip");    
@@ -486,8 +486,10 @@ namespace nocte {
     
     
     void QLive::receiveData(){
+        
+        mRunOscDataThread = true;
 
-        while( mOscListener ) {
+        while( mRunOscDataThread && mOscListener ) {
 
             while (mOscListener->hasWaitingMessages()) {
                 osc::Message message;
