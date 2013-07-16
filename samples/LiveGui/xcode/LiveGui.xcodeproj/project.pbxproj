@@ -19,6 +19,7 @@
 		0FA3D6BAE6F242F2B5391595 /* HorizontalSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DFD8ECFC2DE452E931B6F95 /* HorizontalSlider.cpp */; };
 		105AD6DBC47941A0BF38EABE /* PropertyTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BC4D4EB244D644018B8F1A28 /* PropertyTree.cpp */; };
 		10965E4F17956EA800C89494 /* QLiveGUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10965E4E17956EA800C89494 /* QLiveGUI.cpp */; };
+		10D558941795BE47005D9A67 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 10D558931795BE47005D9A67 /* README.md */; };
 		10DCD3C7179532C400FB8515 /* QLive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10DCD2D3179532C400FB8515 /* QLive.cpp */; };
 		10DCD3C9179532C400FB8515 /* QLiveModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10DCD2D8179532C400FB8515 /* QLiveModule.cpp */; };
 		13E873059D864D49A3C10C60 /* Dragger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44233DDA4B0459DAA515D16 /* Dragger.cpp */; };
@@ -130,6 +131,7 @@
 		10965E4E17956EA800C89494 /* QLiveGUI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QLiveGUI.cpp; sourceTree = "<group>"; };
 		10965E5017957E3700C89494 /* QLiveGuiTrackControl.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = QLiveGuiTrackControl.cpp; path = ../samples/LiveGui/QLiveGuiTrackControl.cpp; sourceTree = "<group>"; };
 		10965E5117957E3700C89494 /* QLiveGuiTrackControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = QLiveGuiTrackControl.h; path = ../samples/LiveGui/QLiveGuiTrackControl.h; sourceTree = "<group>"; };
+		10D558931795BE47005D9A67 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.md; path = ../../../README.md; sourceTree = "<group>"; };
 		10DCD2D3179532C400FB8515 /* QLive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QLive.cpp; sourceTree = "<group>"; };
 		10DCD2D4179532C400FB8515 /* QLive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLive.h; sourceTree = "<group>"; };
 		10DCD2D7179532C400FB8515 /* QLiveGUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLiveGUI.h; sourceTree = "<group>"; };
@@ -511,6 +513,7 @@
 		29B97314FDCFA39411CA2CEA /* LiveGui */ = {
 			isa = PBXGroup;
 			children = (
+				10D558931795BE47005D9A67 /* README.md */,
 				01B97315FEAEA392516A2CEA /* Blocks */,
 				29B97315FDCFA39411CA2CEA /* Headers */,
 				080E96DDFE201D6D7F000001 /* Source */,
@@ -908,6 +911,7 @@
 			files = (
 				D9A2446BCF4F4D00B551DE25 /* CinderApp.icns in Resources */,
 				6D042DA6F6724F2E93EFAE1F /* DefaultSkin.png in Resources */,
+				10D558941795BE47005D9A67 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

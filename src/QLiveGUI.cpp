@@ -28,14 +28,14 @@ using namespace nocte;
 void QLiveGUI::init()
 {
     // TODO: find a better way..
-	fs::path rootPath = getAppPath().parent_path().parent_path().parent_path().parent_path().parent_path().parent_path();
-	addAssetDirectory( rootPath / "assets" );
+//	fs::path rootPath = getAppPath().parent_path().parent_path().parent_path().parent_path().parent_path().parent_path();
+//	addAssetDirectory( rootPath / "assets" );
     
 	mRenderer = new cigwen::GwenRendererGl();
 	mRenderer->Init();
     
 	Gwen::Skin::TexturedBase* skin = new Gwen::Skin::TexturedBase( mRenderer );
-	skin->Init( "DefaultSkin.png" );
+	skin->Init( "DefaultSkinQLiveGui.png" );
     
 	mCanvas = new Gwen::Controls::Canvas( skin );
 	mCanvas->SetSize( getWindowWidth(), getWindowHeight() );
@@ -64,7 +64,7 @@ void QLiveGUI::init()
         if ( boost::starts_with( tracks[k]->getName(), "_") )          // IGNORE all the params in the tracks that starts with "_"
             continue;
         
-        trackControl = new QLiveGuiTrackControl( tracks[k], size, mCanvas );
+        trackControl = new QLiveGuiTrackControl( mLive, tracks[k], size, mCanvas );
     }
     
 }
