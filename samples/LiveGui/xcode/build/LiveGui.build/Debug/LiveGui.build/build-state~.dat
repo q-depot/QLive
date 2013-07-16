@@ -1,0 +1,1551 @@
+TLiveGui
+v5
+r1
+cCheck dependencies
+cProcessInfoPlistFile /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/Debug/LiveGui.app/Contents/Info.plist Info.plist
+cCpResource ../resources/CinderApp.icns ./build/Debug/LiveGui.app/Contents/Resources/CinderApp.icns
+cCpResource ../../../../Cinder-Gwen/assets/DefaultSkin.png ./build/Debug/LiveGui.app/Contents/Resources/DefaultSkin.png
+cProcessPCH++ /var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-hfrkyhmskplwvdcuymhnhnetpdcw/LiveGui_Prefix.pch.pth LiveGui_Prefix.pch normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cProcessPCH++ /var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-gugwqdejwlwxmcgfzwheabbxeyhi/LiveGui_Prefix.pch.pth LiveGui_Prefix.pch normal i386 objective-c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/CinderGwen.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/CinderGwen.cpp normal i386 objective-c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Anim.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Anim.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/BaseRender.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/BaseRender.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Base.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Base.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/LiveGuiApp.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../src/LiveGuiApp.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/GwenRendererGl.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/GwenRendererGl.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/GwenInput.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/GwenInput.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ControlList.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/ControlList.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c0000000051C4005700000000000000AA
+t1371799639
+s170
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/Accelerate.framework/Accelerate
+c0000000051B8287000000000000024F0
+t1371023472
+s9456
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox
+c0000000051B828720000000000024DD8
+t1371023474
+s151000
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/AudioUnit.framework/AudioUnit
+c0000000051B8287200000000000060B4
+t1371023474
+s24756
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/Cocoa.framework/Headers/Cocoa.h
+c0000000051B8287300000000000001E5
+t1371023475
+s485
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/CoreAudio.framework/CoreAudio
+c0000000051B82873000000000000E9A8
+t1371023475
+s59816
+
+N/System/Library/Frameworks/Cocoa.framework/Cocoa
+c000000005086B82A0000000000006730
+t1351006250
+s26416
+
+N/System/Library/Frameworks/CoreVideo.framework/CoreVideo
+c00000000513E75090000000000081CB0
+t1363047689
+s531632
+
+N/System/Library/Frameworks/OpenGL.framework/OpenGL
+c00000000513E742F000000000002DAD0
+t1363047471
+s187088
+
+N/System/Library/Frameworks/QTKit.framework/QTKit
+c00000000513E75CE00000000004A2E10
+t1363047886
+s4861456
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/assets/DefaultSkin.png
+c0000000051D0BDC10000000000005EF1
+t1372634561
+s24305
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Anim.cpp
+c0000000051CA95BF0000000000000C36
+t1372231103
+s3126
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/BaseRender.cpp
+c0000000051CA95BF0000000000001421
+t1372231103
+s5153
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/ControlList.cpp
+c0000000051CA95BF000000000000067E
+t1372231103
+s1662
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Base.cpp
+c0000000051CA95BF0000000000006224
+t1372231103
+s25124
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Button.cpp
+c0000000051CA95BF0000000000000FC0
+t1372231103
+s4032
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Canvas.cpp
+c0000000051CA95BF00000000000013A7
+t1372231103
+s5031
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/CheckBox.cpp
+c0000000051CA95BF0000000000000320
+t1372231103
+s800
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/CollapsibleCategory.cpp
+c0000000051CA95BF00000000000011F4
+t1372231103
+s4596
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ColorControls.cpp
+c0000000051CA95BF0000000000001ACF
+t1372231103
+s6863
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ColorPicker.cpp
+c0000000051CA95BF00000000000018DE
+t1372231103
+s6366
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ComboBox.cpp
+c0000000051CA95BF00000000000012C8
+t1372231103
+s4808
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/CrossSplitter.cpp
+c0000000051CA95BF00000000000010EC
+t1372231103
+s4332
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Dialog/FileOpen.cpp
+c0000000051CA95BF000000000000025D
+t1372231103
+s605
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Dialog/FileSave.cpp
+c0000000051CA95BF000000000000025D
+t1372231103
+s605
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Dialog/FolderOpen.cpp
+c0000000051CA95BF0000000000000240
+t1372231103
+s576
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Dialog/Query.cpp
+c0000000051CA95BF00000000000000C2
+t1372231103
+s194
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/DockBase.cpp
+c0000000051CA95BF0000000000001EA3
+t1372231103
+s7843
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/DockedTabControl.cpp
+c0000000051CA95BF00000000000007AE
+t1372231103
+s1966
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Dragger.cpp
+c0000000051CA95BF00000000000004FB
+t1372231103
+s1275
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/GroupBox.cpp
+c0000000051CA95BF0000000000000353
+t1372231103
+s851
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/HSVColorPicker.cpp
+c0000000051CA95BF00000000000011C1
+t1372231103
+s4545
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/HorizontalScrollBar.cpp
+c0000000051CA95BF0000000000000D23
+t1372231103
+s3363
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/HorizontalSlider.cpp
+c0000000051CA95BF0000000000000458
+t1372231103
+s1112
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ImagePanel.cpp
+c0000000051CA95BF0000000000000070
+t1372231103
+s112
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Label.cpp
+c0000000051CA95BF000000000000087B
+t1372231103
+s2171
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/LabelClickable.cpp
+c0000000051CA95BF0000000000000204
+t1372231103
+s516
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ListBox.cpp
+c0000000051CA95BF0000000000001542
+t1372231103
+s5442
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Menu.cpp
+c0000000051CA95BF0000000000000DF6
+t1372231103
+s3574
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/MenuItem.cpp
+c0000000051CA95BF0000000000000C58
+t1372231103
+s3160
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/MenuStrip.cpp
+c0000000051CA95BF000000000000038A
+t1372231103
+s906
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/NumericUpDown.cpp
+c0000000051CA95BF0000000000000813
+t1372231103
+s2067
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/PageControl.cpp
+c0000000051CA95BF0000000000000EFD
+t1372231103
+s3837
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ProgressBar.cpp
+c0000000051CA95BF00000000000006C8
+t1372231103
+s1736
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Properties.cpp
+c0000000051CA95BF0000000000001035
+t1372231103
+s4149
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/PropertyTree.cpp
+c0000000051CA95BF0000000000000495
+t1372231103
+s1173
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/RadioButton.cpp
+c0000000051CA95BF000000000000018E
+t1372231103
+s398
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/RadioButtonController.cpp
+c0000000051CA95BF000000000000071F
+t1372231103
+s1823
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Rectangle.cpp
+c0000000051CA95BF0000000000000197
+t1372231103
+s407
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ResizableControl.cpp
+c0000000051CA95BF0000000000000D37
+t1372231103
+s3383
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Resizer.cpp
+c0000000051CA95BF0000000000000AAF
+t1372231103
+s2735
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/RichLabel.cpp
+c0000000051CA95BF0000000000001158
+t1372231103
+s4440
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ScrollBar.cpp
+c0000000051CA95BF000000000000057D
+t1372231103
+s1405
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ScrollBarBar.cpp
+c0000000051CA95BF0000000000000457
+t1372231103
+s1111
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ScrollBarButton.cpp
+c0000000051CA95BF00000000000002F1
+t1372231103
+s753
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ScrollControl.cpp
+c0000000051CA95BF0000000000001BB9
+t1372231103
+s7097
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Slider.cpp
+c0000000051CA95BF000000000000072B
+t1372231103
+s1835
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/SplitterBar.cpp
+c0000000051CA95BF0000000000000116
+t1372231103
+s278
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/TabButton.cpp
+c0000000051CA95BF0000000000000B72
+t1372231103
+s2930
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/TabControl.cpp
+c0000000051CA95BF00000000000012D5
+t1372231103
+s4821
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/TabStrip.cpp
+c0000000051CA95BF0000000000001061
+t1372231103
+s4193
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Text.cpp
+c0000000051CA95BF0000000000001E18
+t1372231103
+s7704
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/TextBox.cpp
+c0000000051CA95BF0000000000002E65
+t1372231103
+s11877
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/TextBoxNumeric.cpp
+c0000000051CA95BF00000000000005FA
+t1372231103
+s1530
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/TreeControl.cpp
+c0000000051CA95BF0000000000000639
+t1372231103
+s1593
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/TreeNode.cpp
+c0000000051CA95BF00000000000014E5
+t1372231103
+s5349
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/VerticalScrollBar.cpp
+c0000000051CA95BF0000000000000D52
+t1372231103
+s3410
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/VerticalSlider.cpp
+c0000000051CA95BF000000000000045C
+t1372231103
+s1116
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/WindowCanvas.cpp
+c0000000051CA95BF0000000000001CA7
+t1372231103
+s7335
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/WindowControl.cpp
+c0000000051DD15750000000000000D77
+t1373443445
+s3447
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/DragAndDrop.cpp
+c0000000051CA95BF0000000000001BF3
+t1372231103
+s7155
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Gwen.cpp
+c0000000051CA95BF0000000000000401
+t1372231103
+s1025
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Hook.cpp
+c0000000051CA95BF00000000000001B6
+t1372231103
+s438
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Skin.cpp
+c0000000051CA95BF0000000000001463
+t1372231103
+s5219
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/ToolTip.cpp
+c0000000051CA95BF0000000000000545
+t1372231103
+s1349
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Utility.cpp
+c0000000051CA95BF0000000000001120
+t1372231103
+s4384
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/events.cpp
+c0000000051CA95BF0000000000000B15
+t1372231103
+s2837
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/inputhandler.cpp
+c0000000051CA95BF0000000000002170
+t1372231103
+s8560
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/CinderGwen.cpp
+c0000000051CA95BB0000000000000D07
+t1372231099
+s3335
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/GwenInput.cpp
+c0000000051CA95BB0000000000000CFC
+t1372231099
+s3324
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/GwenRendererGl.cpp
+c0000000051CA95BB0000000000001B2D
+t1372231099
+s6957
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/OscBundle.cpp
+c0000000051434D3400000000000007E1
+t1363365172
+s2017
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/OscListener.cpp
+c0000000051434D3400000000000016B9
+t1363365172
+s5817
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/OscMessage.cpp
+c0000000051434D3400000000000010AD
+t1363365172
+s4269
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/OscSender.cpp
+c0000000051434D3400000000000010FE
+t1363365172
+s4350
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/ip/IpEndpointName.cpp
+c0000000051434D3400000000000009FC
+t1363365172
+s2556
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/ip/posix/NetworkingUtils.cpp
+c0000000051434D3400000000000007B8
+t1363365172
+s1976
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/ip/posix/UdpSocket.cpp
+c0000000051434D340000000000003DAD
+t1363365172
+s15789
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/osc/OscOutboundPacketStream.cpp
+c0000000051434D340000000000003BF2
+t1363365172
+s15346
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/osc/OscPrintReceivedElements.cpp
+c0000000051434D340000000000001C09
+t1363365172
+s7177
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/osc/OscReceivedElements.cpp
+c0000000051434D340000000000004816
+t1363365172
+s18454
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/osc/OscTypes.cpp
+c000000005174304C0000000000000669
+t1366569036
+s1641
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../resources/CinderApp.icns
+c0000000051E4FA620000000000070375
+t1373960802
+s459637
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../src/LiveGuiApp.cpp
+c0000000051E4FAB200000000000005B9
+t1373960882
+s1465
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/Debug/LiveGui.app
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/Debug/LiveGui.app/Contents/Info.plist
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/Debug/LiveGui.app/Contents/MacOS/LiveGui
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/Debug/LiveGui.app/Contents/PkgInfo
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/Debug/LiveGui.app/Contents/Resources/CinderApp.icns
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/Debug/LiveGui.app/Contents/Resources/DefaultSkin.png
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Anim.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Base.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/BaseRender.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Button.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Canvas.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/CheckBox.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/CinderGwen.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/CollapsibleCategory.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ColorControls.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ColorPicker.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ComboBox.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ControlList.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/CrossSplitter.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/DockBase.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/DockedTabControl.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/DragAndDrop.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Dragger.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/FileOpen.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/FileSave.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/FolderOpen.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/GroupBox.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Gwen.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/GwenInput.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/GwenRendererGl.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/HSVColorPicker.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Hook.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/HorizontalScrollBar.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/HorizontalSlider.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ImagePanel.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/IpEndpointName.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Label.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/LabelClickable.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ListBox.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/LiveGui.LinkFileList
+c0000000051E4FB310000000000002A1F
+t1373961009
+s10783
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/LiveGuiApp.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Menu.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/MenuItem.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/MenuStrip.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/NetworkingUtils.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/NumericUpDown.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/OscBundle.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/OscListener.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/OscMessage.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/OscOutboundPacketStream.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/OscPrintReceivedElements.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/OscReceivedElements.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/OscSender.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/OscTypes.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/PageControl.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ProgressBar.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Properties.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/PropertyTree.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Query.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/RadioButton.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/RadioButtonController.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Rectangle.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ResizableControl.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Resizer.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/RichLabel.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ScrollBar.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ScrollBarBar.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ScrollBarButton.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ScrollControl.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Skin.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Slider.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/SplitterBar.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/TabButton.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/TabControl.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/TabStrip.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Text.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/TextBox.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/TextBoxNumeric.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ToolTip.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/TreeControl.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/TreeNode.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/UdpSocket.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Utility.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/VerticalScrollBar.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/VerticalSlider.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/WindowCanvas.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/WindowControl.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/events.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/inputhandler.o
+t2
+s0
+
+N/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/LiveGui_Prefix.pch
+c0000000051E4FA62000000000000012D
+t1373960802
+s301
+i<Cocoa/Cocoa.h>
+i"cinder/Cinder.h"
+i"cinder/app/AppBasic.h"
+i"cinder/gl/gl.h"
+i"cinder/CinderMath.h"
+i"cinder/Matrix.h"
+i"cinder/Vector.h"
+i"cinder/Quaternion.h"
+
+N/Users/Q/Code/Cinder/include/cinder/Cinder.h
+c0000000051C21A030000000000000D79
+t1371675139
+s3449
+
+N/Users/Q/Code/Cinder/include/cinder/CinderMath.h
+c0000000051C21A030000000000001F9C
+t1371675139
+s8092
+
+N/Users/Q/Code/Cinder/include/cinder/Matrix.h
+c0000000051700F240000000000000EDD
+t1366298404
+s3805
+
+N/Users/Q/Code/Cinder/include/cinder/Quaternion.h
+c0000000051700F240000000000005499
+t1366298404
+s21657
+
+N/Users/Q/Code/Cinder/include/cinder/Vector.h
+c0000000051700F24000000000000AD7C
+t1366298404
+s44412
+
+N/Users/Q/Code/Cinder/include/cinder/app/AppBasic.h
+c00000000518B725A0000000000002262
+t1368093274
+s8802
+
+N/Users/Q/Code/Cinder/include/cinder/gl/gl.h
+c0000000051700F240000000000006469
+t1366298404
+s25705
+
+N/var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-gugwqdejwlwxmcgfzwheabbxeyhi/LiveGui_Prefix.pch.pth
+t2
+s0
+
+N/var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-hfrkyhmskplwvdcuymhnhnetpdcw/LiveGui_Prefix.pch.pth
+t2
+s0
+
+NInfo.plist
+c0000000051E4FA620000000000000462
+t1373960802
+s1122
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Anim.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/BaseRender.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/ControlList.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Base.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Button.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Canvas.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/CheckBox.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/CollapsibleCategory.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ColorControls.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ColorPicker.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ComboBox.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/CrossSplitter.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Dialog/FileOpen.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Dialog/FileSave.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Dialog/FolderOpen.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Dialog/Query.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/DockBase.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/DockedTabControl.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Dragger.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/GroupBox.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/HSVColorPicker.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/HorizontalScrollBar.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/HorizontalSlider.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ImagePanel.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Label.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/LabelClickable.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ListBox.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Menu.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/MenuItem.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/MenuStrip.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/NumericUpDown.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/PageControl.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ProgressBar.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Properties.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/PropertyTree.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/RadioButton.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/RadioButtonController.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Rectangle.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ResizableControl.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Resizer.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/RichLabel.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ScrollBar.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ScrollBarBar.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ScrollBarButton.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ScrollControl.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Slider.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/SplitterBar.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/TabButton.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/TabControl.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/TabStrip.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Text.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/TextBox.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/TextBoxNumeric.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/TreeControl.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/TreeNode.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/VerticalScrollBar.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/VerticalSlider.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/WindowCanvas.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/WindowControl.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/DragAndDrop.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Gwen.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Hook.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Skin.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/ToolTip.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Utility.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/events.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/inputhandler.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/CinderGwen.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/GwenInput.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/GwenRendererGl.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/OscBundle.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/OscListener.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/OscMessage.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/OscSender.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/ip/IpEndpointName.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/ip/posix/NetworkingUtils.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/ip/posix/UdpSocket.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/osc/OscOutboundPacketStream.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/osc/OscPrintReceivedElements.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/osc/OscReceivedElements.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/osc/OscTypes.cpp
+r0
+
+CBuild AST from /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../src/LiveGuiApp.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesd0b8e8b03295b741^c45d85b13295b741^---0#1#0#--18"Check dependencies36"FA3F2457-CF4B-4BC1-A392-DBF9599F5F4D-
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Anim.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Anim.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395653817.446682
+e395653820.498741
+r1
+xCompileC
+x./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Anim.o
+x/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Anim.cpp
+xnormal
+xi386
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection110"Compile /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Anim.cpp838672b93295b741^5cad7fbc3295b741^---0#0#0#-19%DVTDocumentLocation2@118"file://localhost/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Anim.cpp0000000000000000^3074"CompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Anim.o ../../../../Cinder-Gwen/gwen/gwen/src/Anim.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch i386 -fmessage-length=0 -std=c++11 -stdlib=libc++ -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.7 -g -fvisibility-inlines-hidden -Wno-sign-conversion -iquote /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-generated-files.hmap -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-own-target-headers.hmap -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-all-target-headers.hmap -iquote /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-project-headers.hmap -iquote../../../../../include -iquote../include -iquote../../../../Cinder-Gwen/src -iquote../../../../Cinder-Gwen/gwen/gwen/include -iquote../../../../OSC/src -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/Debug/include -I../../../../../boost -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/DerivedSources/i386 -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/DerivedSources -F/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/Debug -include /var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-hfrkyhmskplwvdcuymhnhnetpdcw/LiveGui_Prefix.pch -MMD -MT dependencies -MF /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Anim.d --serialize-diagnostics /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Anim.dia -c /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Anim.cpp -o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Anim.o36"C363B612-68B7-43D3-9FE8-5FC65A06159F-
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Base.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Base.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395653817.446803
+e395653821.336757
+r1
+xCompileC
+x./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Base.o
+x/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Base.cpp
+xnormal
+xi386
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection119"Compile /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Base.cpp849d72b93295b741^2f3556bd3295b741^---0#0#0#-19%DVTDocumentLocation2@127"file://localhost/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Base.cpp0000000000000000^3092"CompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Base.o ../../../../Cinder-Gwen/gwen/gwen/src/Controls/Base.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch i386 -fmessage-length=0 -std=c++11 -stdlib=libc++ -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.7 -g -fvisibility-inlines-hidden -Wno-sign-conversion -iquote /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-generated-files.hmap -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-own-target-headers.hmap -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-all-target-headers.hmap -iquote /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-project-headers.hmap -iquote../../../../../include -iquote../include -iquote../../../../Cinder-Gwen/src -iquote../../../../Cinder-Gwen/gwen/gwen/include -iquote../../../../OSC/src -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/Debug/include -I../../../../../boost -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/DerivedSources/i386 -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/DerivedSources -F/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/Debug -include /var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-hfrkyhmskplwvdcuymhnhnetpdcw/LiveGui_Prefix.pch -MMD -MT dependencies -MF /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Base.d --serialize-diagnostics /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Base.dia -c /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Base.cpp -o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Base.o36"CDDE5851-3AA8-4490-AC11-F9328A3B22E3-
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/BaseRender.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/BaseRender.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395653817.446780
+e395653820.256962
+r1
+xCompileC
+x./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/BaseRender.o
+x/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/BaseRender.cpp
+xnormal
+xi386
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection116"Compile /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/BaseRender.cppf4a672b93295b741^c7d841bc3295b741^---0#0#0#-19%DVTDocumentLocation2@124"file://localhost/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/BaseRender.cpp0000000000000000^3110"CompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/BaseRender.o ../../../../Cinder-Gwen/gwen/gwen/src/BaseRender.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch i386 -fmessage-length=0 -std=c++11 -stdlib=libc++ -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.7 -g -fvisibility-inlines-hidden -Wno-sign-conversion -iquote /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-generated-files.hmap -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-own-target-headers.hmap -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-all-target-headers.hmap -iquote /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-project-headers.hmap -iquote../../../../../include -iquote../include -iquote../../../../Cinder-Gwen/src -iquote../../../../Cinder-Gwen/gwen/gwen/include -iquote../../../../OSC/src -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/Debug/include -I../../../../../boost -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/DerivedSources/i386 -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/DerivedSources -F/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/Debug -include /var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-hfrkyhmskplwvdcuymhnhnetpdcw/LiveGui_Prefix.pch -MMD -MT dependencies -MF /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/BaseRender.d --serialize-diagnostics /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/BaseRender.dia -c /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/BaseRender.cpp -o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/BaseRender.o36"D19A5993-EFF9-4F9B-90F1-573DFD3DECE2-
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Button.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Button.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Canvas.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Canvas.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/CheckBox.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/CheckBox.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/CinderGwen.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/CinderGwen.cpp normal i386 objective-c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395653816.531839
+e395653818.887304
+r1
+xCompileC
+x./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/CinderGwen.o
+x/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/CinderGwen.cpp
+xnormal
+xi386
+xobjective-c++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection113"Compile /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/CinderGwen.cpp634288b83295b741^e73936bb3295b741^---0#0#0#-19%DVTDocumentLocation2@121"file://localhost/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/CinderGwen.cpp0000000000000000^3287"CompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/CinderGwen.o ../../../../Cinder-Gwen/src/cigwen/CinderGwen.cpp normal i386 objective-c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c++ -arch i386 -fmessage-length=0 -std=c++11 -stdlib=libc++ -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -Wno-c++11-extensions -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wprotocol -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.7 -g -fvisibility-inlines-hidden -Wno-sign-conversion -iquote /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-generated-files.hmap -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-own-target-headers.hmap -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-all-target-headers.hmap -iquote /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-project-headers.hmap -iquote../../../../../include -iquote../include -iquote../../../../Cinder-Gwen/src -iquote../../../../Cinder-Gwen/gwen/gwen/include -iquote../../../../OSC/src -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/Debug/include -I../../../../../boost -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/DerivedSources/i386 -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/DerivedSources -F/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/Debug -include /var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-gugwqdejwlwxmcgfzwheabbxeyhi/LiveGui_Prefix.pch -MMD -MT dependencies -MF /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/CinderGwen.d --serialize-diagnostics /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/CinderGwen.dia -c /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/CinderGwen.cpp -o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/CinderGwen.o36"915EFE36-6B25-40A6-AACC-FC0134DF95AB-
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/CollapsibleCategory.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/CollapsibleCategory.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ColorControls.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ColorControls.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ColorPicker.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ColorPicker.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ComboBox.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ComboBox.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ControlList.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/ControlList.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395653821.338337
+e395653823.196683
+r1
+xCompileC
+x./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ControlList.o
+x/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/ControlList.cpp
+xnormal
+xi386
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection117"Compile /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/ControlList.cppc1c956bd3295b741^d76732bf3295b741^---0#0#0#-19%DVTDocumentLocation2@125"file://localhost/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/ControlList.cpp0000000000000000^3116"CompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ControlList.o ../../../../Cinder-Gwen/gwen/gwen/src/ControlList.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch i386 -fmessage-length=0 -std=c++11 -stdlib=libc++ -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.7 -g -fvisibility-inlines-hidden -Wno-sign-conversion -iquote /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-generated-files.hmap -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-own-target-headers.hmap -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-all-target-headers.hmap -iquote /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-project-headers.hmap -iquote../../../../../include -iquote../include -iquote../../../../Cinder-Gwen/src -iquote../../../../Cinder-Gwen/gwen/gwen/include -iquote../../../../OSC/src -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/Debug/include -I../../../../../boost -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/DerivedSources/i386 -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/DerivedSources -F/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/Debug -include /var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-hfrkyhmskplwvdcuymhnhnetpdcw/LiveGui_Prefix.pch -MMD -MT dependencies -MF /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ControlList.d --serialize-diagnostics /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ControlList.dia -c /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/ControlList.cpp -o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ControlList.o36"2DA88674-3FBB-403D-B3A4-5048419D8199-
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/CrossSplitter.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/CrossSplitter.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/DockBase.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/DockBase.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/DockedTabControl.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/DockedTabControl.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/DragAndDrop.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/DragAndDrop.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Dragger.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Dragger.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/FileOpen.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Dialog/FileOpen.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/FileSave.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Dialog/FileSave.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/FolderOpen.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Dialog/FolderOpen.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/GroupBox.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/GroupBox.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Gwen.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Gwen.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/GwenInput.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/GwenInput.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395653820.500209
+e395653824.303170
+r1
+xCompileC
+x./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/GwenInput.o
+x/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/GwenInput.cpp
+xnormal
+xi386
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection112"Compile /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/GwenInput.cpp193c80bc3295b741^6b9a03c13295b741^---0#0#0#-19%DVTDocumentLocation2@120"file://localhost/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/GwenInput.cpp0000000000000000^3098"CompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/GwenInput.o ../../../../Cinder-Gwen/src/cigwen/GwenInput.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch i386 -fmessage-length=0 -std=c++11 -stdlib=libc++ -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.7 -g -fvisibility-inlines-hidden -Wno-sign-conversion -iquote /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-generated-files.hmap -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-own-target-headers.hmap -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-all-target-headers.hmap -iquote /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-project-headers.hmap -iquote../../../../../include -iquote../include -iquote../../../../Cinder-Gwen/src -iquote../../../../Cinder-Gwen/gwen/gwen/include -iquote../../../../OSC/src -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/Debug/include -I../../../../../boost -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/DerivedSources/i386 -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/DerivedSources -F/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/Debug -include /var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-hfrkyhmskplwvdcuymhnhnetpdcw/LiveGui_Prefix.pch -MMD -MT dependencies -MF /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/GwenInput.d --serialize-diagnostics /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/GwenInput.dia -c /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/GwenInput.cpp -o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/GwenInput.o36"5C20FE16-AE65-488B-95B3-2413DE9D0EAF-
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/GwenRendererGl.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/GwenRendererGl.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395653820.258572
+e395653824.504367
+r1
+xCompileC
+x./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/GwenRendererGl.o
+x/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/GwenRendererGl.cpp
+xnormal
+xi386
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection117"Compile /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/GwenRendererGl.cpp575e42bc3295b741^a99f03c13295b741^---0#0#0#-19%DVTDocumentLocation2@125"file://localhost/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/GwenRendererGl.cpp0000000000000000^3128"CompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/GwenRendererGl.o ../../../../Cinder-Gwen/src/cigwen/GwenRendererGl.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch i386 -fmessage-length=0 -std=c++11 -stdlib=libc++ -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.7 -g -fvisibility-inlines-hidden -Wno-sign-conversion -iquote /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-generated-files.hmap -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-own-target-headers.hmap -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-all-target-headers.hmap -iquote /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-project-headers.hmap -iquote../../../../../include -iquote../include -iquote../../../../Cinder-Gwen/src -iquote../../../../Cinder-Gwen/gwen/gwen/include -iquote../../../../OSC/src -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/Debug/include -I../../../../../boost -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/DerivedSources/i386 -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/DerivedSources -F/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/Debug -include /var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-hfrkyhmskplwvdcuymhnhnetpdcw/LiveGui_Prefix.pch -MMD -MT dependencies -MF /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/GwenRendererGl.d --serialize-diagnostics /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/GwenRendererGl.dia -c /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/src/cigwen/GwenRendererGl.cpp -o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/GwenRendererGl.o36"C9EFE4DC-9C0B-4EC4-A5D3-3AA4A081E0FD-
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/HSVColorPicker.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/HSVColorPicker.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Hook.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Hook.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/HorizontalScrollBar.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/HorizontalScrollBar.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/HorizontalSlider.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/HorizontalSlider.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ImagePanel.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ImagePanel.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/IpEndpointName.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/ip/IpEndpointName.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Label.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Label.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/LabelClickable.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/LabelClickable.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ListBox.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ListBox.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/LiveGuiApp.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../src/LiveGuiApp.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395653818.890099
+e395653821.486946
+r0
+xCompileC
+x./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/LiveGuiApp.o
+x/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../src/LiveGuiApp.cpp
+xnormal
+xi386
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+o/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../src/LiveGuiApp.cpp:5:10: fatal error: 'QLive.h' file not found
+o#include "QLive.h"
+o         ^
+o1 error generated.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection85"Compile /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../src/LiveGuiApp.cpp4e0de4ba3295b741^a9c17cbd3295b741^-171"/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../src/LiveGuiApp.cpp:5:10: fatal error: 'QLive.h' file not found#include "QLive.h"         ^1 error generated.1(36%IDEClangDiagnosticActivityLogMessage2@24"'QLive.h' file not found-395653821#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic23%DVTTextDocumentLocation3@84"file://localhost/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/src/LiveGuiApp.cpp0000000000000000^4#9#4#9#71#0#29"Lexical or Preprocessor Issue--0#0#0#-19%DVTDocumentLocation4@93"file://localhost/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../src/LiveGuiApp.cpp0000000000000000^3048"CompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/LiveGuiApp.o ../src/LiveGuiApp.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch i386 -fmessage-length=0 -std=c++11 -stdlib=libc++ -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.7 -g -fvisibility-inlines-hidden -Wno-sign-conversion -iquote /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-generated-files.hmap -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-own-target-headers.hmap -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-all-target-headers.hmap -iquote /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-project-headers.hmap -iquote../../../../../include -iquote../include -iquote../../../../Cinder-Gwen/src -iquote../../../../Cinder-Gwen/gwen/gwen/include -iquote../../../../OSC/src -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/Debug/include -I../../../../../boost -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/DerivedSources/i386 -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/DerivedSources -F/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/Debug -include /var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-hfrkyhmskplwvdcuymhnhnetpdcw/LiveGui_Prefix.pch -MMD -MT dependencies -MF /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/LiveGuiApp.d --serialize-diagnostics /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/LiveGuiApp.dia -c /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../src/LiveGuiApp.cpp -o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/LiveGuiApp.o36"F2008F2A-141C-4E3F-9D34-D06AFEAF34AE-
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Menu.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Menu.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/MenuItem.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/MenuItem.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/MenuStrip.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/MenuStrip.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/NetworkingUtils.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/ip/posix/NetworkingUtils.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/NumericUpDown.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/NumericUpDown.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/OscBundle.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/OscBundle.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/OscListener.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/OscListener.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/OscMessage.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/OscMessage.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/OscOutboundPacketStream.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/osc/OscOutboundPacketStream.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/OscPrintReceivedElements.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/osc/OscPrintReceivedElements.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/OscReceivedElements.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/osc/OscReceivedElements.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/OscSender.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/OscSender.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/OscTypes.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/osc/OscTypes.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/PageControl.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/PageControl.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ProgressBar.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ProgressBar.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Properties.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Properties.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/PropertyTree.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/PropertyTree.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Query.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Dialog/Query.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/RadioButton.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/RadioButton.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/RadioButtonController.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/RadioButtonController.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Rectangle.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Rectangle.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ResizableControl.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ResizableControl.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Resizer.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Resizer.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/RichLabel.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/RichLabel.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ScrollBar.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ScrollBar.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ScrollBarBar.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ScrollBarBar.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ScrollBarButton.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ScrollBarButton.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ScrollControl.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/ScrollControl.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Skin.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Skin.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Slider.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Slider.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/SplitterBar.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/SplitterBar.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/TabButton.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/TabButton.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/TabControl.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/TabControl.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/TabStrip.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/TabStrip.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Text.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/Text.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/TextBox.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/TextBox.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/TextBoxNumeric.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/TextBoxNumeric.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/ToolTip.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/ToolTip.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/TreeControl.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/TreeControl.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/TreeNode.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/TreeNode.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/UdpSocket.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../OSC/src/ip/posix/UdpSocket.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/Utility.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Utility.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/VerticalScrollBar.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/VerticalScrollBar.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/VerticalSlider.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/VerticalSlider.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/WindowCanvas.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/WindowCanvas.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/WindowControl.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/Controls/WindowControl.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/events.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/events.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ./build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/inputhandler.o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/gwen/gwen/src/inputhandler.cpp normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCpResource ../../../../Cinder-Gwen/assets/DefaultSkin.png ./build/Debug/LiveGui.app/Contents/Resources/DefaultSkin.png
+s395653809.559318
+e395653809.579063
+r1
+xCpResource
+x../../../../Cinder-Gwen/assets/DefaultSkin.png
+x./build/Debug/LiveGui.app/Contents/Resources/DefaultSkin.png
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection65"Copy ./build/Debug/LiveGui.app/Contents/Resources/DefaultSkin.pngba4e8fb13295b741^793d94b13295b741^---0#0#0#-19%DVTDocumentLocation2@132"file://localhost/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/Debug/LiveGui.app/Contents/Resources/DefaultSkin.png000000000080d041^498"CpResource ../../../../Cinder-Gwen/assets/DefaultSkin.png ./build/Debug/LiveGui.app/Contents/Resources/DefaultSkin.png    cd /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../Cinder-Gwen/assets/DefaultSkin.png /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/Debug/LiveGui.app/Contents/Resources36"0ABFBF47-093A-49AA-8A20-B2889090AFF6-
+
+CCpResource ../resources/CinderApp.icns ./build/Debug/LiveGui.app/Contents/Resources/CinderApp.icns
+s395653809.559286
+e395653809.587319
+r1
+xCpResource
+x../resources/CinderApp.icns
+x./build/Debug/LiveGui.app/Contents/Resources/CinderApp.icns
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection64"Copy ./build/Debug/LiveGui.app/Contents/Resources/CinderApp.icnsa94e8fb13295b741^117197b13295b741^---0#0#0#-19%DVTDocumentLocation2@131"file://localhost/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/Debug/LiveGui.app/Contents/Resources/CinderApp.icns000000000080d041^459"CpResource ../resources/CinderApp.icns ./build/Debug/LiveGui.app/Contents/Resources/CinderApp.icns    cd /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../resources/CinderApp.icns /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/Debug/LiveGui.app/Contents/Resources36"945F0251-2382-4771-B47C-0A1E4541FC97-
+
+CLd /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/Debug/LiveGui.app/Contents/MacOS/LiveGui normal i386
+r0
+
+CProcessInfoPlistFile /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/Debug/LiveGui.app/Contents/Info.plist Info.plist
+s395653809.546032
+e395653809.551067
+r1
+xProcessInfoPlistFile
+x/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/Debug/LiveGui.app/Contents/Info.plist
+xInfo.plist
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Process Info.plist0bee8bb13295b741^8c118db13295b741^---0#0#0#-19%DVTDocumentLocation2@82"file://localhost/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/Info.plist0000000000000000^435"ProcessInfoPlistFile ./build/Debug/LiveGui.app/Contents/Info.plist Info.plist    cd /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode    builtin-infoPlistUtility Info.plist -genpkginfo /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/Debug/LiveGui.app/Contents/PkgInfo -expandbuildsettings -platform macosx -o /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/Debug/LiveGui.app/Contents/Info.plist36"2690814D-AB54-4D86-A075-E0EE5CC883A9-
+
+CProcessPCH++ /Users/Q/Library/Developer/Xcode/DerivedData/LiveGui-fcwqybedysnbznevvcokdgygyalc/Index/PrecompiledHeaders/LiveGui_Prefix-ajkqfxwazphiijhdfbjxwxlwpknd_ast/LiveGui_Prefix.pch.pth LiveGui_Prefix.pch normal i386 c++ com.apple.compilers.llvm.clang.1_0.astbuilder
+r0
+
+CProcessPCH++ /Users/Q/Library/Developer/Xcode/DerivedData/LiveGui-fcwqybedysnbznevvcokdgygyalc/Index/PrecompiledHeaders/LiveGui_Prefix-capljhvscqaaulasjmwgkplplzle_ast/LiveGui_Prefix.pch.pth LiveGui_Prefix.pch normal i386 objective-c++ com.apple.compilers.llvm.clang.1_0.astbuilder
+r0
+
+CProcessPCH++ /var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-gugwqdejwlwxmcgfzwheabbxeyhi/LiveGui_Prefix.pch.pth LiveGui_Prefix.pch normal i386 objective-c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395653809.607432
+e395653816.525507
+r1
+xProcessPCH++
+x/var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-gugwqdejwlwxmcgfzwheabbxeyhi/LiveGui_Prefix.pch.pth
+xLiveGui_Prefix.pch
+xnormal
+xi386
+xobjective-c++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection29"Precompile LiveGui_Prefix.pche6b09bb13295b741^b68686b83295b741^---0#0#0#-19%DVTDocumentLocation2@90"file://localhost/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/LiveGui_Prefix.pch0000000000000000^3242"ProcessPCH++ /var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-gugwqdejwlwxmcgfzwheabbxeyhi/LiveGui_Prefix.pch.pth LiveGui_Prefix.pch normal i386 objective-c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c++-header -arch i386 -fmessage-length=0 -std=c++11 -stdlib=libc++ -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -Wno-c++11-extensions -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wprotocol -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.7 -g -fvisibility-inlines-hidden -Wno-sign-conversion -iquote /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-generated-files.hmap -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-own-target-headers.hmap -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-all-target-headers.hmap -iquote /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-project-headers.hmap -iquote../../../../../include -iquote../include -iquote../../../../Cinder-Gwen/src -iquote../../../../Cinder-Gwen/gwen/gwen/include -iquote../../../../OSC/src -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/Debug/include -I../../../../../boost -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/DerivedSources/i386 -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/DerivedSources -F/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/Debug --serialize-diagnostics /var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-gugwqdejwlwxmcgfzwheabbxeyhi/LiveGui_Prefix.pch.dia -c /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/LiveGui_Prefix.pch -o /var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-gugwqdejwlwxmcgfzwheabbxeyhi/LiveGui_Prefix.pch.pth -MMD -MT dependencies -MF /var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-gugwqdejwlwxmcgfzwheabbxeyhi/LiveGui_Prefix.pch.d36"B2B2E396-289F-4302-95B0-A63F7D6B7F8B-
+
+CProcessPCH++ /var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-hfrkyhmskplwvdcuymhnhnetpdcw/LiveGui_Prefix.pch.pth LiveGui_Prefix.pch normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395653809.607423
+e395653817.440107
+r1
+xProcessPCH++
+x/var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-hfrkyhmskplwvdcuymhnhnetpdcw/LiveGui_Prefix.pch.pth
+xLiveGui_Prefix.pch
+xnormal
+xi386
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection29"Precompile LiveGui_Prefix.pch75af9bb13295b741^b9aa70b93295b741^---0#0#0#-19%DVTDocumentLocation2@90"file://localhost/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/LiveGui_Prefix.pch0000000000000000^3059"ProcessPCH++ /var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-hfrkyhmskplwvdcuymhnhnetpdcw/LiveGui_Prefix.pch.pth LiveGui_Prefix.pch normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++-header -arch i386 -fmessage-length=0 -std=c++11 -stdlib=libc++ -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.7 -g -fvisibility-inlines-hidden -Wno-sign-conversion -iquote /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-generated-files.hmap -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-own-target-headers.hmap -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-all-target-headers.hmap -iquote /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/LiveGui-project-headers.hmap -iquote../../../../../include -iquote../include -iquote../../../../Cinder-Gwen/src -iquote../../../../Cinder-Gwen/gwen/gwen/include -iquote../../../../OSC/src -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/Debug/include -I../../../../../boost -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/DerivedSources/i386 -I/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/LiveGui.build/Debug/LiveGui.build/DerivedSources -F/Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/Debug --serialize-diagnostics /var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-hfrkyhmskplwvdcuymhnhnetpdcw/LiveGui_Prefix.pch.dia -c /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/LiveGui_Prefix.pch -o /var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-hfrkyhmskplwvdcuymhnhnetpdcw/LiveGui_Prefix.pch.pth -MMD -MT dependencies -MF /var/folders/r7/k7c7khws1dl5137d8042sd6c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/LiveGui_Prefix-hfrkyhmskplwvdcuymhnhnetpdcw/LiveGui_Prefix.pch.d36"782DF44D-39C6-4209-9831-96325D68666B-
+
+CTouch /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/./build/Debug/LiveGui.app
+r0
+

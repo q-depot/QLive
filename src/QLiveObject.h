@@ -19,6 +19,21 @@
 
 namespace nocte {
     
+    class QLiveClip;
+    typedef std::shared_ptr<QLiveClip>      QLiveClipRef;
+    
+    class QLiveParam;
+    typedef std::shared_ptr<QLiveParam>     QLiveParamRef;
+    
+    class QLiveDevice;
+    typedef std::shared_ptr<QLiveDevice>	QLiveDeviceRef;
+    
+    class QLiveTrack;
+    typedef std::shared_ptr<QLiveTrack>     QLiveTrackRef;
+    
+    class QLiveScene;
+    typedef std::shared_ptr<QLiveScene>     QLiveSceneRef;
+    
     
     enum ClipState {
         NO_CLIP,			// 0
@@ -26,8 +41,11 @@ namespace nocte {
         CLIP_PLAYING,		// 2
         CLIP_TRIGGERED		// 3
     };
-
-
+    
+    /* -------------------- */
+    /* --- QLive Object --- */
+    /* -------------------- */
+    
     class QLiveObject {
         
         friend class QLive;
@@ -105,15 +123,14 @@ namespace nocte {
         
     public:
         
-        QLiveClip(int index, std::string name, ci::Color color = ci::Color::white() ) : QLiveObject(index, name), mColor(color) 
-        { 
-            mState		= HAS_CLIP;
-            mIsPlaying  = false;
-        };
+        static QLiveClipRef create( int index, std::string name, ci::Color color = ci::Color::white() )
+        {
+            return QLiveClipRef( new QLiveClip( index, name, color ) );
+        }
         
         ~QLiveClip() {}
 
-        ClipState	getState() { return mState; };
+        ClipState	getState() { return mState; }
         
         void		setState(ClipState state) 
         { 
@@ -127,11 +144,11 @@ namespace nocte {
             callStateUpdateCallbacks();
         };
         
-        bool *getIsPlayingRef() { return &mIsPlaying; };
+        bool        *getIsPlayingRef() { return &mIsPlaying; }
         
-        bool		isPlaying() { return mIsPlaying; };
+        bool		isPlaying() { return mIsPlaying; }
         
-        ci::ColorA	getColor() { return mColor; };
+        ci::ColorA	getColor() { return mColor; }
         
         void addStateUpdateCallback( const std::function<void ()> &callback )
         {
@@ -141,7 +158,13 @@ namespace nocte {
         
         
     protected:
-
+        
+        QLiveClip( int index, std::string name, ci::Color color ) : QLiveObject(index, name), mColor(color)
+        {
+            mState		= HAS_CLIP;
+            mIsPlaying  = false;
+        }
+        
         ci::XmlTree getXmlNode() 
         {
             ci::XmlTree node = QLiveObject::getXmlNode();
@@ -151,7 +174,7 @@ namespace nocte {
             return node;
         }
         
-        void loadXmlNode( ci::XmlTree node )
+        void        loadXmlNode( ci::XmlTree node )
         {
             QLiveObject::loadXmlNode( node );
             
@@ -178,15 +201,14 @@ namespace nocte {
                 (*fn)();
             }
         }
-        
-    private:
-        // disallow
-        QLiveClip(const QLiveClip&);
-        QLiveClip& operator=(const QLiveClip&);
     
     };
 
-
+    
+    /* ------------------- */
+    /* --- QLive Param --- */
+    /* ------------------- */
+    
     class QLiveParam : public QLiveObject {
         
         friend class QLive;
@@ -194,20 +216,29 @@ namespace nocte {
         
     public:
         
-        QLiveParam( int index, std::string name, float value = 0.0f, float minVal = 0.0f, float maxVal = 1.0f ) 
-        : QLiveObject(index, name), mValue(value), mMinValue(minVal), mMaxValue(maxVal) {}
+        static QLiveParamRef create( int index, std::string name, float val = 0.0f, float minVal = 0.0f, float maxVal = 1.0f )
+        {
+            return QLiveParamRef( new QLiveParam( index, name, val, minVal, maxVal ) );
+        }
         
         ~QLiveParam() {}
         
-        float getValue() { return mValue; }
+        float getValue() { return *mValue.get(); }
+        void setValue( float val ) { *mValue.get() = val; }
         
-        float* getRef() { return &mValue; }
+        std::shared_ptr<float> getRef() { return mValue; }
         
         float getMin() { return mMinValue; }
         
         float getMax() { return mMaxValue; }
         
     protected:
+       
+        QLiveParam( int index, std::string name, float val, float minVal, float maxVal )
+        : QLiveObject(index, name), mMinValue(minVal), mMaxValue(maxVal)
+        {
+            mValue = std::shared_ptr<float>( new float(val) );
+        }
         
         ci::XmlTree getXmlNode() 
         {
@@ -224,25 +255,24 @@ namespace nocte {
         {
             QLiveObject::loadXmlNode( node );
 
-            mValue      = node.getAttributeValue<float>( "value" );
-            mMinValue   = node.getAttributeValue<float>( "min" );
-            mMaxValue   = node.getAttributeValue<float>( "max" );
+            *mValue.get()   = node.getAttributeValue<float>( "value" );
+            mMinValue       = node.getAttributeValue<float>( "min" );
+            mMaxValue       = node.getAttributeValue<float>( "max" );
         }
         
     protected:
         
-        float       mValue;
-        float       mMinValue;
-        float       mMaxValue;
-        
-    private:
-        // disallow
-        QLiveParam(const QLiveParam&);
-        QLiveParam& operator=(const QLiveParam&);
+        std::shared_ptr<float>  mValue;
+        float                   mMinValue;
+        float                   mMaxValue;
         
     };
 
-
+    
+    /* -------------------- */
+    /* --- QLive Device --- */
+    /* -------------------- */
+    
     class QLiveDevice : public QLiveObject {
         
         friend class QLive;
@@ -250,58 +280,59 @@ namespace nocte {
         
     public:
         
-        QLiveDevice( int index, std::string name ) : QLiveObject(index, name) {}
-        
-        ~QLiveDevice()
+        static QLiveDeviceRef create( int index, const std::string name )
         {
-            for( size_t k=0; k < mParams.size(); k++ )
-                delete mParams[k];
-            mParams.clear();
+            return QLiveDeviceRef( new QLiveDevice( index, name ) );
         }
         
-        void addParam( int index, float value, std::string name, float minVal, float maxVal ) { mParams.push_back( new QLiveParam( index, name, value, minVal, maxVal ) ); }
+        ~QLiveDevice() {}
         
-        std::vector<QLiveParam*> getParams() { return mParams; }
+        void addParam( int index, float value, const std::string name, float minVal, float maxVal )
+        {
+            mParams.push_back( QLiveParam::create( index, name, value, minVal, maxVal ) );
+        }
         
-        QLiveParam* getParam( int idx ) 
+        std::vector<QLiveParamRef> getParams() { return mParams; }
+        
+        QLiveParamRef getParam( int idx )
         { 
             if ( idx < mParams.size() )
                 return mParams[idx]; 
             
-            QLiveParam* param = NULL;
-            return param;
+            return QLiveParamRef();
         }
         
-        QLiveParam* getParam( std::string name )
+        QLiveParamRef getParam( std::string name )
         {
             for( size_t k=0; k < mParams.size(); k++ )
                 if( mParams[k]->mName == name )
                     return mParams[k];
             
-            QLiveParam *param = NULL;
-            return param;
+            return QLiveParamRef();
         }
         
         float getParamValue( std::string name )
         {
-            QLiveParam *param = getParam(name);
+            QLiveParamRef param = getParam(name);
             if ( param )
                 return param->getValue();
                     
             return 0;
         }
         
-        float* getParamRef( std::string name )
+        std::shared_ptr<float> getParamRef( std::string name )
         {   
-            QLiveParam *param = getParam(name);
+            QLiveParamRef param = getParam(name);
+
             if ( param )
                 return param->getRef();
             
-            float *ref = NULL;
-            return ref;
+            return std::shared_ptr<float>();
         }
         
     protected:
+       
+        QLiveDevice( int index, const std::string name ) : QLiveObject(index, name) {}
         
         ci::XmlTree getXmlNode() 
         {
@@ -318,7 +349,7 @@ namespace nocte {
         {
             QLiveObject::loadXmlNode( node );
             
-            QLiveParam      *param;
+            QLiveParamRef   param;
             int             index;
             std::string     name;
             
@@ -334,7 +365,7 @@ namespace nocte {
                     
                 else if ( !param && forceXmlSettings )
                 {
-                    param = new QLiveParam( index, name );
+                    param = QLiveParam::create( index, name );
                     param->loadXmlNode( *nodeIt );
                     mParams.push_back( param );
                 }
@@ -344,94 +375,89 @@ namespace nocte {
         
     protected:
         
-        std::vector<QLiveParam*>    mParams;
-        
-    private:
-        // disallow
-        QLiveDevice(const QLiveDevice&);
-        QLiveDevice& operator=(const QLiveDevice&);
+        std::vector<QLiveParamRef>    mParams;
         
     };
 
-
+    
+    /* ------------------- */
+    /* --- QLive Track --- */
+    /* ------------------- */
+    
     class QLiveTrack : public QLiveObject {
         
         friend class QLive;
         
     public:
-     
-        QLiveTrack( int index, std::string name, ci::Color color = ci::Color::white() ) : QLiveObject(index, name), mColor(color), mVolume(0.0f) {}
         
-        ~QLiveTrack() 
+        static QLiveTrackRef create( int index, std::string name, ci::Color color = ci::Color::white() )
         {
-            for(int k=0; k < mClips.size(); k++)
-                delete mClips[k];
-            mClips.clear();
-            
-            for(int k=0; k < mDevices.size(); k++)
-                delete mDevices[k];
-            mDevices.clear();
+            return QLiveTrackRef( new QLiveTrack( index, name, color ) );
         }
         
-        void addClip( QLiveClip *obj )		{ mClips.push_back(obj); }
-        void addDevice( QLiveDevice *obj )	{ mDevices.push_back(obj); }
+        ~QLiveTrack() {}
+        
+        void addClip( QLiveClipRef obj )		{ mClips.push_back(obj); }
+        void addDevice( QLiveDeviceRef obj )	{ mDevices.push_back(obj); }
             
         
-        std::vector<QLiveClip*> getClips() { return mClips; }
+        std::vector<QLiveClipRef> getClips() { return mClips; }
         
-        std::vector<QLiveDevice*> getDevices() { return mDevices; }
+        std::vector<QLiveDeviceRef> getDevices() { return mDevices; }
 
-        QLiveClip *getClip( int idx ) 
+        QLiveClipRef getClip( int idx )
         { 
             for( size_t k=0; k < mClips.size(); k++ )
                 if ( mClips[k]->mIndex == idx )
                     return mClips[k];
             
-            QLiveClip *clip = NULL;
-            return clip;
+            return QLiveClipRef();
         }
         
-        QLiveClip *getClip( const std::string &name ) 
+        QLiveClipRef getClip( const std::string &name )
         { 
             for( size_t k=0; k < mClips.size(); k++ )
                 if ( mClips[k]->mName == name )
                     return mClips[k];
             
-            QLiveClip *clip = NULL;  
-            return clip;
+            return QLiveClipRef();
         }
 
+        // TODO double check what this is used for, now I'm using shared ptr <<<<<<<<<<<<<<<<<<<<<<<<
         void clearPointers() { mClips.clear(); mDevices.clear(); }
         
-        float getVolume() { return mVolume; }
-
-        float* getVolumeRef() { return &mVolume; }
+        float getVolume() { return *mVolume.get(); }
+        void setVolume( float val ) { *mVolume.get() = val; }
         
-        QLiveDevice* getDevice( int idx ) 
+        std::shared_ptr<float> getVolumeRef() { return mVolume; }
+   
+        QLiveDeviceRef getDevice( int idx )
         {   
             for( size_t k=0; k < mDevices.size(); k++ )
                 if ( mDevices[k]->mIndex == idx )
                     return mDevices[k];
             
-            QLiveDevice *device = NULL;
-            return device;
+            return QLiveDeviceRef();
         }
 
         
-        QLiveDevice* getDevice( const std::string &name ) 
+        QLiveDeviceRef getDevice( const std::string &name )
         { 
             for( size_t k=0; k < mDevices.size(); k++ )
                 if ( mDevices[k]->mName == name )
                     return mDevices[k];
             
-            QLiveDevice *device = NULL;
-            return device;
+            return QLiveDeviceRef();
         }
 
-        
-        ci::ColorA	getColor() { return mColor; };
+        ci::ColorA	getColor() { return mColor; }
         
     protected:
+        
+        QLiveTrack( int index, std::string name, ci::Color color ) : QLiveObject(index, name), mColor(color)
+        {
+            mVolume = std::shared_ptr<float>( new float( 0.0f ) );
+        }
         
         ci::XmlTree getXmlNode() 
         {
@@ -458,11 +484,11 @@ namespace nocte {
         void loadXmlNode( ci::XmlTree node, bool forceXmlSettings = false ) 
         {
             QLiveObject::loadXmlNode( node );
-            mVolume = node.getAttributeValue<float>("volume");
-            mColor  = hexToColor( node.getAttributeValue<std::string>("color") );
+            *mVolume.get()  = node.getAttributeValue<float>("volume");
+            mColor          = hexToColor( node.getAttributeValue<std::string>("color") );
             
-            QLiveClip       *clip;
-            QLiveDevice     *device;
+            QLiveClipRef    clip;
+            QLiveDeviceRef  device;
             int             index;
             std::string     name;
             
@@ -478,7 +504,7 @@ namespace nocte {
                     
                 else if ( !clip && forceXmlSettings )
                 {
-                    clip = new QLiveClip( index, name, ci::Color::white() );
+                    clip = QLiveClip::create( index, name, ci::Color::white() );
                     clip->loadXmlNode( *nodeIt );
                     mClips.push_back( clip );
                 }
@@ -498,7 +524,7 @@ namespace nocte {
                     
                 else if ( !device && forceXmlSettings )
                 {
-                    device = new QLiveDevice( index, name );
+                    device = QLiveDevice::create( index, name );
                     device->loadXmlNode( *nodeIt, forceXmlSettings );
                     mDevices.push_back( device );
                 }
@@ -508,31 +534,35 @@ namespace nocte {
         
     protected:        
         
-        std::vector<QLiveClip*>		mClips;
-        std::vector<QLiveDevice*>	mDevices;
-        float						mVolume;
+        std::vector<QLiveClipRef>   mClips;
+        std::vector<QLiveDeviceRef>	mDevices;
+        std::shared_ptr<float>      mVolume;
         ci::ColorA                  mColor;
         std::map<int, float>        mSends;
         
-    private:
-        // disallow
-        QLiveTrack(const QLiveTrack&);
-        QLiveTrack& operator=(const QLiveTrack&);
-        
     };
 
-
+    
+    /* ------------------- */
+    /* --- QLive Scene --- */
+    /* ------------------- */
+    
     class QLiveScene : public QLiveObject {
 
         friend class QLive;
         
     public:
         
-        QLiveScene( int index, std::string name ) : QLiveObject(index, name) {};
+        static QLiveSceneRef create( int index, std::string name )
+        {
+            return QLiveSceneRef( new QLiveScene( index, name ) );
+        }
 
         ~QLiveScene() {}
         
     protected:
+        
+        QLiveScene( int index, std::string name ) : QLiveObject(index, name) {}
         
         ci::XmlTree getXmlNode() 
         {
@@ -541,11 +571,6 @@ namespace nocte {
 
             return node;
         }
-        
-    private:
-        // disallow
-        QLiveScene(const QLiveScene&);
-        QLiveScene& operator=(const QLiveScene&);
         
     };
 

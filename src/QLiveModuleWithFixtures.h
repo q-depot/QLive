@@ -29,7 +29,7 @@ namespace nocte {
         
     public:
         
-        QLiveModuleWithFixtures( QLive *live, QLiveTrack *track, QLiveClip *clip, std::vector<Fixture*> fixtures ) : QLiveModule(live, track, clip), mFixtures(fixtures)
+        QLiveModuleWithFixtures( QLiveRef live, QLiveTrackRef track, QLiveClipRef clip, std::vector<Fixture*> fixtures ) : QLiveModule(live, track, clip), mFixtures(fixtures)
         {
             mBoundingBox = ci::AxisAlignedBox3f( ci::Vec3f(-1.0f, 0.0f, -1.0f), ci::Vec3f::one() );
 

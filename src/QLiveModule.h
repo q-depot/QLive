@@ -21,6 +21,8 @@
 namespace nocte {
     
     class QLive;
+    typedef std::shared_ptr<QLive> QLiveRef;
+    
     class QLiveClip;
     class QLiveTrack;    
     
@@ -30,7 +32,7 @@ namespace nocte {
         
         QLiveModule() {}
         
-        QLiveModule( QLive *live, QLiveTrack *track, QLiveClip *clip );
+        QLiveModule( QLiveRef live, QLiveTrackRef track, QLiveClipRef clip );
         
         ~QLiveModule() {}
         
@@ -42,9 +44,9 @@ namespace nocte {
 
         bool isPlaying();
         
-        QLiveClip*	getClip() { return mClip; }
+        QLiveClipRef	getClip() { return mClip; }
         
-        QLiveTrack*	getTrack() { return mTrack; }
+        QLiveTrackRef   getTrack() { return mTrack; }
         
         void		updateBrightness();
         
@@ -68,7 +70,7 @@ namespace nocte {
             
             // params
             ci::XmlTree pNode( "param", "" );
-            std::map< std::string, boost::tuple<float,float*,int,int> >::iterator it;
+            std::map< std::string, boost::tuple<float,std::shared_ptr<float>,int,int> >::iterator it;
             for ( it=mParams.begin(); it != mParams.end(); it++ )
             {
                 pNode.setAttribute( "name", it->first );
@@ -108,7 +110,7 @@ namespace nocte {
     
         void registerParam( int deviceIdx, const std::string &name )
         {
-            QLiveDevice *device = mTrack->getDevice( deviceIdx );
+            QLiveDeviceRef device = mTrack->getDevice( deviceIdx );
             
             if ( !device )
             {
@@ -116,13 +118,13 @@ namespace nocte {
                 exit(-1);
             }
             
-            QLiveParam *param = device->getParam(name);
+            QLiveParamRef param = device->getParam(name);
             
             if ( param )
                 mParams[name] = boost::make_tuple( param->getValue(), param->getRef(), device->getIndex(), param->getIndex() );
             
             else
-                mParams[name] = boost::make_tuple( 0.0f, new float(0.0f), device->getIndex(), -1 );
+                mParams[name] = boost::make_tuple( 0.0f, std::shared_ptr<float>( new float(0.0f) ), device->getIndex(), -1 );
         }
         
         float getParamValue( const std::string &name )
@@ -132,11 +134,11 @@ namespace nocte {
         
     protected:
         
-        QLive               *mLive;
-        QLiveTrack          *mTrack;
-        QLiveClip           *mClip;
+        QLiveRef            mLive;
+        QLiveTrackRef       mTrack;
+        QLiveClipRef        mClip;
 
-        std::map< std::string, boost::tuple<float,float*,int,int> >   mParams;
+        std::map< std::string, boost::tuple<float,std::shared_ptr<float>,int,int> >   mParams;
 
         double              mParamsUpdatedAt;
         

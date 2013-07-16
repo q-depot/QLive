@@ -25,7 +25,9 @@ namespace nocte {
     #define AUDIO_RIGHT_CHANNEL     1
         
     class QLive;
+    
     class QLiveDevice;
+    typedef std::shared_ptr<QLiveDevice>    QLiveDeviceRef;
     
     class QLiveAnalyzer {
         
@@ -35,7 +37,7 @@ namespace nocte {
         
         QLiveAnalyzer();
         
-        QLiveAnalyzer( int port, QLiveDevice *device );
+        QLiveAnalyzer( int port, QLiveDeviceRef device );
         
         ~QLiveAnalyzer();
         
@@ -48,7 +50,7 @@ namespace nocte {
         
         bool	isConnected() { return mOscListener != NULL; };
         
-        void	init( int port, QLiveDevice *device );
+        void	init( int port, QLiveDeviceRef device );
         
     protected:
         
@@ -60,7 +62,8 @@ namespace nocte {
       
     protected:
         
-        QLiveDevice         *mDevice;
+        QLiveDeviceRef      mDevice;
+        
         ci::osc::Listener	*mOscListener;
         
         float				mAmplitude[2];

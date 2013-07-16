@@ -22,7 +22,7 @@ using namespace std;
 namespace nocte {
     
     
-    QLiveModule::QLiveModule( QLive *live, QLiveTrack *track, QLiveClip *clip )
+    QLiveModule::QLiveModule( QLiveRef live, QLiveTrackRef track, QLiveClipRef clip )
     : mLive(live), mTrack(track), mClip(clip)
     {
         updateBrightness();
@@ -74,7 +74,7 @@ namespace nocte {
         if ( mParams.count(name) == 0 )
             return;
         
-        boost::tuple<float,float*,int,int> localParam = mParams[name];
+        boost::tuple<float,std::shared_ptr<float>,int,int> localParam = mParams[name];
 
         
         mLive->setParam( mTrack->getIndex(), boost::get<2>(localParam), boost::get<3>(localParam), boost::get<0>(localParam) );
@@ -88,7 +88,7 @@ namespace nocte {
         if ( mClip->isPlaying() && getElapsedSeconds() - mParamsUpdatedAt > 0.5f )
         {                
             // update local params
-            std::map< std::string, boost::tuple<float,float*,int,int> >::iterator it;
+            std::map< std::string, boost::tuple<float,std::shared_ptr<float>,int,int> >::iterator it;
             for ( it=mParams.begin(); it != mParams.end(); it++ )
                 boost::get<0>(it->second) = *(boost::get<1>(it->second));
         }
@@ -101,7 +101,7 @@ namespace nocte {
     { 
         if ( mClip->isPlaying() ) 
         {
-            std::map< std::string, boost::tuple<float,float*,int,int> >::iterator it;
+            std::map< std::string, boost::tuple<float,std::shared_ptr<float>,int,int> >::iterator it;
             for ( it=mParams.begin(); it != mParams.end(); it++ )
                 sendLocalParamValues( it->first );
             
