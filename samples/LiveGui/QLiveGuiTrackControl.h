@@ -73,6 +73,7 @@ public:
             clip = clips[i];
             Gwen::Controls::LabeledRadioButton *radioBtn = rc->AddOption( clip->getName() );
             radioBtn->GetLabel()->SetTextColorOverride( cigwen::toGwen( clip->getColor() ) );
+            radioBtn->SetName( std::to_string( clip->getIndex() ) );
         }
         rc->SetSize( size.x, clips.size() * 22 );
         rc->Dock( Gwen::Pos::Top );
@@ -132,7 +133,7 @@ private:
     void onBrightnessChange( Gwen::Controls::Base* pControl )
     {
         
-        Gwen::Controls::HorizontalSlider* slider = ( Gwen::Controls::HorizontalSlider* ) pControl;
+//        Gwen::Controls::HorizontalSlider* slider = ( Gwen::Controls::HorizontalSlider* ) pControl;
 //        int trackIdx = boost::lexical_cast<int>( slider->GetName() );
         
 //        mLive->setTrackVolume( trackIdx, slider->getScaledValue() );
@@ -151,9 +152,11 @@ private:
     
     void onClipChange( Gwen::Controls::Base* pControl )
     {
-//        Gwen::Controls::RadioButtonController* rc = ( Gwen::Controls::RadioButtonController* ) pControl;
-//        Gwen::Controls::LabeledRadioButton* pSelected = rc->GetSelected();
-//        UnitPrint( Utility::Format( L"RadioButton changed (using 'OnChange' event)\n Chosen Item: '%ls'", pSelected->GetLabel()->GetText().GetUnicode().c_str() ) );
+        Gwen::Controls::RadioButtonController*  rc          = ( Gwen::Controls::RadioButtonController* ) pControl;
+        Gwen::Controls::LabeledRadioButton*     pSelected   = rc->GetSelected();
+        int                                     clipIdx     = boost::lexical_cast<int>( pSelected->GetName() );
+
+        mLive->playClip( mTrack->getIndex(), clipIdx );
     }
     
     void onParamChange( Gwen::Controls::Base* pControl )
@@ -214,23 +217,7 @@ void guiEvent(ciUIEvent *event)
             mLive->playClip( trackIdx, clipIdx );               // play clip
         else
             mLive->stopClip( trackIdx, clipIdx );               // play clip
-    }
-    
-    else if ( boost::find_first( meta, "param") )
-    {
-        // param_TRACKIDX_DEVICEIDX_PARAMIDX
-        
-        ciUISlider *slider = (ciUISlider *) event->widget;
-        
-        std::vector<std::string> splitValues;
-        boost::split( splitValues, meta, boost::is_any_of("_") );
-        
-        int trackIdx    = boost::lexical_cast<int>( splitValues[1] );
-        int deviceIdx   = boost::lexical_cast<int>( splitValues[2] );
-        int paramIdx    = boost::lexical_cast<int>( splitValues[3] );
-        
-        mLive->setParam( trackIdx, deviceIdx, paramIdx, slider->getScaledValue() );
-    }
+    } 
     
 }
 
