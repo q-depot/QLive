@@ -56,15 +56,11 @@ public:
         
         // Brightness
         Gwen::Controls::HorizontalSlider *volume = new Gwen::Controls::HorizontalSlider( this );
-//        volume->SetName( std::to_string( track->getIndex() ) );
         volume->SetSize( size.x - 15, 20 );
         volume->Dock( Gwen::Pos::Top );
         volume->SetRange( 0.0f, 1.0f );
         volume->SetFloatValue( track->getVolume() );
-//        volume->SetFloatValue( 1.0f );
         volume->onValueChanged.Add( this, &QLiveGuiTrackControl::onBrightnessChange );
-        
-//        ci::app::console() << track->getName() << " " << track->getVolume() << " " << volume->GetFloatValue() << std::endl;
         
         // Clips
         Gwen::Controls::RadioButtonController* rc = new Gwen::Controls::RadioButtonController( this );
@@ -74,6 +70,9 @@ public:
             Gwen::Controls::LabeledRadioButton *radioBtn = rc->AddOption( clip->getName() );
             radioBtn->GetLabel()->SetTextColorOverride( cigwen::toGwen( clip->getColor() ) );
             radioBtn->SetName( std::to_string( clip->getIndex() ) );
+
+            if ( clip->isPlaying() )
+                radioBtn->GetRadioButton()->SetChecked( true );
         }
         rc->SetSize( size.x, clips.size() * 22 );
         rc->Dock( Gwen::Pos::Top );
