@@ -51,17 +51,45 @@ public:
 
         // Clips
         Gwen::Controls::RadioButtonController* rc = new Gwen::Controls::RadioButtonController( this );
-
         for( auto i=0; i < clips.size(); i++ )
         {
             clip = clips[i];
             rc->AddOption( clip->getName() );
         }
-        
         rc->SetSize( size.x, size.y - 40 );
         rc->Dock( Gwen::Pos::Top );
-        
         rc->onSelectionChange.Add( this, &QLiveGuiTrackControl::onClipChange );
+        
+        // Params
+        std::vector<nocte::QLiveDeviceRef>  devices = track->getDevices();
+        std::vector<nocte::QLiveParamRef>   params;
+        nocte::QLiveParamRef                param;
+        
+        for( auto i=0; i < devices.size(); i++ )
+        {
+            params = devices[i]->getParams();
+            
+            for( auto j=1; j < params.size(); j++ )       // starts from 1 to ignore "Device On"
+            {
+                param = params[j];
+                
+                // Param name
+                Gwen::Controls::Label *pLabel = new Gwen::Controls::Label( this );
+                pLabel->SetText( param->getName() );
+                pLabel->SizeToContents();
+                pLabel->Dock( Gwen::Pos::Top );
+                
+                // Slider
+                Gwen::Controls::HorizontalSlider *pSlider = new Gwen::Controls::HorizontalSlider( this );
+                pSlider->SetValue( std::to_string( param->getValue() ) );
+                pSlider->SetRange( param->getMin(), param->getMax() );
+                pSlider->SetSize( size.x, 20 );
+                pSlider->Dock( Gwen::Pos::Top );
+                pSlider->onValueChanged.Add( this, &QLiveGuiTrackControl::onParamChange );
+
+//                widget->setMeta( "param_" + toString( track->getIndex() ) + "_" + toString( device->getIndex() ) + "_" + toString( param->getIndex() ) );
+            }
+        }
 
     }
     
@@ -83,6 +111,11 @@ private:
 //        Gwen::Controls::RadioButtonController* rc = ( Gwen::Controls::RadioButtonController* ) pControl;
 //        Gwen::Controls::LabeledRadioButton* pSelected = rc->GetSelected();
 //        UnitPrint( Utility::Format( L"RadioButton changed (using 'OnChange' event)\n Chosen Item: '%ls'", pSelected->GetLabel()->GetText().GetUnicode().c_str() ) );
+    }
+    
+    void onParamChange( Gwen::Controls::Base* pControl )
+    {
+        
     }
 
 };
