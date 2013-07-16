@@ -42,8 +42,8 @@ namespace nocte {
 
         ~QLiveGUI()
         {
-            delete mRenderer;
-            delete mCanvas;
+//            delete mRenderer;
+//            delete mCanvas;
         }
         
         void update() {}

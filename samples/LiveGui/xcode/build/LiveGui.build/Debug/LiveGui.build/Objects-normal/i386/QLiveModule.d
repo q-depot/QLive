@@ -128,5 +128,4 @@ dependencies: \
   ../../../../../boost/boost/type_traits/add_cv.hpp \
   /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../../boost/boost/type_traits/detail/type_trait_def.hpp \
   /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../../boost/boost/type_traits/detail/type_trait_undef.hpp \
-  ../../../../../boost/boost/type_traits/remove_volatile.hpp \
-  /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../src/QLiveAnalyzer.h
+  ../../../../../boost/boost/type_traits/remove_volatile.hpp

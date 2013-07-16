@@ -202,7 +202,6 @@ dependencies: \
   /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../../boost/boost/type_traits/detail/type_trait_def.hpp \
   /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../../../boost/boost/type_traits/detail/type_trait_undef.hpp \
   ../../../../../boost/boost/type_traits/remove_volatile.hpp \
-  /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/../../../src/QLiveAnalyzer.h \
   ../../../../Cinder-Gwen/src/cigwen/GwenRendererGl.h \
   ../../../../../include/cinder/gl/TextureFont.h \
   ../../../../../include/cinder/Text.h \

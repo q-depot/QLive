@@ -20,7 +20,6 @@
 		105AD6DBC47941A0BF38EABE /* PropertyTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BC4D4EB244D644018B8F1A28 /* PropertyTree.cpp */; };
 		10965E4F17956EA800C89494 /* QLiveGUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10965E4E17956EA800C89494 /* QLiveGUI.cpp */; };
 		10DCD3C7179532C400FB8515 /* QLive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10DCD2D3179532C400FB8515 /* QLive.cpp */; };
-		10DCD3C8179532C400FB8515 /* QLiveAnalyzer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10DCD2D5179532C400FB8515 /* QLiveAnalyzer.cpp */; };
 		10DCD3C9179532C400FB8515 /* QLiveModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10DCD2D8179532C400FB8515 /* QLiveModule.cpp */; };
 		13E873059D864D49A3C10C60 /* Dragger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44233DDA4B0459DAA515D16 /* Dragger.cpp */; };
 		1EBFD850EA8A4B209C9AD97B /* Hook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C835E7DF4B7744C6A14653AD /* Hook.cpp */; };
@@ -133,8 +132,6 @@
 		10965E5117957E3700C89494 /* QLiveGuiTrackControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = QLiveGuiTrackControl.h; path = ../samples/LiveGui/QLiveGuiTrackControl.h; sourceTree = "<group>"; };
 		10DCD2D3179532C400FB8515 /* QLive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QLive.cpp; sourceTree = "<group>"; };
 		10DCD2D4179532C400FB8515 /* QLive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLive.h; sourceTree = "<group>"; };
-		10DCD2D5179532C400FB8515 /* QLiveAnalyzer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QLiveAnalyzer.cpp; sourceTree = "<group>"; };
-		10DCD2D6179532C400FB8515 /* QLiveAnalyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLiveAnalyzer.h; sourceTree = "<group>"; };
 		10DCD2D7179532C400FB8515 /* QLiveGUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLiveGUI.h; sourceTree = "<group>"; };
 		10DCD2D8179532C400FB8515 /* QLiveModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QLiveModule.cpp; sourceTree = "<group>"; };
 		10DCD2D9179532C400FB8515 /* QLiveModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLiveModule.h; sourceTree = "<group>"; };
@@ -480,8 +477,6 @@
 			children = (
 				10DCD2D3179532C400FB8515 /* QLive.cpp */,
 				10DCD2D4179532C400FB8515 /* QLive.h */,
-				10DCD2D5179532C400FB8515 /* QLiveAnalyzer.cpp */,
-				10DCD2D6179532C400FB8515 /* QLiveAnalyzer.h */,
 				10DCD2D7179532C400FB8515 /* QLiveGUI.h */,
 				10965E4E17956EA800C89494 /* QLiveGUI.cpp */,
 				10965E5117957E3700C89494 /* QLiveGuiTrackControl.h */,
@@ -1006,7 +1001,6 @@
 				4FFB3E2FC2574367B18377AF /* NetworkingUtils.cpp in Sources */,
 				4A42E58BDD3241C8B99A9305 /* UdpSocket.cpp in Sources */,
 				10DCD3C7179532C400FB8515 /* QLive.cpp in Sources */,
-				10DCD3C8179532C400FB8515 /* QLiveAnalyzer.cpp in Sources */,
 				10DCD3C9179532C400FB8515 /* QLiveModule.cpp in Sources */,
 				10965E4F17956EA800C89494 /* QLiveGUI.cpp in Sources */,
 			);

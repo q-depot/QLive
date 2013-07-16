@@ -36,6 +36,7 @@ public:
         std::vector<nocte::QLiveClipRef>    clips = track->getClips();
         nocte::QLiveClipRef                 clip;
         
+        
         // Label
         Gwen::Controls::Label *label = new Gwen::Controls::Label( this );
         label->SetText( track->getName() );
@@ -43,22 +44,26 @@ public:
         label->Dock( Gwen::Pos::Top );
         label->SetTextColorOverride( cigwen::toGwen( track->getColor() ) );
         
+        
         // Brightness
         Gwen::Controls::HorizontalSlider *brightness = new Gwen::Controls::HorizontalSlider( this );
         brightness->SetSize( size.x, 20 );
         brightness->Dock( Gwen::Pos::Top );
         brightness->onValueChanged.Add( this, &QLiveGuiTrackControl::onBrightnessChange );
 
+        
         // Clips
         Gwen::Controls::RadioButtonController* rc = new Gwen::Controls::RadioButtonController( this );
         for( auto i=0; i < clips.size(); i++ )
         {
             clip = clips[i];
-            rc->AddOption( clip->getName() );
+            Gwen::Controls::LabeledRadioButton *radioBtn = rc->AddOption( clip->getName() );
+//            radioBtn->SetTextColorOverride( cigwen::toGwen( clip->getColor() ) );
         }
-        rc->SetSize( size.x, size.y - 40 );
+        rc->SetSize( size.x, clips.size() * 22 );
         rc->Dock( Gwen::Pos::Top );
         rc->onSelectionChange.Add( this, &QLiveGuiTrackControl::onClipChange );
+        
         
         // Params
         std::vector<nocte::QLiveDeviceRef>  devices = track->getDevices();
@@ -77,6 +82,7 @@ public:
                 Gwen::Controls::Label *pLabel = new Gwen::Controls::Label( this );
                 pLabel->SetText( param->getName() );
                 pLabel->SizeToContents();
+                pLabel->SetMargin( Gwen::Margin( 0, 10, 0, 0 ) );
                 pLabel->Dock( Gwen::Pos::Top );
                 
                 // Slider

@@ -57,7 +57,7 @@ void QLiveGUI::init()
     Vec2f                   size;
     
     size.x              = ( getWindowWidth() - ( n + 1 ) * margin ) / n;
-    size.y              = 350;
+    size.y              = 150;
     
     for( auto k=0; k < tracks.size(); k++ )
     {

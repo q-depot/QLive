@@ -30,8 +30,6 @@ namespace nocte {
     {
         mOscListener    = NULL;
         mOscSender      = NULL;
-        mSelectedTrack  = NULL;
-        mAnalyzer       = NULL;
         mIsPlaying      = false;
         mIsReady        = false;
         
@@ -50,8 +48,6 @@ namespace nocte {
         mFontSmall	= Font( "Helvetica", 12 );
         mFontMedium	= Font( "Helvetica", 14 );
         
-        mAnalyzer   = new QLiveAnalyzer();
-        
         console() << "Live > Initialized!" << endl;	
         
         mPingReceivedAt = getElapsedSeconds();
@@ -60,21 +56,14 @@ namespace nocte {
 
     void QLive::initOsc()
     {
-        if ( mOscListener )					// close OSC listener
-        {
-            mOscListener->shutdown();		
-            delete mOscListener;
-            mOscListener = NULL;
-            ci::sleep(50);
-        }
-        
-        if ( mOscSender )					// close OSC sender
-        {
-            delete mOscSender;
-            mOscSender = NULL;
-        }
-        
         try {
+            
+            if ( mOscSender )					// close OSC sender
+            {
+                delete mOscSender;
+                mOscSender = NULL;
+            }
+            
             mOscSender = new osc::Sender();
             mOscSender->setup(mOscHost, mOscLiveOutPort);
             
@@ -85,7 +74,17 @@ namespace nocte {
             console() << "LIVE: Failed to bind OSC sender socket " << toString(mOscHost) << ":" << toString(mOscLiveOutPort) << endl;
         }
         
+        
         try {
+            
+            if ( mOscListener )					// close OSC listener
+            {
+                mOscListener->shutdown();
+                delete mOscListener;
+                mOscListener = NULL;
+                ci::sleep(50);
+            }
+            
             mOscListener = new osc::Listener();
             mOscListener->setup(mOscLiveInPort);
             console() << "LIVE: Initialized OSC listener " << mOscLiveInPort << endl;
@@ -95,19 +94,6 @@ namespace nocte {
         }
         
         mReceiveOscDataThread = std::thread( &QLive::receiveData, this );
-    }
-
-    
-    void QLive::initAnalyzer( int port, const std::string &trackName, const std::string &deviceName )
-    {
-        QLiveDeviceRef device = getDevice( trackName, deviceName );    // track 0, device 1
-        if ( !device )
-            return;
-//        
-//        if ( !mAnalyzer )
-//            mAnalyzer   = new QLiveAnalyzer( port, device );
-
-        mAnalyzer->init( port, device );
     }
     
     void QLive::shutdown() 
@@ -127,13 +113,6 @@ namespace nocte {
         }
         
         clearObjects();					// delete objects and clear pointers
-        
-        if ( mAnalyzer )
-        {
-            delete mAnalyzer;
-            mAnalyzer = NULL;
-        }
-        
     }
 
     
@@ -552,38 +531,7 @@ namespace nocte {
         }
         console() << "Live > receiveData() thread exited!" << endl;
     }
-
     
-    void QLive::renderAnalyzer()
-    {
-        if ( mAnalyzer )
-            mAnalyzer->render();
-    }
-    
-    
- 	float QLive::getFreqAmplitude(int freq, int channel) 
-    { 
-        if ( mAnalyzer )
-            return mAnalyzer->getFreqAmplitude(freq, channel); 
-
-        return 0.0f;
-    };
-    
-    
-    float* QLive::getFftBuffer(int channel) 
-    { 
-        if ( mAnalyzer )
-            return mAnalyzer->mFft[channel];
-    
-        float *f = NULL;
-        return f;
-    }
-    
-    float* QLive::getAmplitudeRef(int channel)
-    { 
-        return &mAnalyzer->mAmplitude[channel];
-    };
-                 
 
     void QLive::debugOscMessage( osc::Message message )
     {

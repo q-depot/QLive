@@ -28,16 +28,16 @@ namespace nocte {
         updateBrightness();
         
         // init Fft buffer
-        if ( mLive )
-        {   
-            mFftBuffer = new float*[2];
-            
-            for( int k=0; k < 2; k++ )
-            {
-                mFftBuffer[k] = new float[FFT_SIZE];
-                mFftBuffer[k] = mLive->getFftBuffer(k);
-            }
-        }
+//        if ( mLive )
+//        {   
+//            mFftBuffer = new float*[2];
+//            
+//            for( int k=0; k < 2; k++ )
+//            {
+//                mFftBuffer[k] = new float[FFT_SIZE];
+//                mFftBuffer[k] = mLive->getFftBuffer(k);
+//            }
+//        }
         
         mClip->addStateUpdateCallback( std::bind( &QLiveModule::clipStateUpdateCallback, this ) );
         

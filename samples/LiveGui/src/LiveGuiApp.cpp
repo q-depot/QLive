@@ -13,6 +13,7 @@ using namespace nocte;
 
 class LiveGuiApp : public AppNative {
 public:
+    void shutdown();
     void setup();
     void prepareSettings( Settings *settings );
     void mouseDown( MouseEvent event );
@@ -23,6 +24,13 @@ public:
 	QLiveGUIRef             mLiveGUI;
     
 };
+
+
+void LiveGuiApp::shutdown()
+{
+    mLiveGUI.reset();
+    mLive.reset();
+}
 
 
 void LiveGuiApp::prepareSettings( Settings *settings )
@@ -59,7 +67,7 @@ void LiveGuiApp::update()
 void LiveGuiApp::draw()
 {
     // clear out the window with black
-    gl::clear( Color( 0.15, 0.15, 0.15 ) );
+    gl::clear( Color( 0.1f, 0.1f, 0.1f ) );
     
     gl::enableAlphaBlending();
     
@@ -67,7 +75,7 @@ void LiveGuiApp::draw()
     
 //    mLive->renderAnalyzer();
     
-    gl::drawString( toString( getAverageFps() ), Vec2f(15,15) );
+    gl::drawString( toString( getAverageFps() ), getWindowSize() - Vec2f( 100, 25 ) );
     
     mLiveGUI->render();
     

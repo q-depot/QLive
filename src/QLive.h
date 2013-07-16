@@ -20,7 +20,6 @@
 #include "QLiveObject.h"
 #include "QLiveModule.h"
 //#include "QLiveModuleWithFixtures.h"
-#include "QLiveAnalyzer.h"
 
 #define	GET_INFO_MIN_DELAY	2.0f		// minimum delay between info requests
 
@@ -40,17 +39,16 @@ namespace nocte {
             return QLiveRef( new QLive( osc_host, osc_live_in_port, osc_live_out_port, initFromLive ) );
         }
         
-        ~QLive() {}
+        ~QLive()
+        {
+            shutdown();
+        }
 
         void sendMessage(std::string address, std::string args = "");
         
         bool getInfo();
 
         void renderDebug( bool renderScenes = true, bool renderTracks = true, bool renderClips = true, bool renderDevices = true );
-        
-        void renderAnalyzer();
-        
-        void initAnalyzer( int port, const std::string &trackName, const std::string &deviceName );
         
         void play( bool playContinue = false ) 
         { 
@@ -316,18 +314,11 @@ namespace nocte {
         
         QLiveTrackRef	getSelectedTrack() { return mSelectedTrack; }
         
-        void	shutdown();
-        
         bool	isOscListenerConnected()	{ return mOscListener != NULL; }
         
         bool	isOscSenderConnected()		{ return mOscSender != NULL; }
         
         void	initOsc();
-        
-        float	getFreqAmplitude(int freq, int channel);
-        
-        float* getFftBuffer(int channel);
-        float* getAmplitudeRef(int channel);
 
         bool isReady() { return mIsReady; }
             
@@ -343,8 +334,6 @@ namespace nocte {
             return false;
         }
         
-        bool hasAnalyzer() { return mAnalyzer != NULL; }
-        
     private:
         
         QLive( std::string osc_host, int osc_live_in_port, int osc_live_out_port, bool initFromLive );
@@ -354,6 +343,8 @@ namespace nocte {
         void	receiveData();
         
         void	clearObjects();
+        
+        void	shutdown();
         
         ci::ColorA colorIntToColorA( int colorInt )
         {
@@ -381,8 +372,6 @@ namespace nocte {
         std::vector<QLiveSceneRef>	mScenes;
         
         QLiveTrackRef				mSelectedTrack;
-        
-        QLiveAnalyzer               *mAnalyzer;
         
         ci::Font					mFontSmall;
         ci::Font					mFontMedium;
