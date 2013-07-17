@@ -1,6 +1,6 @@
 ffffffffffffffffffffffffffffffff bf465a23fc73a1a6b2cbe4f383d7a00c ffffffffffffffffffffffffffffffff 102 /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/Debug/LiveGui.app
-ffffffffffffffffffffffffffffffff 3cff0fba1732be3a3e5613f574275951 ffffffffffffffffffffffffffffffff 5455768 /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/Debug/LiveGui.app/Contents/MacOS/LiveGui
-457f38e68eebe9101167f5e05d50c676 b137c07f2a30b184610365b58ce50670 ffffffffffffffffffffffffffffffff 3288064 /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/QLiveGUI.o
+ffffffffffffffffffffffffffffffff 3cff0fba1732be3a3e5613f574275951 ffffffffffffffffffffffffffffffff 5455884 /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/Debug/LiveGui.app/Contents/MacOS/LiveGui
+457f38e68eebf77b1167f5e05d50c676 b137c07f2a30b184610365b58ce50670 ffffffffffffffffffffffffffffffff 3290952 /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/QLiveGUI.o
 457f38e68ed1142a1167f5e05d50157f 46e7048e360d1eefc952b27e5455713d ffffffffffffffffffffffffffffffff 3179780 /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/QLiveModule.o
 457f38e68e4412601167f5e05d506dfa d3fcd673f9761b77a3b3618b96cab417 ffffffffffffffffffffffffffffffff 4022700 /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/QLive.o
 457f38e6df3465661167f5e05d511abe d5f490541c27d0f6fbbc4b629a013ace ffffffffffffffffffffffffffffffff 378744 /Users/Q/Code/Cinder/blocks/QLive/samples/LiveGui/xcode/build/LiveGui.build/Debug/LiveGui.build/Objects-normal/i386/UdpSocket.o
