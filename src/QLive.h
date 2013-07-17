@@ -271,7 +271,25 @@ namespace nocte {
             
             return QLiveParamRef();
         }
-
+        
+        std::shared_ptr<float> getParamRef( int trackIdx, int deviceIdx, std::string name )
+        {
+            QLiveTrackRef track = getTrack( trackIdx );
+            
+            if ( track )
+            {
+                QLiveDeviceRef device = track->getDevice( deviceIdx );
+                if ( device )
+                {
+                    QLiveParamRef param = device->getParam(name);
+                    if ( param )
+                        return param->getRef();
+                }
+            }
+            
+            return std::shared_ptr<float>();
+        }
+        
         float getParamValue( int trackIdx, int deviceIdx, std::string name ) 
         { 
             QLiveTrackRef track = getTrack( trackIdx );
@@ -290,23 +308,25 @@ namespace nocte {
             return 0;
         }
         
-        std::shared_ptr<float> getParamRef( int trackIdx, int deviceIdx, std::string name )
-        { 
+        float getParamValue( int trackIdx, int deviceIdx, int paramIdx )
+        {
             QLiveTrackRef track = getTrack( trackIdx );
             
             if ( track )
-            {   
+            {
                 QLiveDeviceRef device = track->getDevice( deviceIdx );
                 if ( device )
                 {
-                    QLiveParamRef param = device->getParam(name);
+                    QLiveParamRef param = device->getParam(paramIdx);
                     if ( param )
-                        return param->getRef();
+                        return param->getValue();
                 }
             }
             
-            return std::shared_ptr<float>();
+            return 0;
         }
+        
+        
         
         bool isPlaying() { return mIsPlaying; }
 
