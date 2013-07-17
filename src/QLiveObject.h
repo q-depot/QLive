@@ -452,6 +452,16 @@ namespace nocte {
 
         ci::ColorA	getColor() { return mColor; }
         
+        QLiveClipRef getPlayingClip()
+        {
+            for( size_t k=0; k < mClips.size(); k++ )
+                if ( mClips[k]->isPlaying() )
+                    return mClips[k];
+            
+            return QLiveClipRef();
+        }
+        
+        
     protected:
         
         QLiveTrack( int index, std::string name, ci::Color color ) : QLiveObject(index, name), mColor(color)

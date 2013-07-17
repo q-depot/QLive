@@ -92,7 +92,7 @@ public:
         }
         mClipsRadioController->SetSize( size.x, clips.size() * 22 );
         mClipsRadioController->Dock( Gwen::Pos::Top );
-//        mClipsRadioController->onSelectionChange.Add( this, &QLiveGuiTrackControl::onClipChange );
+        mClipsRadioController->onSelectionChange.Add( this, &QLiveGuiTrackControl::onClipChange );
         
         
         // Params
@@ -163,6 +163,36 @@ public:
             slider->SetFloatValue( mLive->getParamValue( trackIdx, deviceIdx, paramIdx ) );
             slider->onValueChanged = cb;
         }
+        
+        
+        
+        // Clips
+        Gwen::Controls::LabeledRadioButton  *pSelected  = mClipsRadioController->GetSelected();
+        nocte::QLiveClipRef                 playingClip = mTrack->getPlayingClip();
+        
+        if ( playingClip )
+        {
+            int selectedClipIdx = -1;
+            
+            if ( pSelected )
+                selectedClipIdx = boost::lexical_cast<int>( pSelected->GetName() );
+
+            if ( selectedClipIdx != playingClip->getIndex() )
+            {
+                Gwen::Controls::Base::List &children = mClipsRadioController->GetChildren();
+                
+                for ( Gwen::Controls::Base::List::iterator iter = children.begin(); iter != children.end(); ++iter )
+                {
+                    Gwen::Controls::LabeledRadioButton* pChild = gwen_cast<Gwen::Controls::LabeledRadioButton>( *iter );
+                    selectedClipIdx = boost::lexical_cast<int>( pChild->GetName() );
+                    
+                    if ( playingClip->getIndex() == selectedClipIdx )
+                        pChild->Select();
+                }
+            }
+        }
+        
+        
         
         
         
@@ -264,12 +294,7 @@ private:
     void onVolumeChange( Gwen::Controls::Base* pControl )
     {
         Gwen::Controls::HorizontalSlider* slider = (Gwen::Controls::HorizontalSlider*)pControl;
-        //        Gwen::Controls::LabeledRadioButton*     pSelected   = rc->GetSelected();
-        //        int                                     clipIdx     = boost::lexical_cast<int>( pSelected->GetName() );
-        //
         mLive->setTrackVolume( mTrack->getIndex(), slider->GetFloatValue() );
-        
-        ci::app::console() << "volume changed" << std::endl;
     }
     
     
@@ -285,6 +310,16 @@ private:
         mLive->setParam( trackIdx, deviceIdx, paramIdx, ((Gwen::Controls::Slider*)pControl)->GetFloatValue() );
     }
 
+    
+    void onClipChange( Gwen::Controls::Base* pControl )
+    {
+        Gwen::Controls::RadioButtonController*  rc          = ( Gwen::Controls::RadioButtonController* ) pControl;
+        Gwen::Controls::LabeledRadioButton*     pSelected   = rc->GetSelected();
+        int                                     clipIdx     = boost::lexical_cast<int>( pSelected->GetName() );
+        
+        mLive->playClip( mTrack->getIndex(), clipIdx );
+    }
+    
 private:
     
     nocte::QLiveRef                                 mLive;
