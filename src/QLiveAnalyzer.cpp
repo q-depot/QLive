@@ -61,7 +61,7 @@ QLiveAnalyzer::QLiveAnalyzer() : mDevice(NULL), mOscListener(NULL)
 }
     
     
-QLiveAnalyzer::QLiveAnalyzer( int port, QLiveDevice *device ) : mOscListener(NULL)
+QLiveAnalyzer::QLiveAnalyzer( int port, QLiveDeviceRef device ) : mOscListener(NULL)
 {
     QLiveAnalyzer();
     
@@ -86,7 +86,7 @@ QLiveAnalyzer::~QLiveAnalyzer()
 }
 
     
-void QLiveAnalyzer::init( int port, QLiveDevice *device )
+void QLiveAnalyzer::init( int port, QLiveDeviceRef device )
 {
     mOscInPort  = port;
     mDevice     = device;

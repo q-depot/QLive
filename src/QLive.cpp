@@ -30,10 +30,10 @@ namespace nocte {
     {
         mOscListener    = NULL;
         mOscSender      = NULL;
-        mSelectedTrack  = NULL;
-        mAnalyzer       = NULL;
         mIsPlaying      = false;
         mIsReady        = false;
+        
+        mRunOscDataThread = false;
         
         initOsc();
         
@@ -48,8 +48,6 @@ namespace nocte {
         mFontSmall	= Font( "Helvetica", 12 );
         mFontMedium	= Font( "Helvetica", 14 );
         
-        mAnalyzer   = new QLiveAnalyzer();
-        
         console() << "Live > Initialized!" << endl;	
         
         mPingReceivedAt = getElapsedSeconds();
@@ -58,21 +56,14 @@ namespace nocte {
 
     void QLive::initOsc()
     {
-        if ( mOscListener )					// close OSC listener
-        {
-            mOscListener->shutdown();		
-            delete mOscListener;
-            mOscListener = NULL;
-            ci::sleep(50);
-        }
-        
-        if ( mOscSender )					// close OSC sender
-        {
-            delete mOscSender;
-            mOscSender = NULL;
-        }
-        
         try {
+            
+            if ( mOscSender )					// close OSC sender
+            {
+                delete mOscSender;
+                mOscSender = NULL;
+            }
+            
             mOscSender = new osc::Sender();
             mOscSender->setup(mOscHost, mOscLiveOutPort);
             
@@ -83,7 +74,17 @@ namespace nocte {
             console() << "LIVE: Failed to bind OSC sender socket " << toString(mOscHost) << ":" << toString(mOscLiveOutPort) << endl;
         }
         
+        
         try {
+            
+            if ( mOscListener )					// close OSC listener
+            {
+                mOscListener->shutdown();
+                delete mOscListener;
+                mOscListener = NULL;
+                ci::sleep(50);
+            }
+            
             mOscListener = new osc::Listener();
             mOscListener->setup(mOscLiveInPort);
             console() << "LIVE: Initialized OSC listener " << mOscLiveInPort << endl;
@@ -92,33 +93,18 @@ namespace nocte {
             mOscListener = NULL;
         }
         
-        thread receiveDataThread( &QLive::receiveData, this);
-    }
-
-    
-    void QLive::initAnalyzer( int port, const std::string &trackName, const std::string &deviceName )
-    {
-        QLiveDevice *device = getDevice( trackName, deviceName );    // track 0, device 1
-        if ( !device )
-            return;
-//        
-//        if ( !mAnalyzer )
-//            mAnalyzer   = new QLiveAnalyzer( port, device );
-
-        mAnalyzer->init( port, device );
+        mReceiveOscDataThread = std::thread( &QLive::receiveData, this );
     }
     
     void QLive::shutdown() 
     {
         mIsReady = false;
         
-        if ( mOscListener )					// close OSC listener
-        {
-            mOscListener->shutdown();		
-            delete mOscListener;
-            mOscListener = NULL;
-            ci::sleep(50);
-        }
+        mRunOscDataThread = false;
+        mReceiveOscDataThread.join();
+        mOscListener->shutdown();
+        delete mOscListener;
+        mOscListener = NULL;
 
         if ( mOscSender )					// close OSC sender
         {
@@ -126,25 +112,13 @@ namespace nocte {
             mOscSender = NULL;
         }
         
-        deleteObjects();					// delete objects and clear pointers
-        
-        if ( mAnalyzer )
-        {
-            delete mAnalyzer;
-            mAnalyzer = NULL;
-        }
-        
+        clearObjects();					// delete objects and clear pointers
     }
 
     
-    void QLive::deleteObjects()
-    {        
-        for(int k=0; k < mTracks.size(); k++)
-            delete mTracks[k];
+    void QLive::clearObjects()
+    {
         mTracks.clear();
-        
-        for(int k=0; k < mScenes.size(); k++)
-            delete mScenes[k];
         mScenes.clear();
     }
     
@@ -156,18 +130,16 @@ namespace nocte {
         
         mIsReady = false;
         
-        deleteObjects();
+        clearObjects();
         
         mSelectedTrack = NULL;
         
         mGetInfoRequestAt = getElapsedSeconds();
 
-        deleteObjects();
-        
         sendMessage("/live/name/scene");
 
         ci::sleep(50);
-        sendMessage("/live/name/track"); 
+        sendMessage("/live/name/track");
 
         ci::sleep(200);
         sendMessage("/live/name/clip");    
@@ -185,9 +157,9 @@ namespace nocte {
 
     void QLive::renderDebug( bool renderScenes, bool renderTracks, bool renderClips, bool renderDevices )
     {
-        QLiveTrack  *track;
-        QLiveClip   *clip;
-        QLiveDevice *device;
+        QLiveTrackRef   track;
+        QLiveClipRef    clip;
+        QLiveDeviceRef  device;
 
         gl::color( Color::white() );
         
@@ -300,13 +272,13 @@ namespace nocte {
                 return;
             }
         
-        mScenes.push_back( new QLiveScene( index, name ) );
+        mScenes.push_back( QLiveScene::create( index, name ) );
         
 //        console() << "parse scene: " << endl;
     }
 
 
-    bool sortTracksByIndex( QLiveTrack *a, QLiveTrack *b ) { return ( a->getIndex() < b->getIndex() ); };
+    bool sortTracksByIndex( QLiveTrackRef a, QLiveTrackRef b ) { return ( a->getIndex() < b->getIndex() ); };
 
 
     void QLive::parseTrack( osc::Message message ) 
@@ -326,7 +298,7 @@ namespace nocte {
             }
         
         if ( !has_track )
-            mTracks.push_back( new QLiveTrack( index, name, color ) );
+            mTracks.push_back( QLiveTrack::create( index, name, color ) );
 
         sort( mTracks.begin(), mTracks.end(), sortTracksByIndex );
 
@@ -343,7 +315,7 @@ namespace nocte {
         string 	name		= message.getArgAsString(2);
         ColorA  color       = colorIntToColorA( message.getArgAsInt32(3) );
 
-        QLiveTrack  *track = getTrack( trackIdx );
+        QLiveTrackRef track = getTrack( trackIdx );
         
         if ( track )                                            // return if the clip already exists
         {
@@ -351,7 +323,7 @@ namespace nocte {
                 return;
         }
     
-        QLiveClip *clip = new QLiveClip( clipIdx, name, color );
+        QLiveClipRef clip = QLiveClip::create( clipIdx, name, color );
         
         mTracks[trackIdx]->mClips.push_back( clip );
         
@@ -365,10 +337,10 @@ namespace nocte {
         int clipIdx		= message.getArgAsInt32(1);
         ClipState state	= (ClipState)message.getArgAsInt32(2);
         
-        QLiveClip*  clip;
+        QLiveClipRef clip;
         
         
-        QLiveTrack  *track = getTrack( trackIdx );
+        QLiveTrackRef track = getTrack( trackIdx );
         
         if ( track )
         {
@@ -386,10 +358,10 @@ namespace nocte {
         if ( message.getNumArgs() < 3 )	// seems there is an error in the APIs!
            return;
         
-        int			deviceIdx;
-        string		deviceName;
+        int             deviceIdx;
+        string          deviceName;
 
-        QLiveTrack  *track = getTrack( message.getArgAsInt32(0) );
+        QLiveTrackRef   track = getTrack( message.getArgAsInt32(0) );
         
         if ( track )
         {
@@ -400,7 +372,7 @@ namespace nocte {
                     
                 if ( !track->getDevice(deviceIdx) )
                 {
-                    track->mDevices.push_back( new QLiveDevice( deviceIdx, deviceName ) );
+                    track->mDevices.push_back( QLiveDevice::create( deviceIdx, deviceName ) );
                     
                     // get device params	
                     sendMessage("/live/device", "i" + toString(track->mIndex) + " i" + toString(deviceIdx) );
@@ -416,10 +388,10 @@ namespace nocte {
         if ( message.getNumArgs() < 7 )
             return;
         
-        int			trackIdx    = message.getArgAsInt32(0);
-        int			deviceIdx   = message.getArgAsInt32(1);
-        QLiveTrack	*track      = getTrack(trackIdx);
-        QLiveDevice	*device     = track->getDevice( deviceIdx );
+        int             trackIdx    = message.getArgAsInt32(0);
+        int             deviceIdx   = message.getArgAsInt32(1);
+        QLiveTrackRef	track       = getTrack(trackIdx);
+        QLiveDeviceRef  device      = track->getDevice( deviceIdx );
         
         if ( !device )
             return;
@@ -450,6 +422,9 @@ namespace nocte {
         if ( message.getNumArgs() < 7 )
             return;
         
+        console() << "TODO: clean up this shit." << endl;// WTF is this???
+        // TODO: clean up this shit.
+        
         int			trackIdx    = message.getArgAsInt32(0);
         int			deviceIdx   = message.getArgAsInt32(1);
 //        int			paramIdx    = message.getArgAsInt32(2);
@@ -458,10 +433,10 @@ namespace nocte {
 //        float       paramMin    = message.getArgAsFloat(5);
 //        float       paramMax    = message.getArgAsFloat(6);
         
-        QLiveParam	*param      = getParam( trackIdx, deviceIdx, paramName );
+        QLiveParamRef   param      = getParam( trackIdx, deviceIdx, paramName );
         
         if ( param )
-            param->mValue = paramValue;
+            param->setValue( paramValue );
         
 //        else
 //        {
@@ -476,7 +451,7 @@ namespace nocte {
     
     void QLive::parseTrackSends( ci::osc::Message message )
     {
-        QLiveTrack *track;
+        QLiveTrackRef track;
 
         track = getTrack( message.getArgAsInt32(0) );
         if ( track )
@@ -486,8 +461,10 @@ namespace nocte {
     
     
     void QLive::receiveData(){
+        
+        mRunOscDataThread = true;
 
-        while( mOscListener ) {
+        while( mRunOscDataThread && mOscListener ) {
 
             while (mOscListener->hasWaitingMessages()) {
                 osc::Message message;
@@ -525,7 +502,7 @@ namespace nocte {
                 {
                     int trackIndex = message.getArgAsInt32(0);
                     if ( trackIndex < mTracks.size() )
-                        mTracks[trackIndex]->mVolume = message.getArgAsFloat(1);
+                        mTracks[trackIndex]->setVolume( message.getArgAsFloat(1) );
                 }
 
                 else if ( msgAddress == "/live/track" )
@@ -554,38 +531,7 @@ namespace nocte {
         }
         console() << "Live > receiveData() thread exited!" << endl;
     }
-
     
-    void QLive::renderAnalyzer()
-    {
-        if ( mAnalyzer )
-            mAnalyzer->render();
-    }
-    
-    
- 	float QLive::getFreqAmplitude(int freq, int channel) 
-    { 
-        if ( mAnalyzer )
-            return mAnalyzer->getFreqAmplitude(freq, channel); 
-
-        return 0.0f;
-    };
-    
-    
-    float* QLive::getFftBuffer(int channel) 
-    { 
-        if ( mAnalyzer )
-            return mAnalyzer->mFft[channel];
-    
-        float *f = NULL;
-        return f;
-    }
-    
-    float* QLive::getAmplitudeRef(int channel)
-    { 
-        return &mAnalyzer->mAmplitude[channel];
-    };
-                 
 
     void QLive::debugOscMessage( osc::Message message )
     {
@@ -642,7 +588,7 @@ namespace nocte {
     void QLive::loadSettings( const std::string &filename, bool forceXmlSettings )
     {
         if ( forceXmlSettings )
-            deleteObjects();
+            clearObjects();
         
         XmlTree liveSettings;
         
@@ -656,10 +602,10 @@ namespace nocte {
             return;
         }
         
-        QLiveScene  *scene;
-        QLiveTrack  *track;
-        int         index;
-        string      name;
+        QLiveSceneRef   scene;
+        QLiveTrackRef   track;
+        int             index;
+        string          name;
         
         // parse scenes
         for( XmlTree::Iter nodeIt = liveSettings.begin("QLiveSettings/scenes/scene"); nodeIt != liveSettings.end(); ++nodeIt )
@@ -673,7 +619,7 @@ namespace nocte {
             
             else if ( !scene && forceXmlSettings )
             {
-                scene = new QLiveScene( index, name );
+                scene = QLiveScene::create( index, name );
                 scene->loadXmlNode( *nodeIt );
                 mScenes.push_back( scene );
             }
@@ -691,7 +637,7 @@ namespace nocte {
             
             else if ( !track && forceXmlSettings )
             {
-                track = new QLiveTrack( index, name );
+                track = QLiveTrack::create( index, name );
                 track->loadXmlNode( *nodeIt, forceXmlSettings );
                 mTracks.push_back( track );
             }
