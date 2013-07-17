@@ -36,6 +36,7 @@ void QLiveGUI::init()
     
 	Gwen::Skin::TexturedBase* skin = new Gwen::Skin::TexturedBase( mRenderer );
 	skin->Init( "DefaultSkinQLiveGui.png" );
+//    skin->m_colBGDark = Gwen::Color( 15, 15, 15 );
     
 	mCanvas = new Gwen::Controls::Canvas( skin );
 	mCanvas->SetSize( getWindowWidth(), getWindowHeight() );

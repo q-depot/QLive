@@ -26,9 +26,13 @@ class QLiveGuiTrackControl : public Gwen::Controls::Base {
 
 private:
     
-    struct GwenDeviceParam {
+    struct GwenDeviceParamRef {
         Gwen::Controls::HorizontalSlider    *slider;
-        nocte::QLiveParamRef                param;
+        int                                 trackIdx;
+        int                                 deviceIdx;
+        int                                 paramIdx;
+        std::shared_ptr<float>              ref;
+        float                               prevVal;
     };
     
     
@@ -56,11 +60,12 @@ public:
         
         // Brightness
         Gwen::Controls::HorizontalSlider *volume = new Gwen::Controls::HorizontalSlider( this );
-        volume->SetSize( size.x - 15, 20 );
         volume->Dock( Gwen::Pos::Top );
+        volume->SetSize( size.x - 15, 20 );
         volume->SetRange( 0.0f, 1.0f );
-        volume->SetFloatValue( track->getVolume() );
-        volume->onValueChanged.Add( this, &QLiveGuiTrackControl::onBrightnessChange );
+        volume->SetFloatValue( 0.0f );  // if I set the value here, somehow it gets set in the wrong position, in this way I update the value in the first Render() call
+        mBrightnessGwenParamRef = { volume, mTrack->getIndex(), 0, 0, mTrack->getVolumeRef(), 0.0f };
+
         
         // Clips
         Gwen::Controls::RadioButtonController* rc = new Gwen::Controls::RadioButtonController( this );
@@ -107,12 +112,11 @@ public:
                 pSlider->SetSize( size.x, 20 );
                 pSlider->Dock( Gwen::Pos::Top );
                 pSlider->SetRange( param->getMin(), param->getMax() );
-                pSlider->SetValue( std::to_string( param->getValue() ) );
-                pSlider->onValueChanged.Add( this, &QLiveGuiTrackControl::onParamChange );
-
+                pSlider->SetFloatValue( 0.0f );
                 // used in Render() to update the value
-                GwenDeviceParam p = { pSlider, param };
+                GwenDeviceParamRef p = { pSlider, track->getIndex(), devices[i]->getIndex(), param->getIndex(), param->getRef(), 0.0f };
                 mGwenParams.push_back(p);
+            
             }
         }
 
@@ -122,32 +126,52 @@ public:
 
 	virtual void Render( Gwen::Skin::Base* skin )
     {
+        // this piece of code below is awful!
+        // TODO: change this shit!
+        
+        // update params values, I can't use the fucking onValueChanged handler because it gets together with SetFloatValue and mess up with the OSC thread
+        float sliderVal;
+        float prevVal;
+        float paramVal;
+        
         for( auto k=0; k < mGwenParams.size(); k++ )
-            mGwenParams[k].slider->SetFloatValue( mGwenParams[k].param->getValue() );
+        {
+            sliderVal   = mGwenParams[k].slider->GetFloatValue();
+            prevVal     = mGwenParams[k].prevVal;
+            paramVal    = *mGwenParams[k].ref.get();
+            
+            if (  sliderVal == paramVal )
+                continue;
+
+            if ( sliderVal != prevVal )
+                mLive->setParam( mGwenParams[k].trackIdx, mGwenParams[k].deviceIdx, mGwenParams[k].paramIdx, sliderVal );
+            
+            else
+                mGwenParams[k].slider->SetFloatValue( paramVal );
+
+            mGwenParams[k].prevVal = *mGwenParams[k].ref.get();  // always get the latest value
+        }
+        
+        // same thing for the brightness!        
+        sliderVal   = mBrightnessGwenParamRef.slider->GetFloatValue();
+        prevVal     = mBrightnessGwenParamRef.prevVal;
+        paramVal    = *mBrightnessGwenParamRef.ref.get();
+        
+        if (  sliderVal != paramVal )
+        {
+            if ( sliderVal != prevVal )
+                mLive->setTrackVolume( mBrightnessGwenParamRef.trackIdx, sliderVal );
+
+            else
+                mBrightnessGwenParamRef.slider->SetFloatValue( paramVal );
+            
+            mBrightnessGwenParamRef.prevVal = *mBrightnessGwenParamRef.ref.get();  // always get the latest value
+        }
+        
     }
     
     
 private:
-    
-    void onBrightnessChange( Gwen::Controls::Base* pControl )
-    {
-        
-//        Gwen::Controls::HorizontalSlider* slider = ( Gwen::Controls::HorizontalSlider* ) pControl;
-//        int trackIdx = boost::lexical_cast<int>( slider->GetName() );
-        
-//        mLive->setTrackVolume( trackIdx, slider->getScaledValue() );
-        
-//        ci::app::console() << "trackIdx: " << trackIdx << " " << slider->GetFloatValue() << std::endl;
-        
-//        Gwen::Controls::LabeledRadioButton* pSelected = rc->GetSelected();
-//        UnitPrint( Utility::Format( L"RadioButton changed (using 'OnChange' event)\n Chosen Item: '%ls'", pSelected->GetLabel()->GetText().GetUnicode().c_str() ) );
-        
-//        
-//        int trackIdx = boost::lexical_cast<int>( event->widget->getMeta() );
-//        ciUISlider *slider = (ciUISlider *) event->widget;
-//        mLive->setTrackVolume( trackIdx, slider->getScaledValue() );
-    }
-
     
     void onClipChange( Gwen::Controls::Base* pControl )
     {
@@ -158,23 +182,13 @@ private:
         mLive->playClip( mTrack->getIndex(), clipIdx );
     }
     
-    void onParamChange( Gwen::Controls::Base* pControl )
-    {        
-        std::vector<std::string> splitValues;
-        boost::split( splitValues, pControl->GetName(), boost::is_any_of("_") );
-        
-        int deviceIdx   = boost::lexical_cast<int>( splitValues[0] );
-        int paramIdx    = boost::lexical_cast<int>( splitValues[1] );
-        
-        mLive->setParam( mTrack->getIndex(), deviceIdx, paramIdx, ((Gwen::Controls::Slider*)pControl)->GetFloatValue() );
-    }
-
+    
 private:
     
     nocte::QLiveRef                 mLive;
     nocte::QLiveTrackRef            mTrack;
-    std::vector<GwenDeviceParam>    mGwenParams;
-    
+    std::vector<GwenDeviceParamRef> mGwenParams;
+    GwenDeviceParamRef              mBrightnessGwenParamRef;
 };
 
 
