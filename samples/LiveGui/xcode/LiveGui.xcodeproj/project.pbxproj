@@ -129,7 +129,6 @@
 		0F872F37E4424A6D8FD2DF37 /* HorizontalScrollBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HorizontalScrollBar.h; path = "../../../../Cinder-Gwen/gwen/gwen/include/Gwen/Controls/HorizontalScrollBar.h"; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		10965E4E17956EA800C89494 /* QLiveGUI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QLiveGUI.cpp; sourceTree = "<group>"; };
-		10965E5117957E3700C89494 /* QLiveGuiTrackControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = QLiveGuiTrackControl.h; path = ../samples/LiveGui/QLiveGuiTrackControl.h; sourceTree = "<group>"; };
 		10D558931795BE47005D9A67 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.md; path = ../../../README.md; sourceTree = "<group>"; };
 		10DCD2D3179532C400FB8515 /* QLive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QLive.cpp; sourceTree = "<group>"; };
 		10DCD2D4179532C400FB8515 /* QLive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLive.h; sourceTree = "<group>"; };
@@ -138,6 +137,7 @@
 		10DCD2D9179532C400FB8515 /* QLiveModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLiveModule.h; sourceTree = "<group>"; };
 		10DCD2DA179532C400FB8515 /* QLiveModuleWithFixtures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLiveModuleWithFixtures.h; sourceTree = "<group>"; };
 		10DCD2DB179532C400FB8515 /* QLiveObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLiveObject.h; sourceTree = "<group>"; };
+		10E858B71796CCB2006648D9 /* QLiveGuiTrackControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QLiveGuiTrackControl.h; sourceTree = "<group>"; };
 		128AF15EBE3E4C17A17C1B46 /* WindowControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WindowControl.h; path = "../../../../Cinder-Gwen/gwen/gwen/include/Gwen/Controls/WindowControl.h"; sourceTree = "<group>"; };
 		1407AF1E91B146BE85B4D5BB /* OscTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OscTypes.h; path = ../../../../OSC/src/osc/OscTypes.h; sourceTree = "<group>"; };
 		14BBF60AB3AB485990920E70 /* UdpSocket.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = UdpSocket.cpp; path = ../../../../OSC/src/ip/posix/UdpSocket.cpp; sourceTree = "<group>"; };
@@ -480,7 +480,7 @@
 				10DCD2D4179532C400FB8515 /* QLive.h */,
 				10DCD2D7179532C400FB8515 /* QLiveGUI.h */,
 				10965E4E17956EA800C89494 /* QLiveGUI.cpp */,
-				10965E5117957E3700C89494 /* QLiveGuiTrackControl.h */,
+				10E858B71796CCB2006648D9 /* QLiveGuiTrackControl.h */,
 				10DCD2D8179532C400FB8515 /* QLiveModule.cpp */,
 				10DCD2D9179532C400FB8515 /* QLiveModule.h */,
 				10DCD2DA179532C400FB8515 /* QLiveModuleWithFixtures.h */,
