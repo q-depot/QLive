@@ -38,7 +38,7 @@ namespace nocte {
         
         virtual void render( float height ) {}
         
-        virtual void update( float *values ) {}
+        virtual void update( std::shared_ptr<float> values, size_t n ) {}
         
         bool updateModule();
 

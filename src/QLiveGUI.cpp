@@ -16,7 +16,6 @@
 #include "QLiveGui.h"
 #include "QLiveGuiTrackControl.h"
 
-//#include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
 
 using namespace ci;
@@ -27,22 +26,6 @@ using namespace nocte;
 
 void QLiveGUI::init()
 {
-    // TODO: find a better way..
-//	fs::path rootPath = getAppPath().parent_path().parent_path().parent_path().parent_path().parent_path().parent_path();
-//	addAssetDirectory( rootPath / "assets" );
-    
-	mRenderer = new cigwen::GwenRendererGl();
-	mRenderer->Init();
-    
-	Gwen::Skin::TexturedBase* skin = new Gwen::Skin::TexturedBase( mRenderer );
-	skin->Init( "DefaultSkinQLiveGui.png" );
-//    skin->m_colBGDark = Gwen::Color( 15, 15, 15 );
-    
-	mCanvas = new Gwen::Controls::Canvas( skin );
-//	mCanvas->SetSize( getWindowWidth(), getWindowHeight() );
-    mCanvas->SetSize( getWindowWidth(), 0 );
-	mGwenInput = cigwen::GwenInput::create( mCanvas );
-    
     std::vector<QLiveTrackRef> tracks = mLive->getTracks();
     
     if ( tracks.empty() )
@@ -64,11 +47,14 @@ void QLiveGUI::init()
             continue;
         
         mControls.push_back( QLiveGuiTrackControl::create( mLive, tracks[k], size, mCanvas ) );
-        
-        if ( mControls.back()->GetSize().y > mCanvas->GetSize().y )
-            mCanvas->SetHeight( mControls.back()->GetSize().y );    
     }
-    
+}
+
+
+void QLiveGUI::toggle()
+{
+    for( auto k=0; k < mControls.size(); k++ )
+        mControls[k]->SetHidden( mControls[k]->Visible() );
 }
 
 

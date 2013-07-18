@@ -39,31 +39,22 @@ namespace nocte {
         
     public:
         
-        static QLiveGUIRef create( QLiveRef live )
+        static QLiveGUIRef create( QLiveRef live, Gwen::Controls::Canvas *canvas )
         {
-            return QLiveGUIRef( new QLiveGUI( live ) );
+            return QLiveGUIRef( new QLiveGUI( live, canvas ) );
         }
 
         ~QLiveGUI() {}
         
-        void render()
-        {
-            if ( mCanvas->Visible() )
-                mCanvas->RenderCanvas();
-        }
-        
         void init();
         
-        void toggle()
-        {
-            mCanvas->SetHidden( mCanvas->Visible() );
-        }
+        void toggle();
         
         void toggleParams();
         
     private:
         
-        QLiveGUI( QLiveRef live ) : mLive(live)
+        QLiveGUI( QLiveRef live, Gwen::Controls::Canvas *canvas ) : mLive(live), mCanvas(canvas)
         {
             init();
         }
@@ -72,10 +63,8 @@ namespace nocte {
     private:
         
         QLiveRef                    mLive;
+        Gwen::Controls::Canvas      *mCanvas;
         
-        cigwen::GwenRendererGl                  *mRenderer;
-        cigwen::GwenInputRef                    mGwenInput;
-        Gwen::Controls::Canvas                  *mCanvas;
         std::vector<QLiveGuiTrackControlRef>    mControls;
     };
     
