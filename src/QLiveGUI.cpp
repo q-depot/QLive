@@ -39,7 +39,8 @@ void QLiveGUI::init()
 //    skin->m_colBGDark = Gwen::Color( 15, 15, 15 );
     
 	mCanvas = new Gwen::Controls::Canvas( skin );
-	mCanvas->SetSize( getWindowWidth(), getWindowHeight() );
+//	mCanvas->SetSize( getWindowWidth(), getWindowHeight() );
+    mCanvas->SetSize( getWindowWidth(), 0 );
 	mGwenInput = cigwen::GwenInput::create( mCanvas );
     
     std::vector<QLiveTrackRef> tracks = mLive->getTracks();
@@ -54,78 +55,26 @@ void QLiveGUI::init()
         if ( !boost::starts_with( tracks[k]->getName(), "_") )          // IGNORE all the params in the tracks that starts with "_"
             n++;
     
-    QLiveGuiTrackControl    *trackControl;
-    Vec2f                   size;
-    
-    size.x              = ( getWindowWidth() - ( n + 1 ) * margin ) / n;
-    size.y              = 150;
-    
+    Vec2f size;
+    size.x = ( getWindowWidth() - ( n + 1 ) * margin ) / n;
+    size.y = 150;
     for( auto k=0; k < tracks.size(); k++ )
     {
         if ( boost::starts_with( tracks[k]->getName(), "_") )          // IGNORE all the params in the tracks that starts with "_"
             continue;
         
-        trackControl = new QLiveGuiTrackControl( mLive, tracks[k], size, mCanvas );
+        mControls.push_back( QLiveGuiTrackControl::create( mLive, tracks[k], size, mCanvas ) );
+        
+        if ( mControls.back()->GetSize().y > mCanvas->GetSize().y )
+            mCanvas->SetHeight( mControls.back()->GetSize().y );    
     }
     
 }
 
 
+void QLiveGUI::toggleParams()
+{
+    for( auto k=0; k < mControls.size(); k++ )
+        mControls[k]->toggleParams();
+}
 
-
-
-
-
-
-/*
- void guiEvent(ciUIEvent *event)
- {
- std::string name = event->widget->getName();
- std::string meta = event->widget->getMeta();
- 
- if(name == "Master")
- {
- int trackIdx = boost::lexical_cast<int>( event->widget->getMeta() );
- ciUISlider *slider = (ciUISlider *) event->widget;
- mLive->setTrackVolume( trackIdx, slider->getScaledValue() );
- }
- 
- else if ( boost::find_first( meta, "clip") )
- {
- ciUIToggle *toggle = (ciUIToggle *) event->widget;
- 
- std::vector<std::string>    splitValues;
- std::string                 clipMeta;
- bool                        toggleVal   = toggle->getValue();
- 
- boost::split( splitValues, meta, boost::is_any_of("_") );
- 
- int trackIdx    = boost::lexical_cast<int>( splitValues[1] );
- int clipIdx     = boost::lexical_cast<int>( splitValues[2] );
- 
- toggle->setValue( !toggle->getValue() );    // trigger back the toogle, QLive sets the value, this is to avoid flickering
- 
- if ( toggleVal )
- mLive->playClip( trackIdx, clipIdx );               // play clip
- else
- mLive->stopClip( trackIdx, clipIdx );               // play clip
- }
- 
- else if ( boost::find_first( meta, "param") )
- {
- // param_TRACKIDX_DEVICEIDX_PARAMIDX
- 
- ciUISlider *slider = (ciUISlider *) event->widget;
- 
- std::vector<std::string> splitValues;
- boost::split( splitValues, meta, boost::is_any_of("_") );
- 
- int trackIdx    = boost::lexical_cast<int>( splitValues[1] );
- int deviceIdx   = boost::lexical_cast<int>( splitValues[2] );
- int paramIdx    = boost::lexical_cast<int>( splitValues[3] );
- 
- mLive->setParam( trackIdx, deviceIdx, paramIdx, slider->getScaledValue() );
- }
- 
- }
- */

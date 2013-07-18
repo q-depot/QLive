@@ -31,6 +31,10 @@ namespace nocte {
     class QLiveGUI;
     typedef std::shared_ptr<QLiveGUI> QLiveGUIRef;
     
+    class QLiveGuiTrackControl;
+    typedef std::shared_ptr<QLiveGuiTrackControl> QLiveGuiTrackControlRef;
+    
+    
     class QLiveGUI {
         
     public:
@@ -40,23 +44,22 @@ namespace nocte {
             return QLiveGUIRef( new QLiveGUI( live ) );
         }
 
-        ~QLiveGUI()
-        {
-//            delete mRenderer;
-//            delete mCanvas;
-        }
-        
-        void update() {}
+        ~QLiveGUI() {}
         
         void render()
         {
-            mCanvas->RenderCanvas();
+            if ( mCanvas->Visible() )
+                mCanvas->RenderCanvas();
         }
         
         void init();
         
-        void toggleVisible() {}
+        void toggle()
+        {
+            mCanvas->SetHidden( mCanvas->Visible() );
+        }
         
+        void toggleParams();
         
     private:
         
@@ -70,10 +73,10 @@ namespace nocte {
         
         QLiveRef                    mLive;
         
-        cigwen::GwenRendererGl      *mRenderer;
-        cigwen::GwenInputRef        mGwenInput;
-        Gwen::Controls::Canvas      *mCanvas;
-
+        cigwen::GwenRendererGl                  *mRenderer;
+        cigwen::GwenInputRef                    mGwenInput;
+        Gwen::Controls::Canvas                  *mCanvas;
+        std::vector<QLiveGuiTrackControlRef>    mControls;
     };
     
 }
