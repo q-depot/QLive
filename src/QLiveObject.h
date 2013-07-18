@@ -232,6 +232,12 @@ namespace nocte {
         
         float getMax() { return mMaxValue; }
         
+        void setRange( float minVal, float maxVal )
+        {
+            mMinValue = minVal;
+            mMaxValue = maxVal;
+        }
+        
     protected:
        
         QLiveParam( int index, std::string name, float val, float minVal, float maxVal )

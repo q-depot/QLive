@@ -333,23 +333,18 @@ namespace nocte {
 
     void QLive::parseClipInfo( osc::Message message ) 
     {    
-        int trackIdx	= message.getArgAsInt32(0);
-        int clipIdx		= message.getArgAsInt32(1);
-        ClipState state	= (ClipState)message.getArgAsInt32(2);
+        int             trackIdx	= message.getArgAsInt32(0);
+        int             clipIdx		= message.getArgAsInt32(1);
+        ClipState       state       = (ClipState)message.getArgAsInt32(2);
+        QLiveTrackRef   track       = getTrack( trackIdx );
+        QLiveClipRef    clip;
         
-        QLiveClipRef clip;
-        
-        
-        QLiveTrackRef track = getTrack( trackIdx );
-        
-        if ( track )
-        {
-            clip = track->getClip(clipIdx);
-            
-            // play selected clip
-            if ( clip )
-                clip->setState(state);
-        }
+        if ( !track )
+            return;
+
+        clip = track->getClip(clipIdx);
+        if ( clip )
+            clip->setState(state);
     }
 
 
@@ -422,30 +417,21 @@ namespace nocte {
         if ( message.getNumArgs() < 7 )
             return;
         
-        console() << "TODO: clean up this shit." << endl;// WTF is this???
-        // TODO: clean up this shit.
-        
-        int			trackIdx    = message.getArgAsInt32(0);
-        int			deviceIdx   = message.getArgAsInt32(1);
+        int             trackIdx    = message.getArgAsInt32(0);
+        int             deviceIdx   = message.getArgAsInt32(1);
 //        int			paramIdx    = message.getArgAsInt32(2);
-        float       paramValue  = ( message.getArgType(3) == osc::TYPE_INT32 ) ? message.getArgAsInt32(3) : message.getArgAsFloat(3);
-        string      paramName   = message.getArgAsString(4);
-//        float       paramMin    = message.getArgAsFloat(5);
-//        float       paramMax    = message.getArgAsFloat(6);
+        float           paramValue  = ( message.getArgType(3) == osc::TYPE_INT32 ) ? message.getArgAsInt32(3) : message.getArgAsFloat(3);
+        string          paramName   = message.getArgAsString(4);
+        float           paramMin    = message.getArgAsFloat(5);
+        float           paramMax    = message.getArgAsFloat(6);
         
-        QLiveParamRef   param      = getParam( trackIdx, deviceIdx, paramName );
+        QLiveParamRef   param       = getParam( trackIdx, deviceIdx, paramName );
         
-        if ( param )
+        if ( param )    // we assume the param exists, parseDeviceAllParams() creates one for each device param in Live
+        {
+            param->setRange( paramMin, paramMax );
             param->setValue( paramValue );
-        
-//        else
-//        {
-//            QLiveDevice *device = getDevice( trackIdx, deviceIdx );
-//            
-//            if ( device )
-//                device->mParams.push_back( new QLiveParam( paramIdx, paramName, paramValue, paramMin, paramMax ) );                               
-//        }
-        
+        }
     }
     
     
