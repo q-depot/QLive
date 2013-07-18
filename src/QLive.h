@@ -51,22 +51,19 @@ namespace nocte {
         void renderDebug( bool renderScenes = true, bool renderTracks = true, bool renderClips = true, bool renderDevices = true );
         
         void play( bool playContinue = false ) 
-        { 
-            if ( isAlive() )
-                if ( playContinue ) 
-                    sendMessage("/live/play/continue"); 
-                else 
-                    sendMessage("/live/play"); 
-            else
-                mIsPlaying = true;
+        {
+            if ( playContinue )
+                sendMessage("/live/play/continue"); 
+            else 
+                sendMessage("/live/play");
+        
+            mIsPlaying = true;
         }
         
         void stop() 
         {         
-            if ( isAlive() )
-                sendMessage("/live/stop");
-            else
-                mIsPlaying = false;
+            sendMessage("/live/stop");
+            mIsPlaying = false;
         }
 
         void playClip( int trackIdx, int clipIdx ) 
@@ -81,19 +78,14 @@ namespace nocte {
             if ( !clip )
                 return;
 
-            if ( isAlive() )
-                sendMessage("/live/play/clip", "i" + ci::toString(trackIdx) + " i" + ci::toString(clipIdx) );
+            sendMessage("/live/play/clip", "i" + ci::toString(trackIdx) + " i" + ci::toString(clipIdx) );
           
-            else
-            {
-                std::vector<QLiveClipRef> clips = track->getClips();
-                
-                for( size_t k=0; k < clips.size(); k++ )
-                    if ( clips[k] == clip )
-                        clip->setState( CLIP_PLAYING );
-                    else
-                        clips[k]->setState( HAS_CLIP );
-            }
+            std::vector<QLiveClipRef> clips = track->getClips();
+            for( size_t k=0; k < clips.size(); k++ )
+                if ( clips[k] == clip )
+                    clip->setState( CLIP_PLAYING );
+                else
+                    clips[k]->setState( HAS_CLIP );
         }
         
         void stopClip( int trackIdx, int clipIdx ) 
@@ -108,10 +100,8 @@ namespace nocte {
             if ( !clip )
                 return;
             
-            if ( isAlive() )
-                sendMessage("/live/stop/clip", "i" + ci::toString(trackIdx) + " i" + ci::toString(clipIdx) ); 
-            else
-                clip->setState( HAS_CLIP );
+            sendMessage("/live/stop/clip", "i" + ci::toString(trackIdx) + " i" + ci::toString(clipIdx) );
+            clip->setState( HAS_CLIP );
         }
             
         void setTrackVolume( int trackIdx, float volume ) 
@@ -121,10 +111,8 @@ namespace nocte {
             if ( !track )
                 return;
             
-            if ( isAlive() )
-                sendMessage("/live/volume", "i" + ci::toString(trackIdx) + " f" + ci::toString(volume) ); 
-            else
-                track->setVolume( volume );
+            sendMessage("/live/volume", "i" + ci::toString(trackIdx) + " f" + ci::toString(volume) );
+            track->setVolume( volume );
         }
         
         void setParam( int trackIdx, int deviceIdx, int paramIdx, float value ) 

@@ -25,8 +25,13 @@ namespace nocte {
     class QLiveClip;
     class QLiveTrack;
     
+    class QLiveModuleWithFixtures;
+    typedef std::shared_ptr<QLiveModuleWithFixtures> QLiveModuleWithFixturesRef;
+    
+    
     class QLiveModuleWithFixtures : public QLiveModule {
         
+    
     protected:      // only sub-class can call the constructor
         
         QLiveModuleWithFixtures( QLiveRef live, QLiveTrackRef track, QLiveClipRef clip, std::vector<FixtureRef> fixtures )
@@ -128,11 +133,6 @@ namespace nocte {
         std::vector<int>        mActiveFixtureIndices;
         std::vector<FixtureRef> mFixtures;
         ci::AxisAlignedBox3f    mBoundingBox;
-        
-    private:
-        // disallow
-        QLiveModuleWithFixtures(const QLiveModuleWithFixtures&);
-        QLiveModuleWithFixtures& operator=(const QLiveModuleWithFixtures&);
         
     };
 
