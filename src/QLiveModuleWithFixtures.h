@@ -106,7 +106,8 @@ namespace nocte {
             
             setBoundingBox( bBoxMinVec, bBoxMaxVec );
         }        
-
+        
+        
     protected:
         
         void calcActiveFixtures()

@@ -1,7 +1,20 @@
-#TODO
+QLive is a Cinder block to control Ableton Live.
 
-Fix this
-QLive::parseDeviceParam( osc::Message message )
-line #439    
-    
-QLive isAlive(): what do I need it for? is it safe to ALWAYS set the local value and then send out the osc msg to Live or is better to only send hte osc msg and wait for the response?
+##LiveOSC
+
+The library requires LiveOSC.
+https://github.com/q-depot/LiveOSC
+
+> LiveOSC provides an OSC interface for Ableton Live versions 8 and upwards on both Mac OSX and Windows.
+more info here http://livecontrol.q3f.org/ableton-liveapi/liveosc/
+
+
+##Features
+
+* Transport
+* Sessions
+* Tracks
+* Clips
+* Devices
+* Parameters
+* Mixer

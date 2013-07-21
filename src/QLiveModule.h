@@ -26,6 +26,10 @@ namespace nocte {
     class QLiveClip;
     class QLiveTrack;    
     
+    class QLiveModule;
+    typedef std::shared_ptr<QLiveModule> QLiveModuleRef;
+    
+    
     class QLiveModule {
 
     public:
