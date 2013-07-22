@@ -51,13 +51,15 @@ class QLiveObject {
 
 public:
     
-    QLiveObject( int index, std::string name ) : mIndex(index), mName(name) { }
+    QLiveObject( int index, std::string name ) : mIndex(index), mName(name), mIsSelected(false) { }
     
     ~QLiveObject() {}
     
     int			getIndex() { return mIndex; }
     
     std::string getName() { return mName; }
+    
+    bool isSelected() { return mIsSelected; }
     
 protected:
     
@@ -106,6 +108,8 @@ protected:
     
     int			mIndex;
     std::string	mName;
+    bool        mIsSelected;
+    
     
 private:
     // disallow

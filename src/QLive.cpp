@@ -27,13 +27,13 @@ using namespace std;
 QLive::QLive( string osc_host, int osc_live_in_port, int osc_live_out_port, bool initFromLive ) 
 : mOscHost(osc_host), mOscLiveInPort(osc_live_in_port), mOscLiveOutPort(osc_live_out_port)
 {
-    mOscListener    = NULL;
-    mOscSender      = NULL;
-    mIsPlaying      = false;
-    mIsReady        = false;
+    mOscListener        = NULL;
+    mOscSender          = NULL;
+    mIsPlaying          = false;
+    mIsReady            = false;
     
-    mRunOscDataThread = false;
-    
+    mRunOscDataThread   = false;
+
     initOsc();
     
     // set LiveOsc peer: /remix/set_peer HOST PORT (null host > host is automatically set to the host that sent the request)
@@ -258,26 +258,27 @@ void QLive::sendMessage(string address, string args)
 }
 
 
-void QLive::parseScene( osc::Message message ) {
+void QLive::parseScene( osc::Message message )
+{
+    int     index       = message.getArgAsInt32(0);
+    string  name        = message.getArgAsString(1);
+
+    QLiveSceneRef scene = getScene( index );
     
-    int index	= message.getArgAsInt32(0);
-    string name = message.getArgAsString(1);
-    
-    // update if the scene already exists
-    for(int k=0; k < mScenes.size(); k++)
-        if ( mScenes[k]->mIndex == index )
-        {
-            mScenes[k]->mName = name;
-            return;
-        }
+    if ( scene )
+    {
+        scene->mName = name;
+        return;
+    }
     
     mScenes.push_back( QLiveScene::create( index, name ) );
-    
-//        console() << "parse scene: " << endl;
 }
 
 
-bool sortTracksByIndex( QLiveTrackRef a, QLiveTrackRef b ) { return ( a->getIndex() < b->getIndex() ); };
+bool sortTracksByIndex( QLiveTrackRef a, QLiveTrackRef b )
+{
+    return ( a->getIndex() < b->getIndex() );
+}
 
 
 void QLive::parseTrack( osc::Message message ) 
@@ -285,18 +286,12 @@ void QLive::parseTrack( osc::Message message )
     int     index	= message.getArgAsInt32(0);
     string  name    = message.getArgAsString(1);
     ColorA  color   = colorIntToColorA( message.getArgAsInt32(2) );
-
-    bool has_track = false;
     
-    for(int k=0; k < mTracks.size(); k++)
-        if( mTracks[k]->mIndex == index )
-        {
-            mTracks[k]->mName = name;
-            has_track = true;
-            break;
-        }
+    QLiveTrackRef track = getTrack( index );
     
-    if ( !has_track )
+    if ( track )
+        track->mName = name;
+    else
         mTracks.push_back( QLiveTrack::create( index, name, color ) );
 
     sort( mTracks.begin(), mTracks.end(), sortTracksByIndex );
@@ -314,15 +309,21 @@ void QLive::parseClip( osc::Message message )
     string 	name		= message.getArgAsString(2);
     ColorA  color       = colorIntToColorA( message.getArgAsInt32(3) );
 
-    QLiveTrackRef track = getTrack( trackIdx );
+    QLiveTrackRef   track = getTrack( trackIdx );
+    QLiveClipRef    clip;
     
-    if ( track )                                            // return if the clip already exists
+    if ( track )
     {
-        if ( track->getClip(clipIdx) )
+        clip = track->getClip(clipIdx);
+        if ( clip )
+        {
+            clip->mName     = name;
+            clip->mColor    = color;
             return;
+        }
     }
 
-    QLiveClipRef clip = QLiveClip::create( clipIdx, name, color );
+    clip = QLiveClip::create( clipIdx, name, color );
     
     mTracks[trackIdx]->mClips.push_back( clip );
     
@@ -445,8 +446,8 @@ void QLive::parseTrackSends( ci::osc::Message message )
 }
 
 
-void QLive::receiveData(){
-    
+void QLive::receiveData()
+{    
     mRunOscDataThread = true;
 
     while( mRunOscDataThread && mOscListener ) {
@@ -458,7 +459,7 @@ void QLive::receiveData(){
             string	msgAddress = message.getAddress();
 
             // debug
-            if (false)
+            if ( false && msgAddress != "/live/ping" )
                 debugOscMessage( message );
 
             // Parse Live objects
@@ -467,7 +468,13 @@ void QLive::receiveData(){
             
             else if ( msgAddress == "/live/name/track" )
                 parseTrack(message);
-            
+
+            else if ( msgAddress == "/live/scene" )
+                setSelectedScene( message.getArgAsInt32(0) - 1 );  // LiveOSC inconsistency
+                
+            else if ( msgAddress == "/live/track" )
+                setSelectedTrack( message.getArgAsInt32(0) - 1 );  // LiveOSC inconsistency
+                
             else if ( msgAddress == "/live/name/clip" )
                 parseClip(message);
     
@@ -490,16 +497,16 @@ void QLive::receiveData(){
                     mTracks[trackIndex]->setVolume( message.getArgAsFloat(1) );
             }
 
-            else if ( msgAddress == "/live/track" )
-            {
-                int trackIndex = message.getArgAsInt32(0) - 1;  // shift
-                for(int k=0; k < mTracks.size(); k++)
-                    if ( mTracks[k]->mIndex == trackIndex )
-                    {
-                        mSelectedTrack = mTracks[k];
-                        break;
-                    }
-            }
+//            else if ( msgAddress == "/live/track" )
+//            {
+//                int trackIndex = message.getArgAsInt32(0) - 1;  // shift
+//                for(int k=0; k < mTracks.size(); k++)
+//                    if ( mTracks[k]->mIndex == trackIndex )
+//                    {
+//                        mSelectedTrack = mTracks[k];
+//                        break;
+//                    }
+//            }
             
             else if ( msgAddress == "/live/device/param" )
                 parseDeviceParam(message);
@@ -633,18 +640,53 @@ void QLive::loadSettings( ci::fs::path path, bool forceXmlSettings )
    // syncLiveClips();        // send clip state to Live
     
 }
-//    
-//    void syncLiveClips()
-//    {
-//        vector<QLiveClip*> clips;
-//        
-//        for( size_t k=0; k < mTracks.size(); k++ )
-//        {
-//            clips = mTracks[k]->getClips();
-//            
-//            for( size_t i=0; i < clips.size(); i++ )
-//            {
-//                play
-//            }
-//        }
-//    }
+
+
+void QLive::setSelectedScene( int idx )
+{
+    if ( mSelectedScene )
+        mSelectedScene->mIsSelected = false;
+    
+    mSelectedScene = getScene( idx );
+    
+    if ( !mSelectedScene )
+        return;
+    
+    mSelectedScene->mIsSelected = true;
+
+    setSelectedClip();
+}
+
+
+void QLive::setSelectedTrack( int idx )
+{
+    if ( mSelectedTrack )
+        mSelectedTrack->mIsSelected = false;
+    
+    mSelectedTrack = getTrack( idx );
+
+    if ( !mSelectedTrack )
+        return;
+    
+    mSelectedTrack->mIsSelected = true;
+    
+    setSelectedClip();
+}
+
+
+void QLive::setSelectedClip()
+{
+    if ( mSelectedScene && mSelectedTrack )
+    {
+        if ( mSelectedClip )
+            mSelectedClip->mIsSelected = false;
+        
+        mSelectedClip = mSelectedTrack->getClip( mSelectedScene->mIndex );
+
+        if ( !mSelectedClip )
+            return;
+        
+        mSelectedClip->mIsSelected = true;
+    }
+}
+

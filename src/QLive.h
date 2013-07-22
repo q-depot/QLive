@@ -51,7 +51,7 @@ public:
     void play( bool playContinue = false ) 
     {
         if ( playContinue )
-            sendMessage("/live/play/continue"); 
+            sendMessage("/live/play/continue");
         else 
             sendMessage("/live/play");
     
@@ -313,12 +313,9 @@ public:
     }
     
     
-    
-    bool isPlaying() { return mIsPlaying; }
+    bool    isPlaying() { return mIsPlaying; }
 
-    bool* getIsPlayingRef() { return &mIsPlaying; }
-    
-    QLiveTrackRef	getSelectedTrack() { return mSelectedTrack; }
+    bool*   getIsPlayingRef() { return &mIsPlaying; }
     
     bool	isOscListenerConnected()	{ return mOscListener != NULL; }
     
@@ -326,19 +323,26 @@ public:
     
     void	initOsc();
 
-    bool isReady() { return mIsReady; }
+    bool    isReady() { return mIsReady; }
         
-    void loadSettings( ci::fs::path path, bool forceXmlSettings = false );
+    void    loadSettings( ci::fs::path path, bool forceXmlSettings = false );
     
-    void saveSettings( ci::fs::path path );
+    void    saveSettings( ci::fs::path path );
     
-    bool isAlive()
+    bool    isAlive()
     {
         if ( ci::app::getElapsedSeconds() - mPingReceivedAt < 0.5f )
             return true;
 
         return false;
     }
+    
+    QLiveSceneRef   getSelectedScene()  { return mSelectedScene; }
+    
+    QLiveTrackRef   getSelectedTrack()  { return mSelectedTrack; }
+
+    QLiveClipRef    getSelectedClip()   { return mSelectedClip; }
+    
     
 private:
     
@@ -373,11 +377,17 @@ private:
     void	parseTrackSends( ci::osc::Message message );
     
     void    debugOscMessage( ci::osc::Message message );
+
+    void    setSelectedScene( int idx );
+    void    setSelectedTrack( int idx );
+    void    setSelectedClip();
     
     std::vector<QLiveTrackRef>  mTracks;
     std::vector<QLiveSceneRef>	mScenes;
     
     QLiveTrackRef				mSelectedTrack;
+    QLiveSceneRef				mSelectedScene;
+    QLiveClipRef                mSelectedClip;
     
     ci::Font					mFontSmall;
     ci::Font					mFontMedium;
