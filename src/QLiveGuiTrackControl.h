@@ -20,13 +20,90 @@
 #include "Gwen/Controls/Button.h"
 #include "Gwen/Controls/HorizontalSlider.h"
 #include "Gwen/Controls/RadioButtonController.h"
-
-
+#include "Gwen/Controls/GroupBox.h"
 
 
 class QLiveGuiTrackControl;
 typedef std::shared_ptr<QLiveGuiTrackControl> QLiveGuiTrackControlRef;
 
+class QLiveGuiParamControl;
+typedef std::shared_ptr<QLiveGuiParamControl> QLiveGuiParamControlRef;
+
+
+/* --------------------- */
+/* --- Param Control --- */
+/* --------------------- */
+
+class QLiveGuiParamControl : public Gwen::Controls::Base {
+    
+public:
+    
+    static QLiveGuiParamControlRef create( QLiveRef live, QLiveTrackRef track, QLiveDeviceRef device, QLiveParamRef param, Gwen::Controls::Base *parent )
+    {
+        return QLiveGuiParamControlRef( new QLiveGuiParamControl( live, track, device, param, parent ) );
+    }
+    
+    virtual ~QLiveGuiParamControl() {}
+    
+    virtual void Render( Gwen::Skin::Base* skin )
+    {
+        Gwen::Event::Caller	cb = mSlider->onValueChanged;
+        mSlider->onValueChanged = Gwen::Event::Caller();
+        mSlider->SetFloatValue( mLive->getParamValue( mTrackIdx, mDeviceIdx, mParamIdx ) );
+        mSlider->onValueChanged = cb;
+    }
+    
+    
+private:
+    
+    QLiveGuiParamControl( QLiveRef live, QLiveTrackRef track, QLiveDeviceRef device, QLiveParamRef param, Gwen::Controls::Base *parent )
+    : Gwen::Controls::Base(parent), mLive(live)
+    {
+        SetSize( parent->GetSize().x, 40 );
+        Dock( Gwen::Pos::Top );
+        
+        mTrackIdx   = track->getIndex();
+        mDeviceIdx  = device->getIndex();
+        mParamIdx   = param->getIndex();
+        
+        // Param name
+        Gwen::Controls::Label *pLabel = new Gwen::Controls::Label( this );
+        pLabel->SetText( param->getName() );
+        pLabel->SizeToContents();
+        pLabel->SetMargin( Gwen::Margin( 0, 10, 0, 0 ) );
+        pLabel->Dock( Gwen::Pos::Top );
+        pLabel->SetTextColorOverride( cigwen::toGwen( ci::Color::gray( 0.3f ) ) );
+        
+        // Slider
+        std::string sliderName = std::to_string( mTrackIdx ) + "_" + std::to_string( mDeviceIdx ) + "_" + std::to_string( mParamIdx );
+        mSlider = new Gwen::Controls::HorizontalSlider( this );
+        mSlider->SetName( sliderName );
+        mSlider->SetSize( parent->GetSize().x, 20 );
+        mSlider->Dock( Gwen::Pos::Top );
+        mSlider->SetRange( param->getMin(), param->getMax() );
+        mSlider->SetFloatValue( 0.0f );
+        mSlider->onValueChanged.Add( this, &QLiveGuiParamControl::onChange );
+    }
+    
+    void onChange( Gwen::Controls::Base* pControl )
+    {
+        mLive->setParam( mTrackIdx, mDeviceIdx, mParamIdx, ((Gwen::Controls::Slider*)pControl)->GetFloatValue() );
+    }
+    
+    
+private:
+    
+    QLiveRef                            mLive;
+    Gwen::Controls::HorizontalSlider    *mSlider;
+    int                                 mTrackIdx;
+    int                                 mDeviceIdx;
+    int                                 mParamIdx;
+};
+
+
+/* --------------------- */
+/* --- Track Control --- */
+/* --------------------- */
 
 class QLiveGuiTrackControl : public Gwen::Controls::Base {
     
@@ -41,8 +118,8 @@ public:
     
     virtual void toggleParams()
     {
-        for( auto k=0; k < mParamSliders.size(); k++ )
-            mParamSliders[k]->SetHidden( mParamSliders[k]->Visible() );
+        for( auto k=0; k < mParamControls.size(); k++ )
+            mParamControls[k]->SetHidden( mParamControls[k]->Visible() );
     }
     
     virtual void Render( Gwen::Skin::Base* skin )
@@ -52,27 +129,8 @@ public:
         mVolume->onValueChanged = Gwen::Event::Caller();
         mVolume->SetFloatValue( mTrack->getVolume() );
         mVolume->onValueChanged = cb;
-        
-        // Params
-        std::vector<std::string> splitValues;
-        int trackIdx, deviceIdx, paramIdx;
-        
-        for( auto k=0; k < mParamSliders.size(); k++ )
-        {
-            Gwen::Controls::HorizontalSlider *slider = mParamSliders[k];
-            
-            boost::split( splitValues, slider->GetName(), boost::is_any_of("_") );
-            trackIdx    = boost::lexical_cast<int>( splitValues[0] );
-            deviceIdx   = boost::lexical_cast<int>( splitValues[1] );
-            paramIdx    = boost::lexical_cast<int>( splitValues[2] );
-            
-            Gwen::Event::Caller	cb = slider->onValueChanged;
-            slider->onValueChanged = Gwen::Event::Caller();
-            slider->SetFloatValue( mLive->getParamValue( trackIdx, deviceIdx, paramIdx ) );
-            slider->onValueChanged = cb;
-        }
-        
-        
+
+        // TODO: do same as ParamControls
         // Clips
         Gwen::Controls::LabeledRadioButton  *pSelected  = mClipsRadioController->GetSelected();
         QLiveClipRef                 playingClip = mTrack->getPlayingClip();
@@ -114,7 +172,6 @@ private:
         std::vector<QLiveClipRef>    clips = track->getClips();
         QLiveClipRef                 clip;
 
-        
         // Label
         Gwen::Controls::Label *label = new Gwen::Controls::Label( this );
         label->SetText( track->getName() );
@@ -160,29 +217,12 @@ private:
         {
             params = devices[i]->getParams();
             
-            for( auto j=1; j < params.size(); j++ )       // starts from 1 to ignore "Device On"
+            for( auto j=1; j < params.size(); j++ )       // start from 1 to ignore "Device On"
             {
-                param = params[j];
+                QLiveGuiParamControlRef p = QLiveGuiParamControl::create( mLive, track, devices[i], params[j], this );
                 
-                // Param name
-                Gwen::Controls::Label *pLabel = new Gwen::Controls::Label( this );
-                pLabel->SetText( param->getName() );
-                pLabel->SizeToContents();
-                pLabel->SetMargin( Gwen::Margin( 0, 10, 0, 0 ) );
-                pLabel->Dock( Gwen::Pos::Top );
-                pLabel->SetTextColorOverride( cigwen::toGwen( ci::Color::gray( 0.3f ) ) );
+                mParamControls.push_back( p );
                 
-                // Slider
-                std::string sliderName = std::to_string( mTrack->getIndex() ) + "_" + std::to_string( devices[i]->getIndex() ) + "_" + std::to_string( param->getIndex() );
-                Gwen::Controls::HorizontalSlider *pSlider = new Gwen::Controls::HorizontalSlider( this );
-                pSlider->SetName( sliderName );
-                pSlider->SetSize( size.x, 20 );
-                pSlider->Dock( Gwen::Pos::Top );
-                pSlider->SetRange( param->getMin(), param->getMax() );
-                pSlider->SetFloatValue( 0.0f );
-                pSlider->onValueChanged.Add( this, &QLiveGuiTrackControl::onParamChange );
-                
-                mParamSliders.push_back( pSlider );
                 SetHeight( GetSize().y + 40 );
             }
         }
@@ -221,9 +261,9 @@ private:
     
     QLiveRef                                 mLive;
     QLiveTrackRef                            mTrack;
-    Gwen::Controls::RadioButtonController           *mClipsRadioController;
-    Gwen::Controls::HorizontalSlider                *mVolume;
-    std::vector<Gwen::Controls::HorizontalSlider*>  mParamSliders;
+    Gwen::Controls::RadioButtonController   *mClipsRadioController;
+    Gwen::Controls::HorizontalSlider        *mVolume;
+    std::vector<QLiveGuiParamControlRef>    mParamControls;
     
 };
 

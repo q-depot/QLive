@@ -64,43 +64,9 @@ public:
         mIsPlaying = false;
     }
 
-    void playClip( int trackIdx, int clipIdx ) 
-    { 
-        QLiveTrackRef track = getTrack( trackIdx );
-        
-        if ( !track )
-            return;
-        
-        QLiveClipRef clip = track->getClip(clipIdx);
-        
-        if ( !clip )
-            return;
-
-        sendMessage("/live/play/clip", "i" + ci::toString(trackIdx) + " i" + ci::toString(clipIdx) );
-      
-        std::vector<QLiveClipRef> clips = track->getClips();
-        for( size_t k=0; k < clips.size(); k++ )
-            if ( clips[k] == clip )
-                clip->setState( CLIP_PLAYING );
-            else
-                clips[k]->setState( HAS_CLIP );
-    }
+    void playClip( int trackIdx, int clipIdx );
     
-    void stopClip( int trackIdx, int clipIdx ) 
-    {
-        QLiveTrackRef track = getTrack( trackIdx );
-        
-        if ( !track )
-            return;
-        
-        QLiveClipRef clip = track->getClip(clipIdx);
-        
-        if ( !clip )
-            return;
-        
-        sendMessage("/live/stop/clip", "i" + ci::toString(trackIdx) + " i" + ci::toString(clipIdx) );
-        clip->setState( HAS_CLIP );
-    }
+    void stopClip( int trackIdx, int clipIdx );
         
     void setTrackVolume( int trackIdx, float volume ) 
     { 
