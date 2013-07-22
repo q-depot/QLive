@@ -249,7 +249,7 @@ protected:
     {
         ci::XmlTree node = QLiveObject::getXmlNode();
         node.setTag("param");
-        node.setAttribute( "value", mValue );
+        node.setAttribute( "value", *mValue.get() );
         node.setAttribute( "min",   mMinValue);
         node.setAttribute( "max",   mMaxValue );
 
@@ -478,7 +478,7 @@ protected:
     {
         ci::XmlTree node = QLiveObject::getXmlNode();
         node.setTag("track");
-        node.setAttribute( "volume", mVolume );
+        node.setAttribute( "volume", *mVolume.get() );
         node.setAttribute( "color", colorToHex(mColor) );
         
         ci::XmlTree clips( "clips", "" );
