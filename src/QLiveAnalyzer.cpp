@@ -24,8 +24,6 @@ using namespace ci::app;
 using namespace std;
 
 
-namespace nocte {
-
 QLiveAnalyzer::QLiveAnalyzer() : mDevice(NULL), mOscListener(NULL)
 {
     mFft = new float*[2];
@@ -333,6 +331,4 @@ void QLiveAnalyzer::render()
 	
 	gl::popMatrices();
     
-}
-
 }

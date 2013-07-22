@@ -26,48 +26,45 @@
 #include "cigwen/CinderGwen.h"
 
 
-namespace nocte {
-    
-    class QLiveGUI;
-    typedef std::shared_ptr<QLiveGUI> QLiveGUIRef;
-    
-    class QLiveGuiTrackControl;
-    typedef std::shared_ptr<QLiveGuiTrackControl> QLiveGuiTrackControlRef;
-    
-    
-    class QLiveGUI {
-        
-    public:
-        
-        static QLiveGUIRef create( QLiveRef live, Gwen::Controls::Canvas *canvas )
-        {
-            return QLiveGUIRef( new QLiveGUI( live, canvas ) );
-        }
+class QLiveGUI;
+typedef std::shared_ptr<QLiveGUI> QLiveGUIRef;
 
-        ~QLiveGUI() {}
-        
-        void init();
-        
-        void toggle();
-        
-        void toggleParams();
-        
-    private:
-        
-        QLiveGUI( QLiveRef live, Gwen::Controls::Canvas *canvas ) : mLive(live), mCanvas(canvas)
-        {
-            init();
-        }
+class QLiveGuiTrackControl;
+typedef std::shared_ptr<QLiveGuiTrackControl> QLiveGuiTrackControlRef;
 
-        
-    private:
-        
-        QLiveRef                    mLive;
-        Gwen::Controls::Canvas      *mCanvas;
-        
-        std::vector<QLiveGuiTrackControlRef>    mControls;
-    };
+
+class QLiveGUI {
     
-}
+public:
+    
+    static QLiveGUIRef create( QLiveRef live, Gwen::Controls::Canvas *canvas )
+    {
+        return QLiveGUIRef( new QLiveGUI( live, canvas ) );
+    }
+
+    ~QLiveGUI() {}
+    
+    void init();
+    
+    void toggle();
+    
+    void toggleParams();
+    
+private:
+    
+    QLiveGUI( QLiveRef live, Gwen::Controls::Canvas *canvas ) : mLive(live), mCanvas(canvas)
+    {
+        init();
+    }
+
+    
+private:
+    
+    QLiveRef                    mLive;
+    Gwen::Controls::Canvas      *mCanvas;
+    
+    std::vector<QLiveGuiTrackControlRef>    mControls;
+};
+
 
 #endif
