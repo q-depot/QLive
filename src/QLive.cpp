@@ -552,8 +552,9 @@ void QLive::debugOscMessage( osc::Message message )
 }
 
 
-void QLive::saveSettings( const std::string &filename )
+void QLive::saveSettings( ci::fs::path path )
 {
+    path.replace_extension( ".xml" );
     XmlTree liveSettings("QLiveSettings", "" );
     XmlTree scenes("scenes", "" );
     XmlTree tracks("tracks", "" );
@@ -566,11 +567,12 @@ void QLive::saveSettings( const std::string &filename )
     
     liveSettings.push_back( scenes );
     liveSettings.push_back( tracks );
-    
-    liveSettings.write( writeFile(filename) );
+  
+    liveSettings.write( writeFile(path) );
 }
 
-void QLive::loadSettings( const std::string &filename, bool forceXmlSettings )
+
+void QLive::loadSettings( ci::fs::path path, bool forceXmlSettings )
 {
     if ( forceXmlSettings )
         clearObjects();
@@ -579,11 +581,11 @@ void QLive::loadSettings( const std::string &filename, bool forceXmlSettings )
     
     try 
     {
-        liveSettings = XmlTree( loadFile(filename) );
+        liveSettings = XmlTree( loadFile(path) );
     }
     catch ( ... )
     {
-        console() << "ASOW_stageApp::loadSettings() > settings file " << filename << " not found!" << endl;
+        console() << "ASOW_stageApp::loadSettings() > settings file " << path.filename().generic_string() << " not found!" << endl;
         return;
     }
     

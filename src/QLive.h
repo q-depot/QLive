@@ -328,9 +328,9 @@ public:
 
     bool isReady() { return mIsReady; }
         
-    void loadSettings( const std::string &filename, bool forceXmlSettings = false );
+    void loadSettings( ci::fs::path path, bool forceXmlSettings = false );
     
-    void saveSettings( const std::string &filename );
+    void saveSettings( ci::fs::path path );
     
     bool isAlive()
     {
