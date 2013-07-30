@@ -459,8 +459,8 @@ void QLive::receiveData()
             string	msgAddress = message.getAddress();
 
             // debug
-            if ( false && msgAddress != "/live/ping" )
-                debugOscMessage( message );
+//            if ( true && msgAddress != "/live/ping" && msgAddress != "/live/beat" )
+//                debugOscMessage( message );
 
             // Parse Live objects
             if ( msgAddress == "/live/name/scene" )
@@ -678,15 +678,20 @@ void QLive::setSelectedClip()
 {
     if ( mSelectedScene && mSelectedTrack )
     {
-        if ( mSelectedClip )
-            mSelectedClip->mIsSelected = false;
+        QLiveClipRef clip = mSelectedTrack->getClip( mSelectedScene->mIndex );
         
-        mSelectedClip = mSelectedTrack->getClip( mSelectedScene->mIndex );
+        if ( clip && clip == mSelectedClip )
+            return;
+        
+        if ( mSelectedClip )
+            mSelectedClip->select(false);
+        
+        mSelectedClip = clip;
 
         if ( !mSelectedClip )
             return;
         
-        mSelectedClip->mIsSelected = true;
+        mSelectedClip->select(true);
     }
 }
 

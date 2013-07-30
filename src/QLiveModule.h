@@ -37,7 +37,11 @@ public:
     
     QLiveModule( QLiveRef live, QLiveTrackRef track, QLiveClipRef clip );
     
-    ~QLiveModule() {}
+    ~QLiveModule()
+    {
+        mOnClipUpdateCb.disconnect();
+        mOnClipSelectCb.disconnect();
+    }
     
     virtual void render( float height ) {}
     
@@ -107,7 +111,6 @@ public:
     static void saveSettings( std::vector<QLiveModule*> modules ) {}
     static void loadSettings( std::vector<QLiveModule*> modules ) {}
     
-    void clipStateUpdateCallback();
     
 protected:
 
@@ -135,6 +138,10 @@ protected:
         return boost::get<0>(mParams[name]);
     }
     
+    void clipStateUpdateCallback();
+    
+    void clipSelectCallback();
+    
 protected:
     
     QLiveRef            mLive;
@@ -153,6 +160,7 @@ protected:
     std::vector<int>    mFreqs;
     float**             mFftBuffer;
     
+    boost::signals2::connection     mOnClipUpdateCb, mOnClipSelectCb;
     
 };
 

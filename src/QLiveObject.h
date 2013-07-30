@@ -16,7 +16,7 @@
 
 #include "cinder/Xml.h"
 #include "cinder/Function.h"
-
+#include <boost/signals2.hpp>
 
 class QLiveClip;
 typedef std::shared_ptr<QLiveClip>      QLiveClipRef;
@@ -119,6 +119,10 @@ private:
 };
 
 
+/* ------------------ */
+/* --- QLive Clip --- */
+/* ------------------ */
+
 class QLiveClip : public QLiveObject {
     
     friend class QLive;
@@ -144,7 +148,7 @@ public:
         
         mIsPlaying = ( mState == CLIP_PLAYING )  ? true : false;
         
-        callStateUpdateCallbacks();
+        mOnStateUpdateSignal();
     };
     
     bool        *getIsPlayingRef() { return &mIsPlaying; }
@@ -153,12 +157,17 @@ public:
     
     ci::ColorA	getColor() { return mColor; }
     
-    void addStateUpdateCallback( const std::function<void ()> &callback )
+    boost::signals2::connection connectOnStateUpdate( const std::function<void ()> &f )    { return mOnStateUpdateSignal.connect( f ); }
+
+    boost::signals2::connection connectOnSelect( const std::function<void ()> &f )         { return mOnSelectSignal.connect( f ); }
+
+    void select( bool val )
     {
-        std::shared_ptr<std::function<void ()> > callbackPtr( new std::function<void ()>( callback ) );
-        mStateUpdateCallbacks.push_back( callbackPtr );
-    }    
-    
+        mIsSelected = val;
+
+        if ( val )
+            mOnSelectSignal();
+    }
     
 protected:
     
@@ -192,10 +201,13 @@ protected:
 private:
     
     ClipState	mState;
-    std::vector<std::shared_ptr<std::function<void()> > >   mStateUpdateCallbacks;
+    
+    boost::signals2::signal<void()>     mOnStateUpdateSignal;
+    boost::signals2::signal<void()>     mOnSelectSignal;
+    
     
 private:
-
+/*
     void callStateUpdateCallbacks()
     {
         for( size_t k=0; k < mStateUpdateCallbacks.size(); k++ )
@@ -204,7 +216,7 @@ private:
             (*fn)();
         }
     }
-
+*/
 };
 
 
@@ -469,7 +481,6 @@ public:
         
         return QLiveClipRef();
     }
-    
     
 protected:
     
