@@ -105,8 +105,6 @@ public:
         
         clipStateUpdateCallback();
     }
-    
-    void sendLocalParamValues( const std::string &name ); // set Live value to Module local value is it's playing(is selected)
 
     static void saveSettings( std::vector<QLiveModule*> modules ) {}
     static void loadSettings( std::vector<QLiveModule*> modules ) {}
@@ -149,8 +147,6 @@ protected:
     QLiveClipRef        mClip;
 
     std::map< std::string, boost::tuple<float,std::shared_ptr<float>,int,int> >   mParams;
-
-    double              mParamsUpdatedAt;
     
     float               mTrackVolume;
     
@@ -161,7 +157,6 @@ protected:
     float**             mFftBuffer;
     
     boost::signals2::connection     mOnClipUpdateCb, mOnClipSelectCb;
-    
 };
 
 #endif
