@@ -162,7 +162,6 @@ protected:
         ci::gl::color( ci::Color::white() );
     }
     
-    
     std::vector<int>                mActiveFixtureIndices;
     std::vector<FixtureRef>         mFixtures;
     ci::AxisAlignedBox3f            mBoundingBox;

@@ -559,9 +559,8 @@ void QLive::debugOscMessage( osc::Message message )
 }
 
 
-void QLive::saveSettings( ci::fs::path path )
+XmlTree QLive::getSettingsXml()
 {
-    path.replace_extension( ".xml" );
     XmlTree liveSettings("QLiveSettings", "" );
     XmlTree scenes("scenes", "" );
     XmlTree tracks("tracks", "" );
@@ -574,27 +573,15 @@ void QLive::saveSettings( ci::fs::path path )
     
     liveSettings.push_back( scenes );
     liveSettings.push_back( tracks );
-  
-    liveSettings.write( writeFile(path) );
+    
+    return liveSettings;
 }
 
 
-void QLive::loadSettings( ci::fs::path path, bool forceXmlSettings )
+void QLive::loadSettingsXml( XmlTree liveSettings, bool forceXmlSettings )
 {
     if ( forceXmlSettings )
         clearObjects();
-    
-    XmlTree liveSettings;
-    
-    try 
-    {
-        liveSettings = XmlTree( loadFile(path) );
-    }
-    catch ( ... )
-    {
-        console() << "ASOW_stageApp::loadSettings() > settings file " << path.filename().generic_string() << " not found!" << endl;
-        return;
-    }
     
     QLiveSceneRef   scene;
     QLiveTrackRef   track;
@@ -602,7 +589,7 @@ void QLive::loadSettings( ci::fs::path path, bool forceXmlSettings )
     string          name;
     
     // parse scenes
-    for( XmlTree::Iter nodeIt = liveSettings.begin("QLiveSettings/scenes/scene"); nodeIt != liveSettings.end(); ++nodeIt )
+    for( XmlTree::Iter nodeIt = liveSettings.find("scenes/scene"); nodeIt != liveSettings.end(); ++nodeIt )
     {
         index   = nodeIt->getAttributeValue<int>("index");
         name    = nodeIt->getAttributeValue<string>("name");
@@ -620,7 +607,7 @@ void QLive::loadSettings( ci::fs::path path, bool forceXmlSettings )
     }
     
     // parase tracks
-    for( XmlTree::Iter nodeIt = liveSettings.begin("QLiveSettings/tracks/track"); nodeIt != liveSettings.end(); ++nodeIt )
+    for( XmlTree::Iter nodeIt = liveSettings.find("tracks/track"); nodeIt != liveSettings.end(); ++nodeIt )
     {
         index   = nodeIt->getAttributeValue<int>("index");
         name    = nodeIt->getAttributeValue<string>("name");

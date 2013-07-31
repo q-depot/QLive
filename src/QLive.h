@@ -291,9 +291,13 @@ public:
 
     bool    isReady() { return mIsReady; }
         
-    void    loadSettings( ci::fs::path path, bool forceXmlSettings = false );
+//    void    loadSettings( ci::fs::path path, bool forceXmlSettings = false );
+//    
+//    void    saveSettings( ci::fs::path path );
     
-    void    saveSettings( ci::fs::path path );
+    ci::XmlTree getSettingsXml();
+    
+    void        loadSettingsXml( ci::XmlTree, bool forceXmlSettings = false );
     
     bool    isAlive()
     {
