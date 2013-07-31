@@ -131,6 +131,38 @@ protected:
         }
     }
     
+    void renderSquares( float height )
+    {   
+        ci::Vec3f   pos;
+        float       size = 0.1f;
+        FixtureRef  fixture;
+        
+        for ( size_t k=0; k < mActiveFixtureIndices.size(); k++ )
+        {
+            fixture = mFixtures[mActiveFixtureIndices[k]];
+            pos = fixture->getPos();
+            
+            ci::gl::color(  mClip->getColor() * fixture->getValue() );
+            glBegin(GL_QUADS);
+            ci::gl::vertex( pos + ci::Vec3f(- size , height, - size ) );
+            ci::gl::vertex( pos + ci::Vec3f(+ size , height, - size ) );
+            ci::gl::vertex( pos + ci::Vec3f(+ size , height, + size ) );
+            ci::gl::vertex( pos + ci::Vec3f(- size , height, + size ) );
+            glEnd();
+            
+            ci::gl::color(  mClip->getColor() );
+            glBegin(GL_LINE_LOOP);
+            ci::gl::vertex( pos + ci::Vec3f(- size , height, - size ) );
+            ci::gl::vertex( pos + ci::Vec3f(+ size , height, - size ) );
+            ci::gl::vertex( pos + ci::Vec3f(+ size , height, + size ) );
+            ci::gl::vertex( pos + ci::Vec3f(- size , height, + size ) );
+            glEnd();
+        }
+        
+        ci::gl::color( ci::Color::white() );
+    }
+    
+    
     std::vector<int>                mActiveFixtureIndices;
     std::vector<FixtureRef>         mFixtures;
     ci::AxisAlignedBox3f            mBoundingBox;

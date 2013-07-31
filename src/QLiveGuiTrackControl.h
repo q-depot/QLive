@@ -20,7 +20,6 @@
 #include "Gwen/Controls/Button.h"
 #include "Gwen/Controls/HorizontalSlider.h"
 #include "Gwen/Controls/RadioButtonController.h"
-#include "Gwen/Controls/GroupBox.h"
 
 
 class QLiveGuiTrackControl;
@@ -201,6 +200,7 @@ private:
             if ( clip->isPlaying() )
                 radioBtn->GetRadioButton()->SetChecked( true );
 
+            radioBtn->GetLabel()->onPress.Add( this, &QLiveGuiTrackControl::onClipPress );
             SetHeight( GetSize().y + 20 );
         }
         mClipsRadioController->SetSize( size.x, clips.size() * 22 );
@@ -257,6 +257,14 @@ private:
         mLive->playClip( mTrack->getIndex(), clipIdx );
     }
     
+    // used for the clip label, can't find a better way
+    void onClipPress( Gwen::Controls::Base* pControl )
+    {
+        int clipIdx = boost::lexical_cast<int>( pControl->GetParent()->GetName() );
+        
+        mLive->playClip( mTrack->getIndex(), clipIdx );
+    }
+
 private:
     
     QLiveRef                                 mLive;
