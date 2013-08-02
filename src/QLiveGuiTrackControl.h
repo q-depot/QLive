@@ -135,10 +135,8 @@ public:
         
         for( auto k=0; k < mClipLabels.size(); k++ )
         {
-            clip = mTrack->getClip( (int)atof( mClipLabels[k]->GetName().c_str() ) );
-//            ci::app::console() << clip->getName() << std::endl;
-            
-            top = k * 20;
+            clip    = mTrack->getClip( (int)atof( mClipLabels[k]->GetName().c_str() ) );
+            top     = k * 20;
             
             if ( clip->isPlaying() )
                 ci::gl::color( ci::Color( 0.05f, 1.0f, 0.1f ) );
@@ -155,40 +153,11 @@ public:
         
         ci::gl::popMatrices();
         
-        /*
         // Volume
         Gwen::Event::Caller	cb = mVolume->onValueChanged;
         mVolume->onValueChanged = Gwen::Event::Caller();
         mVolume->SetFloatValue( mTrack->getVolume() );
         mVolume->onValueChanged = cb;
-
-        // TODO: do same as ParamControls
-        // Clips
-        Gwen::Controls::LabeledRadioButton  *pSelected  = mClipsRadioController->GetSelected();
-        QLiveClipRef                 playingClip = mTrack->getPlayingClip();
-        
-        if ( playingClip )
-        {
-            int selectedClipIdx = -1;
-            
-            if ( pSelected )
-                selectedClipIdx = boost::lexical_cast<int>( pSelected->GetName() );
-
-            if ( selectedClipIdx != playingClip->getIndex() )
-            {
-                Gwen::Controls::Base::List &children = mClipsRadioController->GetChildren();
-                
-                for ( Gwen::Controls::Base::List::iterator iter = children.begin(); iter != children.end(); ++iter )
-                {
-                    Gwen::Controls::LabeledRadioButton* pChild = gwen_cast<Gwen::Controls::LabeledRadioButton>( *iter );
-                    selectedClipIdx = boost::lexical_cast<int>( pChild->GetName() );
-                    
-                    if ( playingClip->getIndex() == selectedClipIdx )
-                        pChild->Select();
-                }
-            }
-        }
-         */
     }
     
     
@@ -261,7 +230,6 @@ private:
         mLive->setTrackVolume( mTrack->getIndex(), slider->GetFloatValue() );
     }
     
-    
     void onParamChange( Gwen::Controls::Base* pControl )
     {
         std::vector<std::string> splitValues;
@@ -273,18 +241,7 @@ private:
         
         mLive->setParam( trackIdx, deviceIdx, paramIdx, ((Gwen::Controls::Slider*)pControl)->GetFloatValue() );
     }
-
-//    
-//    void onClipChange( Gwen::Controls::Base* pControl )
-//    {
-//        Gwen::Controls::RadioButtonController*  rc          = ( Gwen::Controls::RadioButtonController* ) pControl;
-//        Gwen::Controls::LabeledRadioButton*     pSelected   = rc->GetSelected();
-//        int                                     clipIdx     = boost::lexical_cast<int>( pSelected->GetName() );
-//        
-////        mLive->playClip( mTrack->getIndex(), clipIdx );
-//    }
     
-    // used for the clip label, can't find a better way
     void onClipPress( Gwen::Controls::Base* pControl )
     {
         int clipIdx = boost::lexical_cast<int>( pControl->GetName() );
@@ -296,7 +253,6 @@ private:
     
     QLiveRef                                        mLive;
     QLiveTrackRef                                   mTrack;
-//    Gwen::Controls::RadioButtonController   *mClipsRadioController;
     std::vector<Gwen::Controls::LabelClickable*>    mClipLabels;
     Gwen::Controls::HorizontalSlider                *mVolume;
     std::vector<QLiveGuiParamControlRef>            mParamControls;
