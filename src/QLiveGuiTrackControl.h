@@ -123,6 +123,39 @@ public:
     
     virtual void Render( Gwen::Skin::Base* skin )
     {
+        QLiveClipRef clip;
+        
+        ci::gl::pushMatrices();
+        
+        ci::gl::translate( ci::Vec2f( 0, 37 ) + cigwen::fromGwen( LocalPosToCanvas() ) );
+
+        glBegin( GL_QUADS );
+        int h = 8;
+        int top;
+        
+        for( auto k=0; k < mClipLabels.size(); k++ )
+        {
+            clip = mTrack->getClip( (int)atof( mClipLabels[k]->GetName().c_str() ) );
+//            ci::app::console() << clip->getName() << std::endl;
+            
+            top = k * 20;
+            
+            if ( clip->isPlaying() )
+                ci::gl::color( ci::Color( 0.05f, 1.0f, 0.1f ) );
+            else
+                ci::gl::color( ci::Color::gray( 0.3f ) );
+            
+            ci::gl::vertex( 0,  top );
+            ci::gl::vertex( h,  top );
+            ci::gl::vertex( h,  top + h );
+            ci::gl::vertex( 0,  top + h );
+        }
+        
+        glEnd();
+        
+        ci::gl::popMatrices();
+        
+        /*
         // Volume
         Gwen::Event::Caller	cb = mVolume->onValueChanged;
         mVolume->onValueChanged = Gwen::Event::Caller();
@@ -155,7 +188,7 @@ public:
                 }
             }
         }
-        
+         */
     }
     
     
@@ -189,24 +222,18 @@ private:
         SetHeight( GetSize().y + 20 );
         
         // Clips
-        mClipsRadioController = new Gwen::Controls::RadioButtonController( this );
         for( auto i=0; i < clips.size(); i++ )
         {
             clip = clips[i];
-            Gwen::Controls::LabeledRadioButton *radioBtn = mClipsRadioController->AddOption( clip->getName() );
-            radioBtn->GetLabel()->SetTextColorOverride( cigwen::toGwen( clip->getColor() ) );
-            radioBtn->SetName( std::to_string( clip->getIndex() ) );
-            
-            if ( clip->isPlaying() )
-                radioBtn->GetRadioButton()->SetChecked( true );
-
-            radioBtn->GetLabel()->onPress.Add( this, &QLiveGuiTrackControl::onClipPress );
-            SetHeight( GetSize().y + 20 );
+            Gwen::Controls::LabelClickable *label = new Gwen::Controls::LabelClickable( this );//( clip->getName() );
+            label->Dock( Gwen::Pos::Top );
+            label->SetTextColorOverride( cigwen::toGwen( clip->getColor() ) );
+            label->SetText( clip->getName() );
+            label->SetName( std::to_string( clip->getIndex() ) );
+            label->SetMargin( Gwen::Margin( 10, 0, 0, 0 ) );
+            label->onPress.Add( this, &QLiveGuiTrackControl::onClipPress );
+            mClipLabels.push_back( label );
         }
-        mClipsRadioController->SetSize( size.x, clips.size() * 22 );
-        mClipsRadioController->Dock( Gwen::Pos::Top );
-        mClipsRadioController->onSelectionChange.Add( this, &QLiveGuiTrackControl::onClipChange );
-        
         
         // Params
         std::vector<QLiveDeviceRef>  devices = track->getDevices();
@@ -247,31 +274,32 @@ private:
         mLive->setParam( trackIdx, deviceIdx, paramIdx, ((Gwen::Controls::Slider*)pControl)->GetFloatValue() );
     }
 
-    
-    void onClipChange( Gwen::Controls::Base* pControl )
-    {
-        Gwen::Controls::RadioButtonController*  rc          = ( Gwen::Controls::RadioButtonController* ) pControl;
-        Gwen::Controls::LabeledRadioButton*     pSelected   = rc->GetSelected();
-        int                                     clipIdx     = boost::lexical_cast<int>( pSelected->GetName() );
-        
-        mLive->playClip( mTrack->getIndex(), clipIdx );
-    }
+//    
+//    void onClipChange( Gwen::Controls::Base* pControl )
+//    {
+//        Gwen::Controls::RadioButtonController*  rc          = ( Gwen::Controls::RadioButtonController* ) pControl;
+//        Gwen::Controls::LabeledRadioButton*     pSelected   = rc->GetSelected();
+//        int                                     clipIdx     = boost::lexical_cast<int>( pSelected->GetName() );
+//        
+////        mLive->playClip( mTrack->getIndex(), clipIdx );
+//    }
     
     // used for the clip label, can't find a better way
     void onClipPress( Gwen::Controls::Base* pControl )
     {
-        int clipIdx = boost::lexical_cast<int>( pControl->GetParent()->GetName() );
-        
+        int clipIdx = boost::lexical_cast<int>( pControl->GetName() );
+        QLiveClipRef clip  = mLive->getClip( mTrack->getIndex(), clipIdx );
         mLive->playClip( mTrack->getIndex(), clipIdx );
     }
 
 private:
     
-    QLiveRef                                 mLive;
-    QLiveTrackRef                            mTrack;
-    Gwen::Controls::RadioButtonController   *mClipsRadioController;
-    Gwen::Controls::HorizontalSlider        *mVolume;
-    std::vector<QLiveGuiParamControlRef>    mParamControls;
+    QLiveRef                                        mLive;
+    QLiveTrackRef                                   mTrack;
+//    Gwen::Controls::RadioButtonController   *mClipsRadioController;
+    std::vector<Gwen::Controls::LabelClickable*>    mClipLabels;
+    Gwen::Controls::HorizontalSlider                *mVolume;
+    std::vector<QLiveGuiParamControlRef>            mParamControls;
     
 };
 

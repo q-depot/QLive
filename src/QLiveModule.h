@@ -39,7 +39,6 @@ public:
     
     ~QLiveModule()
     {
-        mOnClipUpdateCb.disconnect();
         mOnClipSelectCb.disconnect();
     }
     
@@ -70,10 +69,10 @@ public:
     virtual ci::XmlTree getXmlNode() 
     {
         ci::XmlTree node( "module", "" );
-        node.setAttribute( "effect",        mTrack->getName() );
-        node.setAttribute( "name",          mClip->getName() );
-        node.setAttribute( "track",         mTrack->getIndex() );
-        node.setAttribute( "clip",          mClip->getIndex() );
+        node.setAttribute( "type",  mTrack->getName() );
+        node.setAttribute( "name",  mClip->getName() );
+        node.setAttribute( "track", mTrack->getIndex() );
+        node.setAttribute( "clip",  mClip->getIndex() );
         
         // params
         ci::XmlTree pNode( "param", "" );
@@ -100,10 +99,7 @@ public:
             
             if ( mParams.count(name) )
                 boost::get<0>(mParams[name]) = value;
-
-        }    
-        
-        clipStateUpdateCallback();
+        }
     }
 
     static void saveSettings( std::vector<QLiveModule*> modules ) {}
@@ -136,8 +132,6 @@ protected:
         return boost::get<0>(mParams[name]);
     }
     
-    void clipStateUpdateCallback();
-    
     void clipSelectCallback();
     
 protected:
@@ -156,7 +150,7 @@ protected:
     std::vector<int>    mFreqs;
     float**             mFftBuffer;
     
-    boost::signals2::connection     mOnClipUpdateCb, mOnClipSelectCb;
+    boost::signals2::connection     mOnClipSelectCb;
 };
 
 #endif

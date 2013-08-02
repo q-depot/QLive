@@ -24,8 +24,6 @@ QLiveModule::QLiveModule( QLiveRef live, QLiveTrackRef track, QLiveClipRef clip 
 {
     updateBrightness();
     
-    mOnClipUpdateCb = mClip->connectOnStateUpdate( std::bind( &QLiveModule::clipStateUpdateCallback, this ) );
-    
     mOnClipSelectCb = mClip->connectOnSelect( std::bind( &QLiveModule::clipSelectCallback, this ) );
 }
 
@@ -67,11 +65,6 @@ bool QLiveModule::updateModule()
     }
     
     return isPlaying();
-}
-
-
-void QLiveModule::clipStateUpdateCallback()
-{
 }
 
 
