@@ -704,7 +704,6 @@ void QLive::playClip( int trackIdx, int clipIdx )
         else
             clips[k]->setState( HAS_CLIP );
 
-    console() << "play clip: " << clip->isPlaying() << " " << clip->getIndex() << endl;
     // TODO: if both track and scene change, the selected clip can be the wrong one for an instant between the calls
     setSelectedScene( clipIdx );
     setSelectedTrack( trackIdx );

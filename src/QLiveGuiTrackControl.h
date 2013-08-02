@@ -246,7 +246,11 @@ private:
     {
         int clipIdx = boost::lexical_cast<int>( pControl->GetName() );
         QLiveClipRef clip  = mLive->getClip( mTrack->getIndex(), clipIdx );
-        mLive->playClip( mTrack->getIndex(), clipIdx );
+
+        if ( clip->isPlaying() )
+            mLive->stopClip( mTrack->getIndex(), clipIdx );
+        else
+            mLive->playClip( mTrack->getIndex(), clipIdx );
     }
 
 private:

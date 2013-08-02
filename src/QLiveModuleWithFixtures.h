@@ -55,7 +55,7 @@ public:
     
     ci::AxisAlignedBox3f getBoundingBox() { return mBoundingBox; }
     
-    ci::XmlTree getXmlNode() 
+    virtual ci::XmlTree getXmlNode()
     {
         ci::XmlTree node        = QLiveModule::getXmlNode();
         ci::Vec3f   bBoxMinVec  = mBoundingBox.getMin();
@@ -67,7 +67,7 @@ public:
         return node;
     }
     
-    void loadXmlNode( ci::XmlTree node )
+    virtual void loadXmlNode( ci::XmlTree node )
     {
         QLiveModule::loadXmlNode( node );
         ci::Vec3f bBoxMinVec;
