@@ -15,7 +15,6 @@
 #pragma once
 
 #include "cinder/Xml.h"
-//#include "QLive.h"
 #include <boost/tuple/tuple.hpp>
 
 

@@ -724,5 +724,10 @@ void QLive::stopClip( int trackIdx, int clipIdx )
     
     sendMessage("/live/stop/clip", "i" + ci::toString(trackIdx) + " i" + ci::toString(clipIdx) );
     clip->setState( HAS_CLIP );
+
+    clip->select( false );
+    
+    if ( clip == mSelectedClip )
+        mSelectedClip.reset();
 }
 
