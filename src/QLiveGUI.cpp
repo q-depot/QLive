@@ -23,7 +23,7 @@ using namespace ci::app;
 using namespace std;
 
 
-void QLiveGUI::init()
+void QLiveGUI::init( ci::Rectf rect )   // rect doesn't make any fucking sense! TODO: remove this shit!
 {
     std::vector<QLiveTrackRef> tracks = mLive->getTracks();
     
@@ -38,7 +38,7 @@ void QLiveGUI::init()
             n++;
     
     Vec2f size;
-    size.x = ( getWindowWidth() - ( n + 1 ) * margin ) / n;
+    size.x = ( rect.getWidth() - ( n + 1 ) * margin ) / n;
     size.y = 150;
     for( auto k=0; k < tracks.size(); k++ )
     {

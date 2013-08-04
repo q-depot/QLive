@@ -37,14 +37,14 @@ class QLiveGUI {
     
 public:
     
-    static QLiveGUIRef create( QLiveRef live, Gwen::Controls::Canvas *canvas )
+    static QLiveGUIRef create( QLiveRef live, Gwen::Controls::Canvas *canvas, ci::Rectf rect )
     {
-        return QLiveGUIRef( new QLiveGUI( live, canvas ) );
+        return QLiveGUIRef( new QLiveGUI( live, canvas, rect ) );
     }
 
     ~QLiveGUI() {}
     
-    void init();
+    void init( ci::Rectf rect );
     
     void toggle();
     
@@ -52,9 +52,9 @@ public:
     
 private:
     
-    QLiveGUI( QLiveRef live, Gwen::Controls::Canvas *canvas ) : mLive(live), mCanvas(canvas)
+    QLiveGUI( QLiveRef live, Gwen::Controls::Canvas *canvas, ci::Rectf rect ) : mLive(live), mCanvas(canvas)
     {
-        init();
+        init(rect);
     }
 
     
