@@ -79,25 +79,26 @@ public:
         track->setVolume( volume );
     }
     
-    void setParam( int trackIdx, int deviceIdx, int paramIdx, float value ) 
-    { 
-        QLiveTrackRef track = getTrack(trackIdx);
-        if (!track)
-            return;
-        
-        QLiveDeviceRef device = track->getDevice(deviceIdx);
-        if (!device)
-            return;
-        
-        QLiveParamRef param = device->getParam(paramIdx);
+    void setParam( int trackIdx, int deviceIdx, int paramIdx, float value )
+    {
+        QLiveParamRef param = getParam( trackIdx, deviceIdx, paramIdx );
         if(!param)
             return;
         
-        // is alive?????
+        param->setValue( value );
+        
+        sendMessage("/live/device", "i" + ci::toString(trackIdx) + " i" + ci::toString(deviceIdx) + " i" + ci::toString(paramIdx) + " f" + ci::toString(value) );
+    }
+    
+    void setParam( int trackIdx, int deviceIdx, std::string name, float value )
+    {
+        QLiveParamRef param = getParam( trackIdx, deviceIdx, name );
+        if(!param)
+            return;
         
         param->setValue( value );
         
-        sendMessage("/live/device", "i" + ci::toString(trackIdx) + " i" + ci::toString(deviceIdx) + " i" + ci::toString(paramIdx) + " f" + ci::toString(value) ); 
+        sendMessage("/live/device", "i" + ci::toString(trackIdx) + " i" + ci::toString(deviceIdx) + " i" + ci::toString( param->getIndex() ) + " f" + ci::toString(value) );
     }
 
     void getTrackSends( int idx )
@@ -211,11 +212,11 @@ public:
     }
     
     QLiveParamRef getParam( int trackIdx, int deviceIdx, std::string name )
-    { 
+    {
         QLiveTrackRef track = getTrack( trackIdx );
         
         if ( track )
-        {   
+        {
             QLiveDeviceRef device = track->getDevice( deviceIdx );
             if ( device )
                 return device->getParam(name);
@@ -223,7 +224,21 @@ public:
         
         return QLiveParamRef();
     }
-    
+
+    QLiveParamRef getParam( int trackIdx, int deviceIdx, int paramIdx )
+    {
+        QLiveTrackRef track = getTrack( trackIdx );
+        
+        if ( track )
+        {
+            QLiveDeviceRef device = track->getDevice( deviceIdx );
+            if ( device )
+                return device->getParam(paramIdx);
+        }
+        
+        return QLiveParamRef();
+    }
+
     std::shared_ptr<float> getParamRef( int trackIdx, int deviceIdx, std::string name )
     {
         QLiveTrackRef track = getTrack( trackIdx );
