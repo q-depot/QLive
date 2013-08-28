@@ -587,9 +587,9 @@ void QLive::loadSettingsXml( XmlTree liveSettings, bool forceXmlSettings )
     QLiveTrackRef   track;
     int             index;
     string          name;
-    
+
     // parse scenes
-    for( XmlTree::Iter nodeIt = liveSettings.find("scenes/scene"); nodeIt != liveSettings.end(); ++nodeIt )
+    for( XmlTree::Iter nodeIt = liveSettings.begin("scenes/scene"); nodeIt != liveSettings.end(); ++nodeIt )
     {
         index   = nodeIt->getAttributeValue<int>("index");
         name    = nodeIt->getAttributeValue<string>("name");
@@ -607,7 +607,7 @@ void QLive::loadSettingsXml( XmlTree liveSettings, bool forceXmlSettings )
     }
     
     // parase tracks
-    for( XmlTree::Iter nodeIt = liveSettings.find("tracks/track"); nodeIt != liveSettings.end(); ++nodeIt )
+    for( XmlTree::Iter nodeIt = liveSettings.begin("tracks/track"); nodeIt != liveSettings.end(); ++nodeIt )
     {
         index   = nodeIt->getAttributeValue<int>("index");
         name    = nodeIt->getAttributeValue<string>("name");

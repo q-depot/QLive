@@ -128,7 +128,10 @@ protected:
     
     float getParamValue( const std::string &name )
     {
-        return boost::get<0>(mParams[name]);
+        if ( mParams.count( name ) == 0 )
+            return 0.0f;
+        
+        return boost::get<0>( mParams[name] );
     }
     
     void clipSelectCallback();

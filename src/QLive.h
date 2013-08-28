@@ -132,6 +132,9 @@ public:
 //	void playScene(int scene) {	sendMessage("/live/play/scene", "i" + ci::toString(scene) ); };
     
     std::vector<QLiveTrackRef> getTracks() { return mTracks; }
+
+    int getTrackSize() { return mTracks.size(); }
+    
     
     std::vector<QLiveSceneRef> getScenes() { return mScenes; }
     
