@@ -562,6 +562,8 @@ void QLive::debugOscMessage( osc::Message message )
 XmlTree QLive::getSettingsXml()
 {
     XmlTree liveSettings("QLiveSettings", "" );
+    liveSettings.setAttribute( "force", false );
+    
     XmlTree scenes("scenes", "" );
     XmlTree tracks("tracks", "" );
     
