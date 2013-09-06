@@ -308,14 +308,10 @@ public:
     void	initOsc();
 
     bool    isReady() { return mIsReady; }
-        
-//    void    loadSettings( ci::fs::path path, bool forceXmlSettings = false );
-//    
-//    void    saveSettings( ci::fs::path path );
     
     ci::XmlTree getSettingsXml();
     
-    void        loadSettingsXml( ci::XmlTree, bool forceXmlSettings = false );
+    void    loadSettingsXml( ci::XmlTree, bool forceSettings = false );
     
     bool    isAlive()
     {
@@ -394,6 +390,7 @@ private:
     std::thread                 mReceiveOscDataThread;
     bool                        mRunOscDataThread;
     
+    bool                        mForceInitSettings;
 };
 
 

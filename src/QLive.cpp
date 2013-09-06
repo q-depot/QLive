@@ -562,7 +562,7 @@ void QLive::debugOscMessage( osc::Message message )
 XmlTree QLive::getSettingsXml()
 {
     XmlTree liveSettings("QLiveSettings", "" );
-    liveSettings.setAttribute( "force", false );
+    liveSettings.setAttribute( "force", mForceInitSettings );
     
     XmlTree scenes("scenes", "" );
     XmlTree tracks("tracks", "" );
@@ -580,9 +580,11 @@ XmlTree QLive::getSettingsXml()
 }
 
 
-void QLive::loadSettingsXml( XmlTree liveSettings, bool forceXmlSettings )
+void QLive::loadSettingsXml( XmlTree liveSettings, bool forceSettings )
 {
-    if ( forceXmlSettings )
+    mForceInitSettings  = forceSettings;
+    
+    if ( mForceInitSettings )
         clearObjects();
     
     QLiveSceneRef   scene;
@@ -600,7 +602,7 @@ void QLive::loadSettingsXml( XmlTree liveSettings, bool forceXmlSettings )
         if ( scene )
             scene->loadXmlNode( *nodeIt );
         
-        else if ( !scene && forceXmlSettings )
+        else if ( !scene && mForceInitSettings )
         {
             scene = QLiveScene::create( index, name );
             scene->loadXmlNode( *nodeIt );
@@ -616,12 +618,12 @@ void QLive::loadSettingsXml( XmlTree liveSettings, bool forceXmlSettings )
         track   = getTrack(name);
 
         if ( track )
-            track->loadXmlNode( *nodeIt, forceXmlSettings );
+            track->loadXmlNode( *nodeIt, mForceInitSettings );
         
-        else if ( !track && forceXmlSettings )
+        else if ( !track && mForceInitSettings )
         {
             track = QLiveTrack::create( index, name );
-            track->loadXmlNode( *nodeIt, forceXmlSettings );
+            track->loadXmlNode( *nodeIt, mForceInitSettings );
             mTracks.push_back( track );
         }
     }
