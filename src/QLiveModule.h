@@ -99,6 +99,8 @@ public:
             if ( mParams.count(name) )
                 boost::get<0>(mParams[name]) = value;
         }
+        
+        mXmlNode = node;
     }
 
     static void saveSettings( std::vector<QLiveModule*> modules ) {}
@@ -153,6 +155,9 @@ protected:
     float**             mFftBuffer;
     
     boost::signals2::connection     mOnClipSelectCb;
+    
+    ci::XmlTree         mXmlNode;
+    
 };
 
 #endif
