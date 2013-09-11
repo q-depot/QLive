@@ -327,6 +327,10 @@ public:
 
     QLiveClipRef    getSelectedClip()   { return mSelectedClip; }
     
+    std::string getOscHost()        { return mOscHost; }
+    int         getOscInPort()      { return mOscInPort; }
+    int         getOscOutPort()     { return mOscOutPort; }
+
     
 private:
     
@@ -387,8 +391,8 @@ private:
     ci::osc::Sender             *mOscSender;
     ci::osc::Listener			*mOscListener;
     std::string					mOscHost;
-    int							mOscLiveInPort;
-    int							mOscLiveOutPort;
+    int							mOscInPort;
+    int							mOscOutPort;
     std::thread                 mReceiveOscDataThread;
     bool                        mRunOscDataThread;
     

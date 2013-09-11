@@ -25,7 +25,7 @@ using namespace std;
 
     
 QLive::QLive( string osc_host, int osc_live_in_port, int osc_live_out_port, bool initFromLive ) 
-: mOscHost(osc_host), mOscLiveInPort(osc_live_in_port), mOscLiveOutPort(osc_live_out_port)
+: mOscHost(osc_host), mOscInPort(osc_live_in_port), mOscOutPort(osc_live_out_port)
 {
     mOscListener        = NULL;
     mOscSender          = NULL;
@@ -37,7 +37,7 @@ QLive::QLive( string osc_host, int osc_live_in_port, int osc_live_out_port, bool
     initOsc();
     
     // set LiveOsc peer: /remix/set_peer HOST PORT (null host > host is automatically set to the host that sent the request)
-    sendMessage("/remix/set_peer", "s i" + ci::toString(mOscLiveInPort) );
+    sendMessage("/remix/set_peer", "s i" + ci::toString(mOscInPort) );
     
     mGetInfoRequestAt = - GET_INFO_MIN_DELAY * 2.0f;
     
@@ -66,13 +66,13 @@ void QLive::initOsc()
         }
         
         mOscSender = new osc::Sender();
-        mOscSender->setup(mOscHost, mOscLiveOutPort);
+        mOscSender->setup(mOscHost, mOscOutPort);
         
-        console() << "LIVE: Initialized OSC sender " << toString(mOscHost) + ":" << toString(mOscLiveOutPort) << endl;
+        console() << "LIVE: Initialized OSC sender " << toString(mOscHost) + ":" << toString(mOscOutPort) << endl;
     } 
     catch (...) {
         mOscSender = NULL;
-        console() << "LIVE: Failed to bind OSC sender socket " << toString(mOscHost) << ":" << toString(mOscLiveOutPort) << endl;
+        console() << "LIVE: Failed to bind OSC sender socket " << toString(mOscHost) << ":" << toString(mOscOutPort) << endl;
     }
     
     
@@ -87,8 +87,8 @@ void QLive::initOsc()
         }
         
         mOscListener = new osc::Listener();
-        mOscListener->setup(mOscLiveInPort);
-        console() << "LIVE: Initialized OSC listener " << mOscLiveInPort << endl;
+        mOscListener->setup(mOscInPort);
+        console() << "LIVE: Initialized OSC listener " << mOscInPort << endl;
     } 
     catch (...) {
         mOscListener = NULL;
@@ -184,7 +184,7 @@ void QLive::renderDebug( bool renderScenes, bool renderTracks, bool renderClips,
     textLayout.setFont( mFontSmall );
     
     textLayout.addLine( "QLIVE" );
-    textLayout.addLine( mOscHost + " / in " + toString(mOscLiveInPort) + " / out " + toString(mOscLiveOutPort) );
+    textLayout.addLine( mOscHost + " / in " + toString(mOscInPort) + " / out " + toString(mOscOutPort) );
     textLayout.addLine( " " );
     
     if ( renderScenes )
@@ -251,7 +251,7 @@ void QLive::sendMessage(string address, string args)
 {	
     osc::Message message;
     message.setAddress( address );
-    message.setRemoteEndpoint(mOscHost, mOscLiveOutPort);
+    message.setRemoteEndpoint(mOscHost, mOscOutPort);
     vector<string> splitValues;
     boost::split(splitValues, args, boost::is_any_of(" "));
     
@@ -580,8 +580,8 @@ XmlTree QLive::getSettingsXml()
     
     liveSettings.setAttribute( "force",         mForceInitSettings );
     liveSettings.setAttribute( "oscSenderHost", mOscHost );
-    liveSettings.setAttribute( "oscOutPort",    mOscLiveOutPort );
-    liveSettings.setAttribute( "oscInPort",     mOscLiveInPort );
+    liveSettings.setAttribute( "oscOutPort",    mOscOutPort );
+    liveSettings.setAttribute( "oscInPort",     mOscInPort );
     
     XmlTree scenes("scenes", "" );
     XmlTree tracks("tracks", "" );
@@ -607,11 +607,11 @@ void QLive::loadSettingsXml( XmlTree liveSettings, bool forceSettings )
     int     oscOutPort  = liveSettings.getAttributeValue<int>( "oscOutPort" );
     int     oscInPort   = liveSettings.getAttributeValue<int>( "oscInPort" );
 
-    if ( mOscHost != oscHost || mOscLiveInPort != oscInPort || mOscLiveOutPort != oscOutPort )
+    if ( mOscHost != oscHost || mOscInPort != oscInPort || mOscOutPort != oscOutPort )
     {
         mOscHost        = oscHost;
-        mOscLiveInPort  = oscInPort;
-        mOscLiveOutPort = oscOutPort;
+        mOscInPort  = oscInPort;
+        mOscOutPort = oscOutPort;
         
         initOsc();
     }
