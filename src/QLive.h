@@ -340,6 +340,8 @@ private:
     
     void	shutdown();
     
+    void	closeOsc();
+    
     ci::ColorA colorIntToColorA( int colorInt )
     {
         ci::ColorA color;

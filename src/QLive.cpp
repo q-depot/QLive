@@ -55,6 +55,8 @@ QLive::QLive( string osc_host, int osc_live_in_port, int osc_live_out_port, bool
 
 void QLive::initOsc()
 {
+    closeOsc();
+    
     try {
         
         if ( mOscSender )					// close OSC sender
@@ -95,23 +97,36 @@ void QLive::initOsc()
     mReceiveOscDataThread = std::thread( &QLive::receiveData, this );
 }
 
+
 void QLive::shutdown() 
 {
     mIsReady = false;
-    
-    mRunOscDataThread = false;
-    mReceiveOscDataThread.join();
-    mOscListener->shutdown();
-    delete mOscListener;
-    mOscListener = NULL;
 
+    closeOsc();
+    
+    clearObjects();                     // delete objects and clear pointers
+}
+
+
+void QLive::closeOsc()
+{
+    mRunOscDataThread = false;
+    
+    if ( mReceiveOscDataThread.joinable() )
+        mReceiveOscDataThread.join();
+
+    if ( mOscListener )
+    {
+        mOscListener->shutdown();
+        delete mOscListener;
+        mOscListener = NULL;
+    }
+    
     if ( mOscSender )					// close OSC sender
     {
         delete mOscSender;
         mOscSender = NULL;
     }
-    
-    clearObjects();					// delete objects and clear pointers
 }
 
 
@@ -562,7 +577,11 @@ void QLive::debugOscMessage( osc::Message message )
 XmlTree QLive::getSettingsXml()
 {
     XmlTree liveSettings("QLiveSettings", "" );
-    liveSettings.setAttribute( "force", mForceInitSettings );
+    
+    liveSettings.setAttribute( "force",         mForceInitSettings );
+    liveSettings.setAttribute( "oscSenderHost", mOscHost );
+    liveSettings.setAttribute( "oscOutPort",    mOscLiveOutPort );
+    liveSettings.setAttribute( "oscInPort",     mOscLiveInPort );
     
     XmlTree scenes("scenes", "" );
     XmlTree tracks("tracks", "" );
@@ -583,6 +602,19 @@ XmlTree QLive::getSettingsXml()
 void QLive::loadSettingsXml( XmlTree liveSettings, bool forceSettings )
 {
     mForceInitSettings  = forceSettings;
+        
+    string  oscHost     = liveSettings.getAttributeValue<string>( "oscSenderHost" );
+    int     oscOutPort  = liveSettings.getAttributeValue<int>( "oscOutPort" );
+    int     oscInPort   = liveSettings.getAttributeValue<int>( "oscInPort" );
+
+    if ( mOscHost != oscHost || mOscLiveInPort != oscInPort || mOscLiveOutPort != oscOutPort )
+    {
+        mOscHost        = oscHost;
+        mOscLiveInPort  = oscInPort;
+        mOscLiveOutPort = oscOutPort;
+        
+        initOsc();
+    }
     
     if ( mForceInitSettings )
         clearObjects();

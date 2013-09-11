@@ -36,7 +36,7 @@ protected:      // only sub-class can call the constructor
     QLiveModuleWithFixtures( QLiveRef live, QLiveTrackRef track, QLiveClipRef clip, std::vector<FixtureRef> fixtures )
     : QLiveModule(live, track, clip), mFixtures(fixtures)
     {
-        mBoundingBox        = ci::AxisAlignedBox3f( ci::Vec3f(-1.0f, 0.0f, -1.0f), ci::Vec3f::one() );
+        mBoundingBox        = ci::AxisAlignedBox3f( ci::Vec3f(-6.0f, 0.0f, -6.0f), 6.0 * ci::Vec3f::one() );
         mShowBoundingBox    = false;
         
         calcActiveFixtures();

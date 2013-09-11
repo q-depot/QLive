@@ -48,6 +48,9 @@ string QLiveModule::getName()
 
 bool QLiveModule::isPlaying() 
 {
+    if ( mClip->getName() == "out" )
+    console() << "dio porco: " << mClip->isPlaying() << " " << mLive->isPlaying() << endl;
+    
     return ( mClip->isPlaying() && mLive->isPlaying() ); 
 }
 
