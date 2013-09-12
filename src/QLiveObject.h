@@ -277,8 +277,8 @@ protected:
         QLiveObject::loadXmlNode( node );
 
         *mValue.get()   = node.getAttributeValue<float>( "value" );
-        mMinValue       = node.getAttributeValue<float>( "min" );
-        mMaxValue       = node.getAttributeValue<float>( "max" );
+//        mMinValue       = node.getAttributeValue<float>( "min" );
+//        mMaxValue       = node.getAttributeValue<float>( "max" );
     }
     
 protected:
