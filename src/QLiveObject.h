@@ -272,13 +272,16 @@ protected:
         return node;
     }
     
-    void loadXmlNode( ci::XmlTree node )
+    void loadXmlNode( ci::XmlTree node, bool forceXmlSettings )
     {
         QLiveObject::loadXmlNode( node );
 
-        *mValue.get()   = node.getAttributeValue<float>( "value" );
-//        mMinValue       = node.getAttributeValue<float>( "min" );
-//        mMaxValue       = node.getAttributeValue<float>( "max" );
+        if ( forceXmlSettings )
+        {
+            *mValue.get()   = node.getAttributeValue<float>( "value" );
+            mMinValue       = node.getAttributeValue<float>( "min" );
+            mMaxValue       = node.getAttributeValue<float>( "max" );
+        }
     }
     
 protected:
@@ -366,7 +369,7 @@ protected:
         return node;
     }
     
-    void loadXmlNode( ci::XmlTree node, bool forceXmlSettings = false )
+    void loadXmlNode( ci::XmlTree node, bool forceXmlSettings )
     {
         QLiveObject::loadXmlNode( node );
         
@@ -382,12 +385,12 @@ protected:
             param   = getParam(name);
 
             if ( param )
-                param->loadXmlNode( *nodeIt );
+                param->loadXmlNode( *nodeIt, forceXmlSettings );
                 
             else if ( !param && forceXmlSettings )
             {
                 param = QLiveParam::create( index, name );
-                param->loadXmlNode( *nodeIt );
+                param->loadXmlNode( *nodeIt, forceXmlSettings );
                 mParams.push_back( param );
             }
         }
@@ -511,7 +514,7 @@ protected:
         return node;
     }
     
-    void loadXmlNode( ci::XmlTree node, bool forceXmlSettings = false ) 
+    void loadXmlNode( ci::XmlTree node, bool forceXmlSettings )
     {
         QLiveObject::loadXmlNode( node );
         *mVolume.get()  = node.getAttributeValue<float>("volume");
