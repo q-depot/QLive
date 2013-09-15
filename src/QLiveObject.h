@@ -319,9 +319,10 @@ public:
     std::vector<QLiveParamRef> getParams() { return mParams; }
     
     QLiveParamRef getParam( int idx )
-    { 
-        if ( idx < mParams.size() )
-            return mParams[idx]; 
+    {
+        for( size_t k=0; k < mParams.size(); k++ )
+            if ( mParams[k]->getIndex() == idx )
+                return mParams[k];
         
         return QLiveParamRef();
     }
