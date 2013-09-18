@@ -484,8 +484,8 @@ void QLive::receiveData()
             string	msgAddress = message.getAddress();
 
             // debug
-            if ( true && msgAddress != "/live/ping" && msgAddress != "/live/beat" )
-                debugOscMessage( message );
+//            if ( true && msgAddress != "/live/ping" && msgAddress != "/live/beat" )
+//                debugOscMessage( message );
 
             // Parse Live objects
             if ( msgAddress == "/live/name/scene" )
