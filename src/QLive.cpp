@@ -360,10 +360,20 @@ void QLive::parseClipInfo( osc::Message message )
     clip = track->getClip(clipIdx);
     if ( clip )
         clip->setState(state);
+    
+    // Select clip
+    if ( state == 0 )
+        return;
+    
+    if ( mSelectedScene ) mSelectedScene->mIsSelected = false;
+    mSelectedScene = getScene( clip->getIndex() );
+    if ( mSelectedTrack ) mSelectedTrack->mIsSelected = false;
+    mSelectedTrack = track;
+    setSelectedClip();
 }
 
 
-void QLive::parseDeviceList( osc::Message message ) 
+void QLive::parseDeviceList( osc::Message message )
 {
     if ( message.getNumArgs() < 3 )	// seems there is an error in the APIs!
        return;
@@ -474,8 +484,8 @@ void QLive::receiveData()
             string	msgAddress = message.getAddress();
 
             // debug
-//            if ( true && msgAddress != "/live/ping" && msgAddress != "/live/beat" )
-//                debugOscMessage( message );
+            if ( true && msgAddress != "/live/ping" && msgAddress != "/live/beat" )
+                debugOscMessage( message );
 
             // Parse Live objects
             if ( msgAddress == "/live/name/scene" )
@@ -485,10 +495,10 @@ void QLive::receiveData()
                 parseTrack(message);
 
             else if ( msgAddress == "/live/scene" )
-                setSelectedScene( message.getArgAsInt32(0) - 1 );  // LiveOSC inconsistency
+                setSelectedScene( message.getArgAsInt32(0) - 1 );                       // LiveOSC inconsistency
                 
             else if ( msgAddress == "/live/track" )
-                setSelectedTrack( message.getArgAsInt32(0) - 1 );  // LiveOSC inconsistency
+                setSelectedTrack( message.getArgAsInt32(0) - 1 );                       // LiveOSC inconsistency
                 
             else if ( msgAddress == "/live/name/clip" )
                 parseClip(message);
@@ -512,16 +522,8 @@ void QLive::receiveData()
                     mTracks[trackIndex]->setVolume( message.getArgAsFloat(1) );
             }
 
-//            else if ( msgAddress == "/live/track" )
-//            {
-//                int trackIndex = message.getArgAsInt32(0) - 1;  // shift
-//                for(int k=0; k < mTracks.size(); k++)
-//                    if ( mTracks[k]->mIndex == trackIndex )
-//                    {
-//                        mSelectedTrack = mTracks[k];
-//                        break;
-//                    }
-//            }
+            else if ( msgAddress == "/live/track" ) // track selection
+                setSelectedTrack( message.getArgAsInt32(0) - 1 );                       // LiveOSC inconsistency
             
             else if ( msgAddress == "/live/device/param" )
                 parseDeviceParam(message);
