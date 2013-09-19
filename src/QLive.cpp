@@ -359,17 +359,19 @@ void QLive::parseClipInfo( osc::Message message )
 
     clip = track->getClip(clipIdx);
     if ( clip )
+    {
+        // Select clip
+//        if ( state != 0 )
+
+        setSelectedScene( clip->getIndex() );
+        setSelectedTrack( track->getIndex() );
+//        setSelectedClip();
+//        if ( mSelectedClip )
+//            mSelectedClip->select(false);
+        
+        // Set clip state
         clip->setState(state);
-    
-    // Select clip
-    if ( state == 0 )
-        return;
-    
-    if ( mSelectedScene ) mSelectedScene->mIsSelected = false;
-    mSelectedScene = getScene( clip->getIndex() );
-    if ( mSelectedTrack ) mSelectedTrack->mIsSelected = false;
-    mSelectedTrack = track;
-    setSelectedClip();
+    }
 }
 
 
@@ -717,6 +719,8 @@ void QLive::setSelectedClip()
             return;
         
         mSelectedClip->select(true);
+        
+        console() << "select clip " << mSelectedClip->getName() << endl;
     }
 }
 
