@@ -349,20 +349,19 @@ void QLive::parseClipInfo( osc::Message message )
         return;
 
     clip = track->getClip(clipIdx);
-    if ( clip )
-        clip->setState(state);
-    
-    // Select clip
-    if ( state == 0 )
-        return;
-    
-    if ( mSelectedScene ) mSelectedScene->select( false );
-    mSelectedScene = getSceneByIndex( clip->getIndex() );
 
-    if ( mSelectedTrack ) mSelectedTrack->select( false );
-    mSelectedTrack = track;
+    if ( !clip )
+        return;
+
+    // Select clip
+    if ( state == CLIP_TRIGGERED )
+    {
+        setSelectedScene( clip->getIndex() );
+        setSelectedTrack( track->getIndex() );
+    }
     
-    setSelectedClip();
+    // Set clip state
+    clip->setState(state);
 }
 
 
