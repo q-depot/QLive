@@ -14,12 +14,12 @@
 #pragma once
 
 #include "cinder/app/AppBasic.h"
+#include "cinder/gl/TextureFont.h"
 #include "OscSender.h"
 #include "OscListener.h"
 #include "cinder/Utilities.h"
 #include "QLiveObject.h"
 #include "QLiveModule.h"
-//#include "QLiveModuleWithFixtures.h"
 
 #define	GET_INFO_MIN_DELAY	2.0f		// minimum delay between info requests
 
@@ -46,7 +46,7 @@ public:
     
     bool getInfo();
 
-    void renderDebug( bool renderScenes = true, bool renderTracks = true, bool renderClips = true, bool renderDevices = true );
+    void renderDebug( ci::Vec2i offset = ci::Vec2i( 15, 15 ) );
     
     void play( bool playContinue = false ) 
     {
@@ -70,7 +70,7 @@ public:
         
     void setTrackVolume( int trackIdx, float volume ) 
     { 
-        QLiveTrackRef track = getTrack( trackIdx );
+        QLiveTrackRef track = getTrackByIndex( trackIdx );
         
         if ( !track )
             return;
@@ -81,7 +81,7 @@ public:
     
     void setParam( int trackIdx, int deviceIdx, int paramIdx, float value )
     {
-        QLiveParamRef param = getParam( trackIdx, deviceIdx, paramIdx );
+        QLiveParamRef param = getParamByIndex( trackIdx, deviceIdx, paramIdx );
         if(!param)
             return;
         
@@ -90,57 +90,15 @@ public:
         sendMessage("/live/device", "i" + ci::toString(trackIdx) + " i" + ci::toString(deviceIdx) + " i" + ci::toString(paramIdx) + " f" + ci::toString(value) );
     }
     
-    void setParam( int trackIdx, int deviceIdx, std::string name, float value )
-    {
-        QLiveParamRef param = getParam( trackIdx, deviceIdx, name );
-        if(!param)
-            return;
-        
-        param->setValue( value );
-        
-        sendMessage("/live/device", "i" + ci::toString(trackIdx) + " i" + ci::toString(deviceIdx) + " i" + ci::toString( param->getIndex() ) + " f" + ci::toString(value) );
-    }
-
-    void getTrackSends( int idx )
-    {
-        QLiveTrackRef track = getTrack( idx );
-        
-        if ( !track )
-            return;
-        
-        sendMessage( "/live/send", "i" + ci::toString(idx) );
-    }
-
-    void setTrackSend( int trackIdx, int sendIdx, float val )
-    {
-        QLiveTrackRef track = getTrack( trackIdx );
-        
-        if ( !track )
-            return;
-        
-        track->mSends[sendIdx] = val;   // if the send value doesn't change in Live, it doesn't send anything back!
-        
-        sendMessage( "/live/send", "i" + ci::toString(trackIdx) + " i" + ci::toString(sendIdx) + " f" + ci::toString(val) );
-    }
-
-//	void stopTrack(int track) { sendMessage("/live/stop/track", "i" + ci::toString(track) ); }
-
-//	void setTrackName(int index, std::string name) { sendMessage("/live/name/track", "i" + ci::toString(index) + " s" + name ); };
-    
-//	void setClip() { // /live/name/clip         (int track, int clip, string name)              Sets clip number clip in track number track's name to name };
-    
-//	void playScene(int scene) {	sendMessage("/live/play/scene", "i" + ci::toString(scene) ); };
-    
     std::vector<QLiveTrackRef> getTracks() { return mTracks; }
 
     int getTrackSize() { return mTracks.size(); }
     
-    
     std::vector<QLiveSceneRef> getScenes() { return mScenes; }
     
-    QLiveClipRef getClip( int trackIdx, int clipIdx )
+    QLiveClipRef getClipByIndex( int trackIdx, int clipIdx )
     {   
-        QLiveTrackRef track = getTrack(trackIdx);
+        QLiveTrackRef track = getTrackByIndex(trackIdx);
         
         if ( track )
             return track->getClip(clipIdx);            
@@ -148,55 +106,27 @@ public:
         return QLiveClipRef();
     }
     
-    QLiveClipRef getClip( const std::string trackName, const std::string clipName )
-    {   
-        QLiveTrackRef track = getTrack(trackName);
-        
-        if ( track )
-            return track->getClip(clipName);            
-        
-        return QLiveClipRef();
-    }
-    
-    QLiveTrackRef getTrack( int trackIdx )
+    QLiveTrackRef getTrackByIndex( int trackIdx )
     { 
         for( size_t k=0; k < mTracks.size(); k++ )
-            if ( mTracks[k]->mIndex == trackIdx )
+            if ( mTracks[k]->getIndex() == trackIdx )
                 return mTracks[k];
         
         return QLiveTrackRef();
     }
     
-    QLiveTrackRef getTrack( const std::string &name )
-    { 
-        for( size_t k=0; k < mTracks.size(); k++ )
-            if ( mTracks[k]->mName == name )
-                return mTracks[k];
-        
-        return QLiveTrackRef();
-    }
-    
-    QLiveSceneRef getScene( int idx )
+    QLiveSceneRef getSceneByIndex( int idx )
     {   
         for( size_t k=0; k < mScenes.size(); k++ )
-            if ( mScenes[k]->mIndex == idx )
+            if ( mScenes[k]->getIndex() == idx )
                 return mScenes[k];
         
         return QLiveSceneRef();
     }
     
-    QLiveSceneRef getScene( const std::string &name )
-    {   
-        for( size_t k=0; k < mScenes.size(); k++ )
-            if ( mScenes[k]->mName == name )
-                return mScenes[k];
-        
-        return QLiveSceneRef();
-    }
-    
-    QLiveDeviceRef getDevice( int trackIdx, int deviceIdx )
+    QLiveDeviceRef getDeviceByIndex( int trackIdx, int deviceIdx )
     {         
-        QLiveTrackRef track = getTrack(trackIdx);
+        QLiveTrackRef track = getTrackByIndex(trackIdx);
         
         if ( track )
             return track->getDevice(deviceIdx);            
@@ -204,33 +134,9 @@ public:
         return QLiveDeviceRef();
     }
     
-    QLiveDeviceRef getDevice( const std::string &trackName, const std::string &deviceName )
-    {         
-        QLiveTrackRef track = getTrack(trackName);
-        
-        if ( track )
-            return track->getDevice(deviceName);            
-        
-        return QLiveDeviceRef();
-    }
-    
-    QLiveParamRef getParam( int trackIdx, int deviceIdx, std::string name )
+    QLiveParamRef getParamByIndex( int trackIdx, int deviceIdx, int paramIdx )
     {
-        QLiveTrackRef track = getTrack( trackIdx );
-        
-        if ( track )
-        {
-            QLiveDeviceRef device = track->getDevice( deviceIdx );
-            if ( device )
-                return device->getParam(name);
-        }
-        
-        return QLiveParamRef();
-    }
-
-    QLiveParamRef getParam( int trackIdx, int deviceIdx, int paramIdx )
-    {
-        QLiveTrackRef track = getTrack( trackIdx );
+        QLiveTrackRef track = getTrackByIndex( trackIdx );
         
         if ( track )
         {
@@ -242,9 +148,9 @@ public:
         return QLiveParamRef();
     }
 
-    std::shared_ptr<float> getParamRef( int trackIdx, int deviceIdx, std::string name )
+    std::shared_ptr<float> getParamRefByName( int trackIdx, int deviceIdx, std::string name )
     {
-        QLiveTrackRef track = getTrack( trackIdx );
+        QLiveTrackRef track = getTrackByIndex( trackIdx );
         
         if ( track )
         {
@@ -260,9 +166,9 @@ public:
         return std::shared_ptr<float>();
     }
     
-    float getParamValue( int trackIdx, int deviceIdx, std::string name ) 
+    float getParamValueByName( int trackIdx, int deviceIdx, std::string name )
     { 
-        QLiveTrackRef track = getTrack( trackIdx );
+        QLiveTrackRef track = getTrackByIndex( trackIdx );
         
         if ( track )
         {   
@@ -277,25 +183,6 @@ public:
         
         return 0;
     }
-    
-    float getParamValue( int trackIdx, int deviceIdx, int paramIdx )
-    {
-        QLiveTrackRef track = getTrack( trackIdx );
-        
-        if ( track )
-        {
-            QLiveDeviceRef device = track->getDevice( deviceIdx );
-            if ( device )
-            {
-                QLiveParamRef param = device->getParam(paramIdx);
-                if ( param )
-                    return param->getValue();
-            }
-        }
-        
-        return 0;
-    }
-    
     
     bool    isPlaying() { return mIsPlaying; }
 
@@ -364,7 +251,6 @@ private:
     void	parseDeviceList( ci::osc::Message message );
     void	parseDeviceAllParams( ci::osc::Message message );
     void	parseDeviceParam( ci::osc::Message message );
-    void	parseTrackSends( ci::osc::Message message );
     
     void    debugOscMessage( ci::osc::Message message );
 
@@ -379,8 +265,8 @@ private:
     QLiveSceneRef				mSelectedScene;
     QLiveClipRef                mSelectedClip;
     
-    ci::Font					mFontSmall;
-    ci::Font					mFontMedium;
+    ci::gl::TextureFontRef		mFontSmall;
+    ci::gl::TextureFontRef      mFontMedium;
     
     bool						mIsPlaying;
     bool                        mIsReady;

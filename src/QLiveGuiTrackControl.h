@@ -48,7 +48,7 @@ public:
     {
         Gwen::Event::Caller	cb = mSlider->onValueChanged;
         mSlider->onValueChanged = Gwen::Event::Caller();
-        mSlider->SetFloatValue( mLive->getParamValue( mTrackIdx, mDeviceIdx, mParamIdx ) );
+        mSlider->SetFloatValue( mParam->getValue() );
         mSlider->onValueChanged = cb;
     }
     
@@ -61,9 +61,7 @@ private:
         SetSize( parent->GetSize().x, 40 );
         Dock( Gwen::Pos::Top );
         
-        mTrackIdx   = track->getIndex();
-        mDeviceIdx  = device->getIndex();
-        mParamIdx   = param->getIndex();
+        mParam = param;
         
         // Param name
         Gwen::Controls::Label *pLabel = new Gwen::Controls::Label( this );
@@ -74,9 +72,7 @@ private:
         pLabel->SetTextColorOverride( cigwen::toGwen( ci::Color::gray( 0.3f ) ) );
         
         // Slider
-        std::string sliderName = std::to_string( mTrackIdx ) + "_" + std::to_string( mDeviceIdx ) + "_" + std::to_string( mParamIdx );
         mSlider = new Gwen::Controls::HorizontalSlider( this );
-        mSlider->SetName( sliderName );
         mSlider->SetSize( parent->GetSize().x, 20 );
         mSlider->Dock( Gwen::Pos::Top );
         mSlider->SetRange( param->getMin(), param->getMax() );
@@ -86,7 +82,7 @@ private:
     
     void onChange( Gwen::Controls::Base* pControl )
     {
-        mLive->setParam( mTrackIdx, mDeviceIdx, mParamIdx, ((Gwen::Controls::Slider*)pControl)->GetFloatValue() );
+        mParam->setValue( ((Gwen::Controls::Slider*)pControl)->GetFloatValue() );
     }
     
     
@@ -94,9 +90,8 @@ private:
     
     QLiveRef                            mLive;
     Gwen::Controls::HorizontalSlider    *mSlider;
-    int                                 mTrackIdx;
-    int                                 mDeviceIdx;
-    int                                 mParamIdx;
+    QLiveParamRef                       mParam;
+    
 };
 
 
@@ -245,7 +240,7 @@ private:
     void onClipPress( Gwen::Controls::Base* pControl )
     {
         int clipIdx = boost::lexical_cast<int>( pControl->GetName() );
-        QLiveClipRef clip  = mLive->getClip( mTrack->getIndex(), clipIdx );
+        QLiveClipRef clip  = mLive->getClipByIndex( mTrack->getIndex(), clipIdx );
 
         if ( clip->isPlaying() )
             mLive->stopClip( mTrack->getIndex(), clipIdx );

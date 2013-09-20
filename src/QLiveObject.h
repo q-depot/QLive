@@ -46,8 +46,6 @@ enum ClipState {
 /* -------------------- */
 
 class QLiveObject {
-    
-    friend class QLive;
 
 public:
     
@@ -61,14 +59,24 @@ public:
     
     bool isSelected() { return mIsSelected; }
     
-protected:
+    void setName( std::string name ) { mName = name; }
+
+    void setIndex( int index ) { mIndex = index; }
     
-    virtual ci::XmlTree getXmlNode() 
+    virtual void select( bool val )
+    {
+        mIsSelected = val;
+        
+        if ( val )
+            mOnSelectSignal();
+    }
+    
+    virtual ci::XmlTree getXmlNode()
     {
         ci::XmlTree node( "object", "" );
         node.setAttribute( "name", mName );
         node.setAttribute( "index", mIndex );
-
+        
         return node;
     }
     
@@ -77,6 +85,9 @@ protected:
         mName   = node.getAttributeValue<std::string>( "name" );
         mIndex  = node.getAttributeValue<int>( "index" );
     }
+    
+    
+protected:
     
     std::string colorToHex( const ci::ColorA &color ) {
         unsigned int a = ((unsigned int) (color.a * 255) & 0xFF) << 24;
@@ -105,10 +116,13 @@ protected:
         return ci::ColorA(r, g, b, a);
     }
     
-    
-    int			mIndex;
-    std::string	mName;
-    bool        mIsSelected;
+    bool                            mIsSelected;
+    boost::signals2::signal<void()> mOnSelectSignal;
+
+private:
+
+    int                             mIndex;
+    std::string                     mName;
     
     
 private:
@@ -124,9 +138,6 @@ private:
 /* ------------------ */
 
 class QLiveClip : public QLiveObject {
-    
-    friend class QLive;
-    friend class QLiveTrack;
     
 public:
     
@@ -161,23 +172,7 @@ public:
 
     boost::signals2::connection connectOnSelect( const std::function<void ()> &f )         { return mOnSelectSignal.connect( f ); }
 
-    void select( bool val )
-    {
-        mIsSelected = val;
-
-        if ( val )
-            mOnSelectSignal();
-    }
-    
-protected:
-    
-    QLiveClip( int index, std::string name, ci::Color color ) : QLiveObject(index, name), mColor(color)
-    {
-        mState		= HAS_CLIP;
-        mIsPlaying  = false;
-    }
-    
-    ci::XmlTree getXmlNode() 
+    ci::XmlTree getXmlNode()
     {
         ci::XmlTree node = QLiveObject::getXmlNode();
         node.setTag("clip");
@@ -192,6 +187,17 @@ protected:
         
         mColor  = hexToColor( node.getAttributeValue<std::string>( "color" ) );
     }
+    
+    void setColor( ci::Color col ) { mColor = col; }
+    
+    
+protected:
+    
+    QLiveClip( int index, std::string name, ci::Color color ) : QLiveObject(index, name), mColor(color)
+    {
+        mState		= HAS_CLIP;
+        mIsPlaying  = false;
+    }
 
 protected:
 
@@ -203,7 +209,6 @@ private:
     ClipState	mState;
     
     boost::signals2::signal<void()>     mOnStateUpdateSignal;
-    boost::signals2::signal<void()>     mOnSelectSignal;
     
     
 private:
@@ -225,9 +230,6 @@ private:
 /* ------------------- */
 
 class QLiveParam : public QLiveObject {
-    
-    friend class QLive;
-    friend class QLiveDevice;
     
 public:
     
@@ -253,35 +255,35 @@ public:
         mMaxValue = maxVal;
     }
     
-protected:
-   
-    QLiveParam( int index, std::string name, float val, float minVal, float maxVal )
-    : QLiveObject(index, name), mMinValue(minVal), mMaxValue(maxVal)
-    {
-        mValue = std::shared_ptr<float>( new float(val) );
-    }
-    
-    ci::XmlTree getXmlNode() 
+    ci::XmlTree getXmlNode()
     {
         ci::XmlTree node = QLiveObject::getXmlNode();
         node.setTag("param");
         node.setAttribute( "value", *mValue.get() );
         node.setAttribute( "min",   mMinValue);
         node.setAttribute( "max",   mMaxValue );
-
+        
         return node;
     }
     
     void loadXmlNode( ci::XmlTree node, bool forceXmlSettings )
     {
         QLiveObject::loadXmlNode( node );
-
+        
         if ( forceXmlSettings )
         {
             *mValue.get()   = node.getAttributeValue<float>( "value" );
             mMinValue       = node.getAttributeValue<float>( "min" );
             mMaxValue       = node.getAttributeValue<float>( "max" );
         }
+    }
+    
+protected:
+   
+    QLiveParam( int index, std::string name, float val, float minVal, float maxVal )
+    : QLiveObject(index, name), mMinValue(minVal), mMaxValue(maxVal)
+    {
+        mValue = std::shared_ptr<float>( new float(val) );
     }
     
 protected:
@@ -298,9 +300,6 @@ protected:
 /* -------------------- */
 
 class QLiveDevice : public QLiveObject {
-    
-    friend class QLive;
-    friend class QLiveTrack;
     
 public:
     
@@ -330,7 +329,7 @@ public:
     QLiveParamRef getParam( std::string name )
     {
         for( size_t k=0; k < mParams.size(); k++ )
-            if( mParams[k]->mName == name )
+            if( mParams[k]->getName() == name )
                 return mParams[k];
         
         return QLiveParamRef();
@@ -355,11 +354,7 @@ public:
         return std::shared_ptr<float>();
     }
     
-protected:
-   
-    QLiveDevice( int index, const std::string name ) : QLiveObject(index, name) {}
-    
-    ci::XmlTree getXmlNode() 
+    ci::XmlTree getXmlNode()
     {
         ci::XmlTree node = QLiveObject::getXmlNode();
         node.setTag("device");
@@ -384,10 +379,10 @@ protected:
             index   = nodeIt->getAttributeValue<int>("index");
             name    = nodeIt->getAttributeValue<std::string>("name");
             param   = getParam(name);
-
+            
             if ( param )
                 param->loadXmlNode( *nodeIt, forceXmlSettings );
-                
+            
             else if ( !param && forceXmlSettings )
             {
                 param = QLiveParam::create( index, name );
@@ -397,6 +392,10 @@ protected:
         }
         
     }
+    
+protected:
+   
+    QLiveDevice( int index, const std::string name ) : QLiveObject(index, name) {}
     
 protected:
     
@@ -411,8 +410,6 @@ protected:
 
 class QLiveTrack : public QLiveObject {
     
-    friend class QLive;
-    
 public:
     
     static QLiveTrackRef create( int index, std::string name, ci::Color color = ci::Color::white() )
@@ -425,7 +422,6 @@ public:
     void addClip( QLiveClipRef obj )		{ mClips.push_back(obj); }
     void addDevice( QLiveDeviceRef obj )	{ mDevices.push_back(obj); }
         
-    
     std::vector<QLiveClipRef> getClips() { return mClips; }
     
     std::vector<QLiveDeviceRef> getDevices() { return mDevices; }
@@ -433,7 +429,7 @@ public:
     QLiveClipRef getClip( int idx )
     { 
         for( size_t k=0; k < mClips.size(); k++ )
-            if ( mClips[k]->mIndex == idx )
+            if ( mClips[k]->getIndex() == idx )
                 return mClips[k];
         
         return QLiveClipRef();
@@ -442,7 +438,7 @@ public:
     QLiveClipRef getClip( const std::string &name )
     { 
         for( size_t k=0; k < mClips.size(); k++ )
-            if ( mClips[k]->mName == name )
+            if ( mClips[k]->getName() == name )
                 return mClips[k];
         
         return QLiveClipRef();
@@ -459,7 +455,7 @@ public:
     QLiveDeviceRef getDevice( int idx )
     {   
         for( size_t k=0; k < mDevices.size(); k++ )
-            if ( mDevices[k]->mIndex == idx )
+            if ( mDevices[k]->getIndex() == idx )
                 return mDevices[k];
         
         return QLiveDeviceRef();
@@ -469,7 +465,7 @@ public:
     QLiveDeviceRef getDevice( const std::string &name )
     { 
         for( size_t k=0; k < mDevices.size(); k++ )
-            if ( mDevices[k]->mName == name )
+            if ( mDevices[k]->getName() == name )
                 return mDevices[k];
         
         return QLiveDeviceRef();
@@ -486,14 +482,9 @@ public:
         return QLiveClipRef();
     }
     
-protected:
     
-    QLiveTrack( int index, std::string name, ci::Color color ) : QLiveObject(index, name), mColor(color)
-    {
-        mVolume = std::shared_ptr<float>( new float( 0.0f ) );
-    }
     
-    ci::XmlTree getXmlNode() 
+    ci::XmlTree getXmlNode()
     {
         ci::XmlTree node = QLiveObject::getXmlNode();
         node.setTag("track");
@@ -505,7 +496,7 @@ protected:
         
         for( size_t k=0; k < mClips.size(); k++ )
             clips.push_back( mClips[k]->getXmlNode() );
-
+        
         for( size_t k=0; k < mDevices.size(); k++ )
             devices.push_back( mDevices[k]->getXmlNode() );
         
@@ -532,10 +523,10 @@ protected:
             index   = nodeIt->getAttributeValue<int>("index");
             name    = nodeIt->getAttributeValue<std::string>("name");
             clip    = getClip(name);
-
+            
             if ( clip )
                 clip->loadXmlNode( *nodeIt );
-                
+            
             else if ( !clip && forceXmlSettings )
             {
                 clip = QLiveClip::create( index, name, ci::Color::white() );
@@ -545,17 +536,16 @@ protected:
             
         }
         
-        
-        // parse devices            
+        // parse devices
         for( ci::XmlTree::Iter nodeIt = node.begin("devices/device"); nodeIt != node.end(); ++nodeIt )
         {
             index   = nodeIt->getAttributeValue<int>("index");
             name    = nodeIt->getAttributeValue<std::string>("name");
             device  = getDevice(name);
-
+            
             if ( device )
                 device->loadXmlNode( *nodeIt, forceXmlSettings );
-                
+            
             else if ( !device && forceXmlSettings )
             {
                 device = QLiveDevice::create( index, name );
@@ -563,8 +553,17 @@ protected:
                 mDevices.push_back( device );
             }
         }
-    
+        
     }
+    
+    
+protected:
+    
+    QLiveTrack( int index, std::string name, ci::Color color ) : QLiveObject(index, name), mColor(color)
+    {
+        mVolume = std::shared_ptr<float>( new float( 0.0f ) );
+    }
+    
     
 protected:        
     
@@ -572,7 +571,6 @@ protected:
     std::vector<QLiveDeviceRef>	mDevices;
     std::shared_ptr<float>      mVolume;
     ci::ColorA                  mColor;
-    std::map<int, float>        mSends;
     
 };
 
@@ -582,8 +580,6 @@ protected:
 /* ------------------- */
 
 class QLiveScene : public QLiveObject {
-
-    friend class QLive;
     
 public:
     
@@ -594,17 +590,17 @@ public:
 
     ~QLiveScene() {}
     
-protected:
-    
-    QLiveScene( int index, std::string name ) : QLiveObject(index, name) {}
-    
-    ci::XmlTree getXmlNode() 
+    ci::XmlTree getXmlNode()
     {
         ci::XmlTree node = QLiveObject::getXmlNode();
         node.setTag("scene");
-
+        
         return node;
     }
+    
+protected:
+    
+    QLiveScene( int index, std::string name ) : QLiveObject(index, name) {}
     
 };
 
