@@ -101,7 +101,7 @@ public:
         QLiveTrackRef track = getTrackByIndex(trackIdx);
         
         if ( track )
-            return track->getClip(clipIdx);            
+            return track->getClipByIndex(clipIdx);
             
         return QLiveClipRef();
     }
@@ -129,7 +129,7 @@ public:
         QLiveTrackRef track = getTrackByIndex(trackIdx);
         
         if ( track )
-            return track->getDevice(deviceIdx);            
+            return track->getDeviceByIndex(deviceIdx);            
         
         return QLiveDeviceRef();
     }
@@ -140,9 +140,9 @@ public:
         
         if ( track )
         {
-            QLiveDeviceRef device = track->getDevice( deviceIdx );
+            QLiveDeviceRef device = track->getDeviceByIndex( deviceIdx );
             if ( device )
-                return device->getParam(paramIdx);
+                return device->getParamByIndex(paramIdx);
         }
         
         return QLiveParamRef();
@@ -154,10 +154,10 @@ public:
         
         if ( track )
         {
-            QLiveDeviceRef device = track->getDevice( deviceIdx );
+            QLiveDeviceRef device = track->getDeviceByIndex( deviceIdx );
             if ( device )
             {
-                QLiveParamRef param = device->getParam(name);
+                QLiveParamRef param = device->getParamByName(name);
                 if ( param )
                     return param->getRef();
             }
@@ -172,10 +172,10 @@ public:
         
         if ( track )
         {   
-            QLiveDeviceRef device = track->getDevice( deviceIdx );
+            QLiveDeviceRef device = track->getDeviceByIndex( deviceIdx );
             if ( device )
             {
-                QLiveParamRef param = device->getParam(name);
+                QLiveParamRef param = device->getParamByName(name);
                 if ( param )
                     return param->getValue();
             }
@@ -253,10 +253,12 @@ private:
     void	parseDeviceParam( ci::osc::Message message );
     
     void    debugOscMessage( ci::osc::Message message );
-
-    void    setSelectedScene( int idx );
-    void    setSelectedTrack( int idx );
-    void    setSelectedClip();
+    
+    void    setSelectedScene( QLiveSceneRef scene );
+    void    setSelectedTrack( QLiveTrackRef track );
+    void    setSelectedClip( QLiveClipRef clip );
+    
+    void    updateSelectedClip( int sceneIdx, int trackIdx );
     
     std::vector<QLiveTrackRef>  mTracks;
     std::vector<QLiveSceneRef>	mScenes;

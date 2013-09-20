@@ -130,7 +130,7 @@ public:
         
         for( auto k=0; k < mClipLabels.size(); k++ )
         {
-            clip    = mTrack->getClip( (int)atof( mClipLabels[k]->GetName().c_str() ) );
+            clip    = mTrack->getClipByIndex( (int)atof( mClipLabels[k]->GetName().c_str() ) );
             top     = k * 20;
             
             if ( clip->isPlaying() )

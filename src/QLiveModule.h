@@ -111,7 +111,7 @@ protected:
 
     void registerParam( int deviceIdx, const std::string &name )
     {
-        QLiveDeviceRef device = mTrack->getDevice( deviceIdx );
+        QLiveDeviceRef device = mTrack->getDeviceByIndex( deviceIdx );
         
         if ( !device )
         {
@@ -119,7 +119,7 @@ protected:
             exit(-1);
         }
         
-        QLiveParamRef param = device->getParam(name);
+        QLiveParamRef param = device->getParamByName(name);
         
         if ( param )
             mParams[name] = boost::make_tuple( param->getValue(), param->getRef(), device->getIndex(), param->getIndex() );

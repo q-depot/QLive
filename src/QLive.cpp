@@ -23,7 +23,10 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-    
+
+bool sortTracksByIndex( QLiveTrackRef a, QLiveTrackRef b ) { return ( a->getIndex() < b->getIndex() ); }
+
+
 QLive::QLive( string osc_host, int osc_live_in_port, int osc_live_out_port, bool initFromLive ) 
 : mOscHost(osc_host), mOscInPort(osc_live_in_port), mOscOutPort(osc_live_out_port)
 {
@@ -171,8 +174,7 @@ bool QLive::getInfo()
         if ( clips.empty() )
             continue;
     
-        setSelectedScene( clips[0]->getIndex() );
-        setSelectedTrack( mTracks[k]->getIndex() );
+        updateSelectedClip( clips[0]->getIndex(), mTracks[k]->getIndex() );
         sendMessage("/live/scene", "i" + to_string( clips[0]->getIndex() ) );
         sendMessage("/live/track/view", "i" + to_string( mTracks[k]->getIndex() ) );
         break;
@@ -224,14 +226,14 @@ void QLive::renderDebug( Vec2i offset )
         
         clipsStr = "\tClips ------- ";
         for( int i = 0; i < clips.size(); i++ )
-            clipsStr += to_string( clips[i]->getIndex() ) + " [ " + clips[i]->getName() + " ]   ";
+            clipsStr += to_string( clips[i]->getIndex() ) + " [ " + clips[i]->getName() + " ]     ";
         mFontSmall->drawString( clipsStr, pos );
         pos.y += 18;
         
         
         devicesStr = "\tDevices --- ";
         for( int i = 0; i < devices.size(); i++ )
-            devicesStr += to_string( devices[i]->getIndex() ) + "[ " + devices[i]->getName() + " ]   ";
+            devicesStr += to_string( devices[i]->getIndex() ) + " [ " + devices[i]->getName() + " ]     ";
         mFontSmall->drawString( devicesStr, pos );
         pos.y += 25;
     }
@@ -281,12 +283,6 @@ void QLive::parseScene( osc::Message message )
 }
 
 
-bool sortTracksByIndex( QLiveTrackRef a, QLiveTrackRef b )
-{
-    return ( a->getIndex() < b->getIndex() );
-}
-
-
 void QLive::parseTrack( osc::Message message ) 
 {          
     int     index	= message.getArgAsInt32(0);
@@ -320,7 +316,7 @@ void QLive::parseClip( osc::Message message )
     
     if ( track )
     {
-        clip = track->getClip(clipIdx);
+        clip = track->getClipByIndex(clipIdx);
         if ( clip )
         {
             clip->setName( name );
@@ -348,17 +344,14 @@ void QLive::parseClipInfo( osc::Message message )
     if ( !track )
         return;
 
-    clip = track->getClip(clipIdx);
+    clip = track->getClipByIndex(clipIdx);
 
     if ( !clip )
         return;
 
     // Select clip
     if ( state == CLIP_TRIGGERED )
-    {
-        setSelectedScene( clip->getIndex() );
-        setSelectedTrack( track->getIndex() );
-    }
+        updateSelectedClip( clip->getIndex(), track->getIndex() );
     
     // Set clip state
     clip->setState(state);
@@ -383,7 +376,7 @@ void QLive::parseDeviceList( osc::Message message )
         deviceIdx	= message.getArgAsInt32(k);
         deviceName  = message.getArgAsString(k+1);
             
-        if ( !track->getDevice(deviceIdx) )
+        if ( !track->getDeviceByIndex(deviceIdx) )
         {
             track->addDevice( QLiveDevice::create( deviceIdx, deviceName ) );
             
@@ -403,7 +396,7 @@ void QLive::parseDeviceAllParams( osc::Message message )
     int             trackIdx    = message.getArgAsInt32(0);
     int             deviceIdx   = message.getArgAsInt32(1);
     QLiveTrackRef	track       = getTrackByIndex(trackIdx);
-    QLiveDeviceRef  device      = track->getDevice( deviceIdx );
+    QLiveDeviceRef  device      = track->getDeviceByIndex( deviceIdx );
     
     if ( !device )
         return;
@@ -456,9 +449,15 @@ void QLive::receiveData()
 {    
     mRunOscDataThread = true;
 
+    int selectedSceneIdx, selectedTrackIdx;
+    
     while( mRunOscDataThread && mOscListener ) {
-
-        while (mOscListener->hasWaitingMessages()) {
+        
+        selectedSceneIdx = -1;
+        selectedTrackIdx = -1;
+        
+        while ( mOscListener->hasWaitingMessages() )
+        {
             osc::Message message;
             mOscListener->getNextMessage(&message);
             
@@ -475,12 +474,12 @@ void QLive::receiveData()
             else if ( msgAddress == "/live/name/track" )
                 parseTrack(message);
 
-            else if ( msgAddress == "/live/scene" )
-                setSelectedScene( message.getArgAsInt32(0) - 1 );                       // LiveOSC inconsistency
-                
+            else if ( msgAddress == "/live/scene" ) 
+                selectedSceneIdx = message.getArgAsInt32(0) - 1;                // -1 LiveOSC inconsistency
+            
             else if ( msgAddress == "/live/track" )
-                setSelectedTrack( message.getArgAsInt32(0) - 1 );                       // LiveOSC inconsistency
-                
+                selectedTrackIdx = message.getArgAsInt32(0) - 1;                // -1 LiveOSC inconsistency
+            
             else if ( msgAddress == "/live/name/clip" )
                 parseClip(message);
     
@@ -502,9 +501,6 @@ void QLive::receiveData()
                 if ( trackIndex < mTracks.size() )
                     mTracks[trackIndex]->setVolume( message.getArgAsFloat(1) );
             }
-
-            else if ( msgAddress == "/live/track" ) // track selection
-                setSelectedTrack( message.getArgAsInt32(0) - 1 );                       // LiveOSC inconsistency
             
             else if ( msgAddress == "/live/device/param" )
                 parseDeviceParam(message);
@@ -512,7 +508,9 @@ void QLive::receiveData()
             else if ( msgAddress == "/live/ping" )
                 mPingReceivedAt = getElapsedSeconds();
         }
-            
+        
+        updateSelectedClip( selectedSceneIdx, selectedTrackIdx );
+        
         sleep(15.0f);
 //		boost::this_thread::sleep(boost::posix_time::milliseconds(15));
     }
@@ -645,57 +643,83 @@ void QLive::loadSettingsXml( XmlTree liveSettings, bool forceSettings )
 }
 
 
-void QLive::setSelectedScene( int idx )
+void QLive::updateSelectedClip( int sceneIdx, int trackIdx )
 {
-    if ( mSelectedScene )
-        mSelectedScene->select( false );
-    
-    mSelectedScene = getSceneByIndex( idx );
-    
-    if ( !mSelectedScene )
+    // nothing changed
+    if ( sceneIdx < 0 && trackIdx < 0 )
         return;
     
-    mSelectedScene->select( true );
+    QLiveSceneRef   scene;
+    QLiveTrackRef   track;
+    QLiveClipRef    clip;
+    
+    // track changed
+    if ( sceneIdx < 0 )
+    {
+        
+        QLiveTrackRef track = getTrackByIndex( trackIdx );
+        
+        setSelectedTrack( track );
+        
+        if ( !mSelectedTrack )
+            return;
+    
+        clip = mSelectedTrack->getPlayingClip();                        // find playing clip
 
-    setSelectedClip();
+        if ( !clip && mSelectedTrack->getClips().size() > 0 )           // otherwise find the first clip
+            clip = mSelectedTrack->getClips()[0];
+        
+        setSelectedClip( clip );
+    }
+    
+    // scene changed
+    else if ( trackIdx < 0 && mSelectedTrack )
+    {
+        clip    = getClipByIndex( mSelectedTrack->getIndex(), mSelectedScene->getIndex() );
+        scene   = getSceneByIndex( sceneIdx );
+
+        setSelectedScene( scene );
+        setSelectedClip( clip );
+    }
+    
+    // track + scene changed
+    else
+    {
+        track   = getTrackByIndex( trackIdx );
+        scene   = getSceneByIndex( sceneIdx );
+        clip    = getClipByIndex( trackIdx, sceneIdx );
+        
+        setSelectedScene( scene );
+        setSelectedTrack( track );
+        setSelectedClip( clip );
+    }
 }
 
 
-void QLive::setSelectedTrack( int idx )
+void QLive::setSelectedScene( QLiveSceneRef scene )
 {
-    if ( mSelectedTrack )
-        mSelectedTrack->select( false );
-    
-    mSelectedTrack = getTrackByIndex( idx );
-
-    if ( !mSelectedTrack )
-        return;
-    
-    mSelectedTrack->select( true );
-    
-    setSelectedClip();
+    if ( scene == mSelectedScene )  return;
+    if ( mSelectedScene )           mSelectedScene->select(false);
+    mSelectedScene                  = scene;
+    if ( mSelectedScene )           mSelectedScene->select(true);
 }
 
 
-void QLive::setSelectedClip()
+void QLive::setSelectedTrack( QLiveTrackRef track )
 {
-    if ( !mSelectedScene || !mSelectedTrack )
-        return;
-    
-    QLiveClipRef clip = getClipByIndex( mSelectedTrack->getIndex(), mSelectedScene->getIndex() );
-    
-    if ( clip && clip == mSelectedClip )
-        return;
-    
-    if ( mSelectedClip )
-        mSelectedClip->select(false);
-    
-    mSelectedClip = clip;
+    if ( track == mSelectedTrack )  return;
+    if ( mSelectedTrack )           mSelectedTrack->select(false);
+    mSelectedTrack                  = track;
+    if ( mSelectedTrack )           mSelectedTrack->select(true);
+}
 
-    if ( !mSelectedClip )
-        return;
-    
-    mSelectedClip->select(true);
+
+void QLive::setSelectedClip( QLiveClipRef clip )
+{
+    if ( clip == mSelectedClip )    return;
+    if ( mSelectedClip )            mSelectedClip->select(false);
+    mSelectedClip                   = clip;
+    if ( mSelectedClip )            mSelectedClip->select(true);
 }
 
 
@@ -706,7 +730,7 @@ void QLive::playClip( int trackIdx, int clipIdx )
     if ( !track )
         return;
     
-    QLiveClipRef clip = track->getClip(clipIdx);
+    QLiveClipRef clip = track->getClipByIndex(clipIdx);
     
     if ( !clip )
         return;
@@ -720,9 +744,7 @@ void QLive::playClip( int trackIdx, int clipIdx )
         else
             clips[k]->setState( HAS_CLIP );
 
-    // TODO: if both track and scene change, the selected clip can be the wrong one for an instant between the calls
-    setSelectedScene( clipIdx );
-    setSelectedTrack( trackIdx );
+    updateSelectedClip( clipIdx, trackIdx );
 }
 
 
@@ -733,7 +755,7 @@ void QLive::stopClip( int trackIdx, int clipIdx )
     if ( !track )
         return;
     
-    QLiveClipRef clip = track->getClip(clipIdx);
+    QLiveClipRef clip = track->getClipByIndex(clipIdx);
     
     if ( !clip )
         return;

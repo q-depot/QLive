@@ -317,7 +317,7 @@ public:
     
     std::vector<QLiveParamRef> getParams() { return mParams; }
     
-    QLiveParamRef getParam( int idx )
+    QLiveParamRef getParamByIndex( int idx )
     {
         for( size_t k=0; k < mParams.size(); k++ )
             if ( mParams[k]->getIndex() == idx )
@@ -326,7 +326,7 @@ public:
         return QLiveParamRef();
     }
     
-    QLiveParamRef getParam( std::string name )
+    QLiveParamRef getParamByName( std::string name )
     {
         for( size_t k=0; k < mParams.size(); k++ )
             if( mParams[k]->getName() == name )
@@ -337,7 +337,7 @@ public:
     
     float getParamValue( std::string name )
     {
-        QLiveParamRef param = getParam(name);
+        QLiveParamRef param = getParamByName(name);
         if ( param )
             return param->getValue();
                 
@@ -346,7 +346,7 @@ public:
     
     std::shared_ptr<float> getParamRef( std::string name )
     {   
-        QLiveParamRef param = getParam(name);
+        QLiveParamRef param = getParamByName(name);
 
         if ( param )
             return param->getRef();
@@ -378,7 +378,7 @@ public:
         {
             index   = nodeIt->getAttributeValue<int>("index");
             name    = nodeIt->getAttributeValue<std::string>("name");
-            param   = getParam(name);
+            param   = getParamByIndex(index);
             
             if ( param )
                 param->loadXmlNode( *nodeIt, forceXmlSettings );
@@ -426,7 +426,7 @@ public:
     
     std::vector<QLiveDeviceRef> getDevices() { return mDevices; }
 
-    QLiveClipRef getClip( int idx )
+    QLiveClipRef getClipByIndex( int idx )
     { 
         for( size_t k=0; k < mClips.size(); k++ )
             if ( mClips[k]->getIndex() == idx )
@@ -434,14 +434,14 @@ public:
         
         return QLiveClipRef();
     }
-    
-    QLiveClipRef getClip( const std::string &name )
-    { 
-        for( size_t k=0; k < mClips.size(); k++ )
-            if ( mClips[k]->getName() == name )
-                return mClips[k];
+
+    QLiveDeviceRef getDeviceByIndex( int idx )
+    {
+        for( size_t k=0; k < mDevices.size(); k++ )
+            if ( mDevices[k]->getIndex() == idx )
+                return mDevices[k];
         
-        return QLiveClipRef();
+        return QLiveDeviceRef();
     }
 
     // TODO double check what this is used for, now I'm using shared ptr <<<<<<<<<<<<<<<<<<<<<<<<
@@ -451,26 +451,7 @@ public:
     void setVolume( float val ) { *mVolume.get() = val; }
     
     std::shared_ptr<float> getVolumeRef() { return mVolume; }
-
-    QLiveDeviceRef getDevice( int idx )
-    {   
-        for( size_t k=0; k < mDevices.size(); k++ )
-            if ( mDevices[k]->getIndex() == idx )
-                return mDevices[k];
-        
-        return QLiveDeviceRef();
-    }
-
     
-    QLiveDeviceRef getDevice( const std::string &name )
-    { 
-        for( size_t k=0; k < mDevices.size(); k++ )
-            if ( mDevices[k]->getName() == name )
-                return mDevices[k];
-        
-        return QLiveDeviceRef();
-    }
-
     ci::ColorA	getColor() { return mColor; }
     
     QLiveClipRef getPlayingClip()
@@ -481,8 +462,6 @@ public:
         
         return QLiveClipRef();
     }
-    
-    
     
     ci::XmlTree getXmlNode()
     {
@@ -522,7 +501,7 @@ public:
         {
             index   = nodeIt->getAttributeValue<int>("index");
             name    = nodeIt->getAttributeValue<std::string>("name");
-            clip    = getClip(name);
+            clip    = getClipByIndex(index);
             
             if ( clip )
                 clip->loadXmlNode( *nodeIt );
@@ -541,7 +520,7 @@ public:
         {
             index   = nodeIt->getAttributeValue<int>("index");
             name    = nodeIt->getAttributeValue<std::string>("name");
-            device  = getDevice(name);
+            device  = getDeviceByIndex(index);
             
             if ( device )
                 device->loadXmlNode( *nodeIt, forceXmlSettings );
@@ -571,7 +550,6 @@ protected:
     std::vector<QLiveDeviceRef>	mDevices;
     std::shared_ptr<float>      mVolume;
     ci::ColorA                  mColor;
-    
 };
 
 
