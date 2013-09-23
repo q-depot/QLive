@@ -106,6 +106,8 @@ public:
     static void saveSettings( std::vector<QLiveModule*> modules ) {}
     static void loadSettings( std::vector<QLiveModule*> modules ) {}
     
+    int getIndex() { return mClip->getIndex(); }
+    
     
 protected:
 
