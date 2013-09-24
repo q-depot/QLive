@@ -648,7 +648,7 @@ void QLive::updateSelectedClip( int sceneIdx, int trackIdx )
     // nothing changed
     if ( sceneIdx < 0 && trackIdx < 0 )
         return;
-    
+
     QLiveSceneRef   scene;
     QLiveTrackRef   track;
     QLiveClipRef    clip;
@@ -675,9 +675,9 @@ void QLive::updateSelectedClip( int sceneIdx, int trackIdx )
     // scene changed
     else if ( trackIdx < 0 && mSelectedTrack )
     {
-        clip    = getClipByIndex( mSelectedTrack->getIndex(), mSelectedScene->getIndex() );
+        clip    = getClipByIndex( mSelectedTrack->getIndex(), sceneIdx );
         scene   = getSceneByIndex( sceneIdx );
-
+        
         setSelectedScene( scene );
         setSelectedClip( clip );
     }
