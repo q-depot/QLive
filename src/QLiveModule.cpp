@@ -72,6 +72,6 @@ void QLiveModule::clipSelectCallback()
 {
     std::map< std::string, boost::tuple<float,std::shared_ptr<float>,int,int> >::iterator it;
     for ( it=mParams.begin(); it != mParams.end(); it++ )
-        mLive->setParam( mTrack->getIndex(), boost::get<2>(it->second), boost::get<3>(it->second), boost::get<0>(it->second) );
+        mLive->setParamByIndex( mTrack->getIndex(), boost::get<2>(it->second), boost::get<3>(it->second), boost::get<0>(it->second) );
 }
 

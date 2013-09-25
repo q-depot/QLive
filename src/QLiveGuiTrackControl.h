@@ -234,7 +234,7 @@ private:
         int deviceIdx   = boost::lexical_cast<int>( splitValues[1] );
         int paramIdx    = boost::lexical_cast<int>( splitValues[2] );
         
-        mLive->setParam( trackIdx, deviceIdx, paramIdx, ((Gwen::Controls::Slider*)pControl)->GetFloatValue() );
+        mLive->setParamByIndex( trackIdx, deviceIdx, paramIdx, ((Gwen::Controls::Slider*)pControl)->GetFloatValue() );
     }
     
     void onClipPress( Gwen::Controls::Base* pControl )
