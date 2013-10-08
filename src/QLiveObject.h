@@ -82,8 +82,9 @@ public:
     
     virtual void loadXmlNode( ci::XmlTree node )
     {
-        mName   = node.getAttributeValue<std::string>( "name" );
-        mIndex  = node.getAttributeValue<int>( "index" );
+        // I don't really want this, index shouldn't change and the name is usually used to find the object
+        // mName   = node.getAttributeValue<std::string>( "name" );
+        // mIndex  = node.getAttributeValue<int>( "index" );
     }
     
     
@@ -427,9 +428,18 @@ public:
     std::vector<QLiveDeviceRef> getDevices() { return mDevices; }
 
     QLiveClipRef getClipByIndex( int idx )
-    { 
+    {
         for( size_t k=0; k < mClips.size(); k++ )
             if ( mClips[k]->getIndex() == idx )
+                return mClips[k];
+        
+        return QLiveClipRef();
+    }
+
+    QLiveClipRef getClipByName( const std::string name )
+    {
+        for( size_t k=0; k < mClips.size(); k++ )
+            if ( mClips[k]->getName() == name )
                 return mClips[k];
         
         return QLiveClipRef();
@@ -501,7 +511,7 @@ public:
         {
             index   = nodeIt->getAttributeValue<int>("index");
             name    = nodeIt->getAttributeValue<std::string>("name");
-            clip    = getClipByIndex(index);
+            clip    = getClipByName(name);
             
             if ( clip )
                 clip->loadXmlNode( *nodeIt );
@@ -512,7 +522,6 @@ public:
                 clip->loadXmlNode( *nodeIt );
                 mClips.push_back( clip );
             }
-            
         }
         
         // parse devices
